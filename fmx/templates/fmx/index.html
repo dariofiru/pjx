@@ -1,0 +1,200 @@
+{% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+ 
+ 
+
+{% endblock %}
+
+
+{% block body %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
+
+<div class="container-fluid border bg-light" style="  margin:50px;padding:20px;">
+
+
+    <div class="row" style="text-align:center" >
+        <div class="col    col-md-3"></div>
+
+        <div class="col    col-md-9">
+            <div class="container text-center" >
+             
+                <div class="row align-items-start" >
+                  
+                  <div class="col "   >
+                    4-4-2<br>
+                    <input class="select-formation" name="formazione" id="select-442" type="radio" checked value="442">
+                  </div>
+                  <div class="col "  >
+                    4-3-3<br>
+                    <input class="select-formation" name="formazione" id="select-433" type="radio" value="433">
+                  </div>
+                  <div class="col  "  >
+                   3-4-3<br>
+                   <input class="select-formation" name="formazione" id="select-343" type="radio" value="343">
+                  </div>
+                 
+                </div>
+            </div>
+
+
+        </div>
+         
+    </div>
+ 
+<div class="row">
+    
+    <div id="player-list" class="col bg-bs-light border   col-md-3">
+        <p class="text-success p-2 fs-4 ">Team</p>
+        
+        
+<!--         <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" >
+            <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+              <span class="fs-5 fw-semibold">Players</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom scrollarea"> 
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong id="player-name" class="mb-1">List group item heading</strong>
+                   
+                </div>
+                <div  id="player-appearences" class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                  <strong class="mb-1">List group item heading</strong>
+                   
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+              </a>
+               
+            </div>
+          </div> -->
+        
+    
+    
+    
+    </div>
+     
+    <div class="col bg-body-secondary field  col-md-9" id="442" style="display: block;" >
+        <div class="container  internal-field rounded-3 text-center " >
+            <div class="row  bs-success-bg-subtle " >              
+              <div class="col"></div>
+              <div class="col p-3 player-box    rounded-5 bg-success text-white "  >
+                <p class="fs-5">Goalkeeper</p></div>
+              <div class="col"></div>
+            </div>
+      
+            <div class="row align-items-start" >
+                
+              <div id="def" class="col p-3 player-box    rounded-5 bg-success text-white ">
+                <div class="container" id="def_c_1">
+                Defender 1</div></div>
+              
+              <div id="def2" class="col p-3 player-box   rounded-5 bg-success text-white ">  
+                <div class="container" id="def_c_2">Defender 2</div>
+              </div>
+              
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">
+                <div class="container" id="def_c_3">Defender 3</div>
+            </div>
+            
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">
+                <div class="container" id="def_c_4">Defender 4</div>
+            </div> 
+       
+            <div class="row ">
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">Midfielder 1</div>
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">Midfielder 2</div>
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">Midfielder 3</div>
+              <div class="col p-3 player-box   rounded-5 bg-success text-white ">Midfielder 4</div>
+            </div>
+        
+             <div class="row ">
+                  <div class="col  "></div>
+                  <div class="col p-3 player-box   rounded-5 bg-success text-white ">Attacker 1</div>
+                  <div class="col p-3 player-box   rounded-5 bg-success text-white ">Attacker 2</div>
+                  <div class="col  "></div>
+             </div>
+        </div>
+    </div>
+
+    <div class="col bg-body-secondary field  col-md-9" id="433" style="display: none;" >
+        <div class="container  internal-field rounded-3 text-center " >
+            <div class="row  bs-success-bg-subtle " >              
+              <div class="col"></div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white "  >
+                <p class="fs-4">Goalkeeper</p></div>
+              <div class="col"></div>
+            </div>
+      
+            <div class="row align-items-start" >
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 1</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 2</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 3</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 4</div>
+            </div>
+       
+            <div class="row ">
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 1</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 2</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 3</div>
+            </div>
+        
+             <div class="row ">
+                  
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 1</div>
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 2</div>
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 3</div>
+             </div>
+        </div>
+    </div>
+
+    <div class="col bg-body-secondary field  col-md-9" id="343" style="display: none;" >
+        <div class="container  internal-field rounded-3 text-center " >
+            <div class="row  bs-success-bg-subtle " >              
+              <div class="col"></div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white "  >
+                <p class="fs-4">Goalkeeper</p></div>
+              <div class="col"></div>
+            </div>
+      
+            <div class="row align-items-start" >
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 1</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 2</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Defender 3</div>
+            </div>
+       
+            <div class="row ">
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 1</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 2</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 3</div>
+              <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Midfielder 4</div>
+            </div>
+        
+             <div class="row ">
+                  
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 1</div>
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 2</div>
+                  <div class="col p-3 player-box  border border-success rounded-5 bg-dark text-white ">Attacker 3</div>
+             </div>
+        </div>
+    </div>
+     
+</div> 
+</div>    
+
+<div id="players-list" >
+</div>
+
+ 
+
+ 
+
+  
+<script src="{% static 'fmx/fmx.js' %}"></script>
+{% endblock %}
+
+
