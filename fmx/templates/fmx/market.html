@@ -1,0 +1,76 @@
+{% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+
+
+
+{% endblock %}
+
+
+{% block body %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+market!
+
+<div class="container-fluid border bg-light" style="  margin:20px;padding:20px;">
+
+
+
+
+  <div class="row">
+
+    <div id="player-list" class="col bg-bs-light border   col-md-3">
+      <p class="text-success p-2 fs-4 ">Team</p>
+
+    </div>
+
+    <div class="col bg-body-secondary field  col-md-9" style="display: block;">
+      <div class="container  internal-field rounded-3 text-center ">
+        <div class="row w-50 bs-success-bg-subtle ">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
+            Goalkeeper 1</div>
+        </div>
+        <div class="row w-50 bs-success-bg-subtle ">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
+            goalkeeper 2</div>
+        </div>
+        
+      </div>
+      <div class="container  internal-field rounded-3 text-center ">
+        <div class="row w-50 bs-success-bg-subtle ">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
+            Defender 1</div>
+        </div>
+        <div class="row w-50 bs-success-bg-subtle ">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
+            Defender 2</div>
+        </div>
+        <div class="row  w-50 bs-success-bg-subtle">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
+            Defender 3</div>
+        </div>
+        <div class="row  w-50 bs-success-bg-subtle">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
+            Defender 4</div>
+        </div>
+        <div class="row  w-50 bs-success-bg-subtle">
+          <div class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
+            Defender 5</div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="players-list">
+</div>
+
+
+
+
+
+
+<script src="{% static 'fmx/fmx market.js' %}"></script>
+{% endblock %}

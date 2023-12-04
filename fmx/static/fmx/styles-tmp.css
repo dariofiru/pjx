@@ -1,25 +1,31 @@
 .player-box{
     border:1px solid black;
      margin: 5px;
-    height: 100px;
-     
-
+    height: 100px;   
 }
 
 .player-details{
     margin:3px;
      
 } 
-
-.field{
+ 
+/*.field{
   background-image: url('https://img.freepik.com/free-photo/grass-texture-background_64049-124.jpg?w=1380&t=st=1701609034~exp=1701609634~hmac=9359ac207633cfbeef95761d108d238dad57c8df1df509ee3283a2d30b42c8a9');
  
 
-}
+}  */
 
 .internal-field{
   border: 2px solid white;
   margin-top:40px;
+}
+
+
+.player-box-market{
+  border:1px solid black;
+   margin: 5px;
+  height: 40px;   
+  width:40px;
 }
 
 @keyframes lineInserted {

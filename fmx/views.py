@@ -4,12 +4,32 @@ from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
+from django.db.models import Avg, Count
 import json
 import requests
 import http.client
+import datetime
 from .models import Team, Player, Fixture, User
 # Create your views here.
+
+def utilities(request, cmd):
+     
+    if cmd=="match-week":
+        fixtures = Fixture.objects.all() 
+        for fixture in fixtures:
+            week=fixture.date.isocalendar()[1]
+            Fixture.objects.filter(pk=fixture.id).update(week=week)
+    elif cmd=="week-count":
+        week = (Fixture.objects
+        .values('week')
+        .annotate(dcount=Count('week'))
+        .order_by()
+        )
+    return render(request, "fmx/index.html",
+             {
+               "api":  week
+               })
+
 
 def index(request):
      return render(request, "fmx/index.html")
@@ -155,7 +175,11 @@ def get_player_value(request):
             pass
         else:
             Player.objects.filter(pk=player.id).update(assists=0)
-            
+        if player.goals:
+            pass
+        else:
+            Player.objects.filter(pk=player.id).update(goals=0)
+
     for player in players:
         super_secret_algorithm=(player.appearences*0.5)+(player.lineups*0.8)+(player.goals*1.6)+(player.rating*1.1)+(player.assists*1.4)
         if player.position == 'Defender':
@@ -197,11 +221,19 @@ def importFixtures(request):
         fixture_data= response.json()
         for fixture in fixture_data['response']:
             try: 
+                home_team = Team.objects.filter(id=fixture['teams']['home']['id']).first()
+                away_team = Team.objects.filter(id=fixture['teams']['away']['id']).first()
                 new_fixture=Fixture(id=fixture['fixture']['id'],timestamp=fixture['fixture']['timestamp'],
-                                   home=fixture['teams']['home']['id'],
-                                    away = fixture['teams']['away']['id'],
-                                    date = fixture['fixture']['date'] 
+                                    home=home_team,
+                                     away = away_team,
+                                     date = fixture['fixture']['date'],
+                                     round =  fixture['league']['round']
                                    )
+                # new_fixture=Fixture(id=fixture['fixture']['id'],timestamp=fixture['fixture']['timestamp'],
+                #                    home=fixture['teams']['home']['id'],
+                #                     away = fixture['teams']['away']['id'],
+                #                     date = fixture['fixture']['date'] 
+                #                    )
                 new_fixture.save()
             except IntegrityError:
                 pass 

@@ -3,14 +3,17 @@ from django.db import models
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    club = models.TextField(blank=True)
+    initial_budget =models.FloatField(default=680)
 
     def __str__(self) -> str:
         return f"{self.id} => {self.username}"
 
     def serialize(self):
         return {
-            "username": self.username 
+            "username": self.username, 
+            "club": self.club,
+            "initial_budget" : self.initial_budget
         }
 
 class Team(models.Model):
@@ -70,16 +73,17 @@ class Player(models.Model):
 
 
     def __str__(self) -> str:
-        return f"{self.team_id.name} - {self.name}: {self.position} - {self.rating}"
-    
+       # return f"{self.team_id.name} - {self.name}: {self.position} - {self.rating}"
+        return f"{self.name}: {self.appearences} -  {self.lineups} -  {self.goals} -  {self.assists} - {self.rating}"
 
 class Fixture(models.Model):
     id = models.PositiveIntegerField(primary_key = True)
     timestamp = models.PositiveIntegerField(blank=True,null=True)
-    home = models.PositiveIntegerField()
-    away= models.PositiveIntegerField()
+    home = models.ForeignKey("Team", on_delete=models.CASCADE, related_name="home_team")
+    away= models.ForeignKey("Team", on_delete=models.CASCADE, related_name="away_team")
     date = models.DateTimeField()
     week = models.PositiveIntegerField(blank=True,null=True)
+    round = models.TextField(blank=True,null=True)
 
     def __str__(self) -> str:
         return f"{self.date}: {self.home} - {self.away} - {self.week}"
@@ -89,9 +93,11 @@ class Fixture(models.Model):
             "id": self.id,
             "date": self.date,
             "week": self.week,
-            "home": self.home,
-            "away": self.away
+            "home": self.home.id,
+            "away": self.away.id
         }
+    
+
 
 class User_club(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users")
