@@ -9,6 +9,9 @@
      
 } 
  
+ 
+
+ 
 /*.field{
   background-image: url('https://img.freepik.com/free-photo/grass-texture-background_64049-124.jpg?w=1380&t=st=1701609034~exp=1701609634~hmac=9359ac207633cfbeef95761d108d238dad57c8df1df509ee3283a2d30b42c8a9');
  
@@ -28,11 +31,219 @@
   width:40px;
 }
 
-@keyframes lineInserted {
-    from {
-      height: 0;
-    }
-    to {
-      height: 20px; /* your line height here */
-    }
-  }
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+
+.hero {
+  background-size: cover;
+  background-position: center center; }
+  .hero, .hero > .container > .row {
+    height: 100vh;
+    min-height: 500px; }
+  .hero.overlay:before {
+    content: "";
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
+  .hero h1 {
+    font-weight: 700;
+    font-size: 4rem; }
+    @media (max-width: 991.98px) {
+      .hero h1 {
+        font-size: 2.5rem; } }
+  .hero p {
+    color: rgba(255, 255, 255, 0.7); }
+
+
+    .bg-image {
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; }
+      .bg-image.overlay {
+        position: relative; }
+        .bg-image.overlay:after {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 0;
+          width: 100%;
+          background: rgba(0, 0, 0, 0.7); }
+ .bg-image > .container {
+        position: relative;
+        z-index: 1; }
+
+
+
+        .cd-panel {
+          /*...*/
+          visibility: hidden;
+          transition: visibility 0s 0.6s;
+          color:black;
+        }
+        
+        .cd-panel.cd-panel--is-visible {
+          visibility: visible;
+          transition: visibility 0s 0s;
+        }
+        
+        .cd-panel__header {
+          /*...*/
+          position: fixed;
+          top: 0;
+          width: 90%;
+          height: 50px;
+          transition: transform 0.3s 0s;
+          transform: translateY(-50px);
+        }
+        
+        .cd-panel--from-right .cd-panel__header {
+          right: 0;
+        }
+        
+        .cd-panel--from-left .cd-panel__header {
+          left: 0;
+        }
+        
+        .cd-panel--is-visible .cd-panel__header {
+          transition: transform 0.3s 0.3s;
+          transform: translateY(0px);
+        }
+        
+        .cd-panel__container {
+          /*...*/
+          position: fixed;
+          width: 90%;
+          height: 100%;
+          top: 0;
+          transition: transform 0.3s 0.3s;
+        }
+        
+        .cd-panel--from-right .cd-panel__container {
+          right: 0;
+          transform: translate3d(100%, 0, 0);
+        }
+        
+        .cd-panel--from-left .cd-panel__container {
+          left: 0;
+          transform: translate3d(-100%, 0, 0);
+        }
+        
+        .cd-panel--is-visible .cd-panel__container {
+          transform: translate3d(0, 0, 0);
+          transition-delay: 0s;
+        }
+/* The side navigation menu */
+
+        .sidenav {
+          height: 100%; /* 100% Full-height */
+          width: 0; /* 0 width - change this with JavaScript */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Stay on top */
+          top: 0;
+          right: 0;
+          background-color: black;
+          overflow-x: hidden; /* Disable horizontal scroll */
+          padding-top: 60px; /* Place content 60px from the top */
+          transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+        }
+ 
+        
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+          color: #f1f1f1;
+        }
+        
+        /* Position and style the close button (top right corner) */
+        .sidenav .closebtn {
+          position: absolute;
+          top: 0;
+          right: 25px;
+          font-size: 36px;
+          margin-left: 50px;
+        }
+        
+        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+        
+        @media screen and (max-height: 450px) {
+          .sidenav {padding-top: 15px;}
+          .sidenav a {font-size: 18px;}
+        }        
+  
+        .box {
+          float: left;
+          height: 20px;
+          width: 20px;
+          margin-bottom: 15px;
+          border: 1px solid black;
+          clear: both;
+        }
+        
+        .red {
+          background-color: red;
+        }
+        
+        .green {
+          background-color: green;
+        }
+        
+        .blue {
+          background-color: blue;
+        }

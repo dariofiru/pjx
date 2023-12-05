@@ -9,14 +9,111 @@
 
 {% block body %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="container-fluid text-info center   overlay" style="background-image: url('static/fmx/bg_3.jpg');"> 
+  <div class="row w-50 bs-success-bg-subtle  "></div>
+<div class=" col opacity-75 center border  bg-light   " style="  margin:60px;padding:10px;">
+  <div class="  text-black border "  > 
+
+    <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
+    <div class="row border bg-light">
+      <div class="col-4 border bg-light">
+
+        <div class="container">
+        <div class="row">
+          <div class="col-6"> 
+            
 
 
-<div class="container-fluid border bg-light" style="  margin:20px;padding:20px;">
+
+            <details data-dropdown>
+              <summary>
+               Team:
+              </summary>
+              <ul role="menu">
+                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
+                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
+                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
+              </ul>
+            </details>
+           
+
+          </div>
+          <div class="col-5"> <details data-dropdown>
+            <summary>
+             Position:
+            </summary>
+            <ul role="menu">
+              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Goalkeepers</a></li>
+              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Defenders</a></li>
+              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Midlfielders</a></li>
+              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Attackers</a></li>
+            </ul>
+          </details></div>
+        </div>
+        <div class="row">
+           
+          <div class="col-10 text-left border"> 
+            <br>
+            <div id="player-list"></div>
+          </div>
+        </div>
+        </div>
+        </div>
+      
+      <div id ="canvas_test" class="col-8">
+        
+    ddd
+    <div class="row">
+           
+      <div class="col-8 text-left border"> 
+        <div >dsds</div>
+      </div>
+      <div class="col-4 text-left border"> 
+        <div ><div id="mySidenav" class="sidenav">
+ 
+          <div class="row">
+            <div class="col-2"></div>
+            <div  class="col-8 text-center">
+              <img id="det_player_photo" class="rounded "style="border:1px solid gray; margin:5px" data-playerid='0' src="#" style="width: 90px;">
+              <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:5px">s</div>
+            </div>
+            <div class="col-2"></div>
+          </div>
+          <div class="row m-3">
+            <div id="det_player_1" class="col-6  text-white">x</div>
+            <div id="det_player_2" class="col-6  text-white">d</div>
+             
+            </div>
+            <div class="container  ">
+            <div class="row m-3 border border-success-subtle  border-white">
+  
+              <div id="stat_player_1" class="col-6 text-white">x</div>
+              <div id="stat_player_2" class="col-6  text-white">d</div>
+              
+            </div>
+              
+              
+            
 
 
 
+             
+              </div>
+        </div></div>
+      </div>
+    </div>
+          
+        
+        </div></div>
+    </div>
+</div>
+</div>
+</div>
+ 
+<br><hr> 
 
-  <div class="row">
+<div class="container-fluid border bg-light" style="  margin:10px;padding:10px;">
+ 
 
     <div id="player-list" class="col bg-bs-light border   col-md-3">
       <p class="text-success p-2 fs-4 ">Team
@@ -45,8 +142,9 @@
       </p>
 
     </div>
-    
-    <div class="col bg-body-secondary field  col-md-9" style="display: block;">
+</div>
+  </div>
+    <div class="col bg-body-secondary field  col-md-4" style="display: block;">
       <div class="container  internal-field rounded-3 text-center ">
         <div class="row w-50 bs-success-bg-subtle ">
           <div id="Goalkeeper-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
@@ -128,9 +226,9 @@
   </div>
 </div>
 
-<div id="players-list">
+<!---<div id="players-list">
 </div>
-
+ --->
 
 
 
@@ -143,4 +241,5 @@ var  initial_budget=Number(initial_budget_str)
 </script> 
 
 <script src="{% static 'fmx/fmx market.js' %}"></script>
+{% static 'fmx/fmx market.js' %}
 {% endblock %}

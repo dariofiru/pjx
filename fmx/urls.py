@@ -11,6 +11,7 @@ urlpatterns = [
     
     path("get_player_value", views.get_player_value, name="get_player_value"),
     path("players", views.players, name="players"),
+    path("get_player_details/<str:id>", views.get_player_details, name="get_player_details"),
 
     path("market", market_views.market, name="market"),
 

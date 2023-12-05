@@ -65,23 +65,7 @@ def importTeam(request):
             new_team.save()
         except IntegrityError:
               pass
-        if team['team']['id']<40:
-            list_teams =list_teams+team['team']['name']
-            querystring = {"team":team['team']['id'],"league":"39","season":"2021"}
-            response = requests.get(url, headers=headers, params=querystring)
-            players_data = response.json()
-            for player in players_data['response']:
-                try:
-                    new_player = Player            (id=player['player']['id'],team_id=team['team']['id'],
-                       name=player['player']['name'],
-                         age= player['player']['age'], 
-                         
-                          position=player['statistics']['games']['position'],
-                          photo=player['photo']['photo'],
-                          appearences=player['statistics']['games']['appearences']       )
-                    new_player.save()
-                except IntegrityError:
-                    pass
+ 
     #data = json_response
 
     return render(request, "fmx/index.html",
@@ -90,11 +74,7 @@ def importTeam(request):
                })
      
 def importPlayers(request):
-   # f = open('players.json', 'r', encoding='utf-8')
- 
-    # returns JSON object as 
-    # a dictionary
-    #players_data = json.load(f)
+
     tst ="hello"
     #page = players_data['paging']['total']
    
@@ -123,12 +103,20 @@ def importPlayers(request):
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
                                    age=players['player']['age'], nationality = players['player']['nationality'],
                                     position = players['statistics'][i]['games']['position'],
-                                    photo = players['player']['photo'], appearences = players['statistics'][i]['games']['appearences'],
+                                    photo = players['player']['photo'],
+                                    appearences = players['statistics'][i]['games']['appearences'],
                                     rating = players['statistics'][i]['games']['rating'],
                                     lineups = players['statistics'][i]['games']['lineups'],
                                     goals = players['statistics'][i]['goals']['total'], 
                                     conceded = players['statistics'][i]['goals']['conceded'],
-                                    assists = players['statistics'][i]['goals']['assists']
+                                    assists = players['statistics'][i]['goals']['assists'],
+                                    yellowcard = players['statistics'][i]['cards']['yellow'],
+                                    redcard =  players['statistics'][i]['cards']['red'],
+                                    penaltywon = players['statistics'][i]['penalty']['won'],
+                                     minutes = players['statistics'][i]['games']['minutes'],
+                                    teamlogo = players['statistics'][i]['team']['logo'],
+                                    height = players['player']['height'],
+                                    weight = players['player']['weight']
                                    )
                                 new_player.save()
                             except IntegrityError:
@@ -150,12 +138,20 @@ def importPlayers(request):
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
                                    age=players['player']['age'], nationality = players['player']['nationality'],
                                     position = players['statistics'][i]['games']['position'],
-                                    photo = players['player']['photo'], appearences = players['statistics'][i]['games']['appearences'],
+                                    photo = players['player']['photo'],
+                                    appearences = players['statistics'][i]['games']['appearences'],
                                     rating = players['statistics'][i]['games']['rating'],
                                     lineups = players['statistics'][i]['games']['lineups'],
                                     goals = players['statistics'][i]['goals']['total'], 
                                     conceded = players['statistics'][i]['goals']['conceded'],
-                                    assists = players['statistics'][i]['goals']['assists']
+                                    assists = players['statistics'][i]['goals']['assists'],
+                                    yellowcard = players['statistics'][i]['cards']['yellow'],
+                                    redcard =  players['statistics'][i]['cards']['red'],
+                                    penaltywon = players['statistics'][i]['penalty']['won'],
+                                     minutes = players['statistics'][i]['games']['minutes'],
+                                    teamlogo = players['statistics'][i]['team']['logo'],
+                                    height = players['player']['height'],
+                                    weight = players['player']['weight']
                                    )
                                 new_player.save()
                             except IntegrityError:
@@ -203,8 +199,18 @@ def players(request):
 
     return JsonResponse([player.serialize() for player in players], safe=False)
 
-def importFixtures(request):
 
+def get_player_details(request,id):
+    playerT = None
+    try:
+        playerT = Player.objects.filter(id=id)
+    except Player.DoesNotExist:
+        HttpResponse("error")
+    return JsonResponse([player.serialize() for player in playerT], safe=False)
+
+
+
+def importFixtures(request):
     active_teams = Team.objects.filter(active=True) 
     for team in active_teams:
         team_id_api = team.id

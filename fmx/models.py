@@ -50,6 +50,13 @@ class Player(models.Model):
     assists = models.PositiveIntegerField(blank=True,null=True)
     rating = models.FloatField(default=6.0)
     value = models.PositiveIntegerField(blank=True,null=True)
+    yellowcard = models.PositiveIntegerField(blank=True,null=True)
+    redcard = models.PositiveIntegerField(blank=True,null=True)
+    penaltywon = models.PositiveIntegerField(blank=True,null=True)
+    minutes = models.PositiveIntegerField(blank=True,null=True)
+    teamlogo = models.TextField(blank=False,null=True)
+    height = models.TextField(blank=False,null=True)
+    weight = models.TextField(blank=False,null=True)
 
     def serialize(self):
         return {
@@ -67,7 +74,14 @@ class Player(models.Model):
             "conceded" : self.conceded,
             "assists" : self.assists,
             "rating" : self.rating,
-            "value" : self.value
+            "value" : self.value,
+            "yellowcard": self.yellowcard,
+            "redcard" : self.redcard,
+            "penaltywon" : self.penaltywon,
+            "minutes": self.minutes,
+            "teamlogo" : self.teamlogo,
+            "height": self.height,
+            "weight" : self.weight 
 
         }
 
