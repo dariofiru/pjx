@@ -1,15 +1,57 @@
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
-
-class Squad{
-    constructor(){
-        this.club=user.club;
-        this.initial_budget=user.initial_budget;
-        this.current_budget=user.initial_budget;
+    
+    function listQ(){
+        changedText.textContent = this.value;
     }
-}
+    document.getElementById("list").onchange = listQ;
+
+
+function get_data(){
+    console.log("budget: "+initial_budget)
+        fetch( `user_club/${user_id}`)
+        .then(response => response.text())
+        .then(text => {
+            if(text==="empty"){
+
+            }else{
+                var user_data = JSON.parse(text);
+            }
+        });
+    }
+
+
+async function buyPlayer(player_id, player_value,player_position, player_fullname){
+        if(player_value>initial_budget){
+             Alert("Not enough budget!");
+             return false;
+        }
+        else{
+            for (let i = 1; i < 6; i++) {
+                const player_slot= document.getElementById(`${player_position}-${String(i)}`)   
+                if(player_slot.dataset.playerid==="0"){
+                    player_slot.dataset.playerid=player_id;
+                    player_slot.innerHTML=player_fullname
+                    if (i==5){
+                        let full = player_slot.getElementsByClassName('buy_btn');
+                        for (i in full) {
+                            console.log("=>"+full[i].innerHTML)
+                            full[i].classList.remove('btn-outline-success')
+                            full[i].classList.add('btn-danger')
+                            }
+                    }
+                    break; 
+                }
+                if (i==5){
+                    alert("no more")
+                    break;
+                }
+              }
+              return false;
+        }
+        return false;
+    }
+    
+    
  
 async function fetchPlayers() {
         var my_likesR = [];
@@ -19,6 +61,10 @@ async function fetchPlayers() {
                 var player = JSON.parse(text);
                 const player_list= document.getElementById('player-list')
                 for (var i in player) {
+                    let player_id=player[i].id;
+                    let player_value=player[i].value;
+                    let player_position = player[i].position
+                    let player_fullname= player[i].name
                     const player_box = document.createElement("div");
                     player_box.id = 'player_box'
                     const player_hidden_id = document.createElement("div")
@@ -54,29 +100,30 @@ async function fetchPlayers() {
 
                     const add_player_btn = document.createElement("button");
                     add_player_btn.classList.add('btn')
+                    add_player_btn.classList.add('buy_btn')
                     add_player_btn.id=`${player[i].id}`
                     add_player_btn.classList.add('btn-outline-success')
                     add_player_btn.textContent ="Buy!";
+                     
                     player_name.append(player_hidden_id)
                     player_box.append(player_name)
                     player_box.append(player_stats)
                     player_name.append(add_player_btn)
                  
-                    player_list.append(player_box)                     
+                    player_list.append(player_box)     
+                     
+                    add_player_btn.addEventListener('click', event => {
+                        buyPlayer(player_id, player_value,player_position, player_fullname);
+                        return false;
+                    });             
                     }                                       
             });
             return false 
         }
         
-  fetchPlayers()
 
  
-async function buyPlayer(){
+fetchPlayers()
 
-
-}
-
-const squad_name = new Squad()
-console.log("classe: "+ squad_name.initial_budget)
 
 });

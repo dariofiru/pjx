@@ -9,7 +9,7 @@ import json
 import requests
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User
+from .models import Team, Player, Fixture, User, User_club
 # Create your views here.
 
 
@@ -18,3 +18,12 @@ def market(request):
             #, {
              #   "PostForm": form, "check":"yes"
             #})
+
+def user_club(request, id):
+     userT = User.objects.filter(id=id)
+     try:
+           user_clubT = User_club.objects.filter(user__in=userT).get()
+     except User_club.DoesNotExist:
+          return HttpResponse("empty")
+
+     return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)

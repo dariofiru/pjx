@@ -14,6 +14,8 @@ urlpatterns = [
 
     path("market", market_views.market, name="market"),
 
+    path("user_club/<str:id>", market_views.user_club, name="user_club"),
+
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register")

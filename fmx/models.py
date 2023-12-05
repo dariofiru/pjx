@@ -104,7 +104,7 @@ class User_club(models.Model):
     name =  models.TextField(blank=False)
     timestamp = models.DateTimeField()
     img = models.TextField(blank=False,null=True)
-    goalkeeper_1 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="g1")
+    goalkeeper_1 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="g1", null=True)
     goalkeeper_2 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="g2")
     
 
