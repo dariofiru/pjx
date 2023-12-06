@@ -1,10 +1,16 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
 const side_nav_close=document.getElementById("mySidenav"); 
 side_nav_close.addEventListener('click', event => {
     //const side_nav=document.getElementById("mySidenav");
     document.getElementById("mySidenav").style.width = "0";
-});  
+}); 
+
+hello()
+
+
 async function get_data(){
     console.log("budget: "+initial_budget)
         fetch( `user_club/${user_id}`)
@@ -104,13 +110,24 @@ async function fetchPlayers() {
                     const player_hidden_id = document.createElement("div")
                     player_hidden_id.innerHTML=`${player[i].id}`
                     player_hidden_id.style.display="none";
-                    player_box.classList.add('bg-bs-light');
-                     
-                    player_box.classList.add('border');
-                    player_box.classList.add('rounded-3');
-                    player_box.classList.add('player-details');
+
+                    player_box.classList.add('border', 'rounded-3', 'player-details', 'bg-bs-light');
+ 
+
+                    // drag drop start
+ 
+
+                    // drag drop end 
+
+
+
                     const player_name = document.createElement("div");
                     player_name.innerHTML=`<b>${player[i].name}</b> `;
+                    
+                    player_name.setAttribute("id", player_fullname)
+                    player_name.setAttribute("idreal", player_id)
+                    player_name.setAttribute("draggable", "true")
+                    player_name.setAttribute("ondragstart", "drag(event)")
                     player_name.style.padding="4px"
                     player_name.classList.add('player_name', 'text-primary-emphasis', 'bg-success-subtle')
                     //player_name.classList.add('border-primary-subtle');
@@ -176,7 +193,7 @@ async function fetchPlayers() {
                     player_box.append(player_name)
                     player_box.append(player_stats)
                     player_box.append(player_btn_div)
-                 
+                        
                     player_list.append(player_box)     
                      
                     add_player_btn.addEventListener('click', event => {
@@ -191,6 +208,21 @@ async function fetchPlayers() {
 
  
 fetchPlayers()
+function allowDrop(ev) {
+    console.log("allowdrop")
+    ev.preventDefault();
+  }
+  
+ 
+
+ 
+    
+  var span = document.getElementById("myModal");
+  var close = document.getElementsByClassName("close")[0];
+  // When the user clicks on the button, open the modal
+  close.onclick = function() {
+    span.style.display = "none";
+  }
 
 
 });
