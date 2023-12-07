@@ -78,15 +78,15 @@ async function get_player_details(id){
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
             <b>Height:</b> ${player_data[i].height}<br><br> `;
             }
-            stat_player_1.innerHTML=`Lineups: ${player_data[i].lineups}<br> 
+            stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
-            Assists:<i> ${player_data[i].assists}</i><br>`;
-            stat_player_2.innerHTML=`<img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
+            Assists: ${player_data[i].assists}<br></span>`;
+            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
             width=15px>: ${player_data[i].yellowcard}<br> 
             <img src="https://png2.cleanpng.com/sh/fd5049e50e3d24a2343c26b68ce164bc/L0KzQYm3U8I5N6Zuj5H0aYP2gLBuTgBmdpJxjOs2Y3H1dH7okCNwa5pmjNt4bj3pf7F7gvFtdF53fdhucnXoPcHzgglmel5oeeRtLUXkcrO6UsFnQGc2SNM6Lka6QoWCVsIyOWY3SqQ6N0WzQ4a7WcEveJ9s/kisspng-penalty-card-association-football-referee-player-card-5abb321f8610a1.6724962115222175035491.png"
             width=15px>:
              ${player_data[i].redcard}<br>
-            Pen won:${player_data[i].penaltywon}<br>`;
+            Pen won:${player_data[i].penaltywon}<br></span>`; 
             return false;
     });
 }
@@ -161,19 +161,25 @@ async function fetchPlayers(page, team, position) {
                     player_name.setAttribute("idreal", player_id)
                     player_name.setAttribute("draggable", "true")
                     player_name.setAttribute("ondragstart", "drag(event)")
-                    player_name.innerHTML=`<b>${player[i].name}</b> `;
+                    player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
  
                     player_name.style.padding="4px"
-                    player_name.classList.add('player_name', 'text-primary-emphasis','bg-subtle')
-                    /* if (player[i].position ==="Attacker"){
+                    //player_name.classList.add('player_name', 'text-primary-emphasis','bg-subtle','bs-info-bg-subtle')
+                    player_name.classList.add('player_name', 'text-primary-emphasis', 'bs-info-bg-subtle')
+                    player_name.classList.add('bg-primary-subtle');
+                     if (player[i].position ==="Attacker"){
                         player_name.classList.add( 'bg-success-subtle')    
                     } else if (player[i].position ==="Midfielder"){
-                        player_name.classList.add('bs-warning-bg-subtle')
+                        player_name.classList.add('bg-primary-subtle');
                     }
                     else if (player[i].position ==="Defender"){
                         console.log("quiiiiiiii")
-                        player_name.classList.add('bs-info-bg-subtle')
-                    } */
+                        player_name.classList.add('bg-secondary-subtle');
+                    } 
+                    else if (player[i].position ==="Goalkeeper"){
+                        console.log("quiiiiiiii")
+                        player_name.classList.add('bg-danger-subtle');
+                    }
                      
                     //player_name.classList.add('border-primary-subtle');
                     player_name.classList.add('fs-6');
