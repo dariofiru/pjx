@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 import json
+from django.core.paginator import Paginator
 import requests
 import http.client
 import datetime
@@ -193,10 +194,44 @@ def get_player_value(request):
                "players": players, "avg" : avg
                })
 
-def players(request):
+def players(request,page,team,position):
+    #############
+    # Retrieves the main list of available players
+    # and takes care of filtering or search requests
+    #
+    #############
     players= Player.objects.all()
     players = players.order_by("-position").all()
+    team_tmp="no team"
+    position_tmp="no position"
+    if team!="0":
+        try:
+            team_tmp = Team.objects.filter(id=team)
+        except Team.DoesNotExist:
+            HttpResponse("error")
+        
+        players= players.filter(team_id__in=team_tmp).all()
+    
+    if position!="0":
+        try:    
+            players= players.filter(position=position) 
+        except Player.DoesNotExist:
+            HttpResponse("error")
+    
+    #return JsonResponse([team.serialize() for team in team_tmp], safe=False)
+    
 
+    
+    paginator = Paginator(players, 6)
+    players = paginator.get_page(page)
+     
+    json_final =[]
+    #  for player in players:
+    #      player=player.serialize()
+    #      json_tmp=player.serialize()
+    #      json_tmp["team name"]=team_tmp
+    #      player.append(json_tmp)  
+    #return JsonResponse(json_final, safe=False)
     return JsonResponse([player.serialize() for player in players], safe=False)
 
 

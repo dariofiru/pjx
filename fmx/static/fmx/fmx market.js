@@ -8,7 +8,35 @@ side_nav_close.addEventListener('click', event => {
     document.getElementById("mySidenav").style.width = "0";
 }); 
 
-hello()
+async function get_teams(){ // returns all team names for the search dropdown 
+    console.log("teams: " )
+    const team_search=document.getElementById("team_search");
+        fetch( "get_teams")
+        .then(response => response.text())
+        .then(text => {
+           
+                var teams_data = JSON.parse(text);
+                for (var i in teams_data) {
+                    var option = document.createElement("option");
+                    option.text = teams_data[i].name;
+                    option.value = teams_data[i].id;
+                    team_search.add(option);
+                }
+            }
+        );
+    }
+
+/// listeners for search dropdowns (teams and position)
+const team_search=document.getElementById("team_search"); 
+const position_search=document.getElementById("position_search");
+team_search.addEventListener("change", function() {
+   console.log("team: " +team_search.value)
+   fetchPlayers(1, team_search.value, position_search.value)
+});
+position_search.addEventListener("change", function() {
+    console.log("position: " +position_search.value)
+    fetchPlayers(1, team_search.value, position_search.value)
+});
 
 
 async function get_data(){
@@ -20,12 +48,15 @@ async function get_data(){
 
             }else{
                 var user_data = JSON.parse(text);
+                
             }
         });
     }
 async function get_player_details(id){
-
-
+    //////////////
+    // creates the side bar with player statistics.
+    //
+    //////////////
     const side_nav=document.getElementById("mySidenav");
     const det_player_photo=document.getElementById("det_player_photo");
     const det_player_name=document.getElementById("det_player_name");
@@ -93,14 +124,19 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
     
     
  
-async function fetchPlayers() {
+async function fetchPlayers(page, team, position) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log("link"+`players/${page}/${team}/${position}`)
         var my_likesR = [];
-        await fetch("players")
+          fetch(`players/${page}/${team}/${position}` )
             .then(response => response.text())
             .then(text => {
+                 console.log(text)
+                 
                 var player = JSON.parse(text);
                 const player_list= document.getElementById('player-list')
-                for (var i in player) {
+                        player_list.innerHTML=""
+                        for (var i in player) {
                     let player_id=player[i].id;
                     let player_value=player[i].value;
                     let player_position = player[i].position
@@ -110,24 +146,23 @@ async function fetchPlayers() {
                     const player_hidden_id = document.createElement("div")
                     player_hidden_id.innerHTML=`${player[i].id}`
                     player_hidden_id.style.display="none";
-
                     player_box.classList.add('border', 'rounded-3', 'player-details', 'bg-bs-light');
  
 
                     // drag drop start
- 
+
 
                     // drag drop end 
 
 
 
                     const player_name = document.createElement("div");
-                    player_name.innerHTML=`<b>${player[i].name}</b> `;
-                    
                     player_name.setAttribute("id", player_fullname)
                     player_name.setAttribute("idreal", player_id)
                     player_name.setAttribute("draggable", "true")
                     player_name.setAttribute("ondragstart", "drag(event)")
+                    player_name.innerHTML=`<b>${player[i].name}</b> `;
+                    
                     player_name.style.padding="4px"
                     player_name.classList.add('player_name', 'text-primary-emphasis', 'bg-success-subtle')
                     //player_name.classList.add('border-primary-subtle');
@@ -139,9 +174,8 @@ async function fetchPlayers() {
                    // player_img.src = `${player[i].photo}`;
 
                     const player_stats = document.createElement("div");
-                    player_stats.classList.add('player_stats');
+                    player_stats.classList.add('player_stats','fw-normal');
                     player_stats.id='player_stats';
-                    player_stats.classList.add('fw-normal');
                     player_stats.innerHTML=`<b>Position:</b> ${player[i].position}<br>
                     <b>Current Price:</b> ${player[i].value}
                     `;
@@ -206,12 +240,22 @@ async function fetchPlayers() {
         }
         
 
+
+
+
+function fetchPlayers_bug(page, team, position){
+    console.log("try: " + `players/${page}/${team}/${position}` )
+    fetch(`players/${page}/${team}/${position}`  )
+            .then(response => response.text())
+            .then(text => {
+                 console.log(" =>" +text)
+                });
+            }
+
+get_teams() // get team names for search options  
+//fetchPlayers_bug(1, "0", "0")
+fetchPlayers(1, "0", "0") // fetch players for first time
  
-fetchPlayers()
-function allowDrop(ev) {
-    console.log("allowdrop")
-    ev.preventDefault();
-  }
   
  
 

@@ -8,9 +8,11 @@ urlpatterns = [
     #path("import-team", views.importTeam, name="import-team"),
     #path("import-players", views.importPlayers, name="import-players"),
     #path("import-fixtures", views.importFixtures, name="import-fixtures"),
-    
+    path("get_teams", market_views.get_teams, name="get_teams"),
     path("get_player_value", views.get_player_value, name="get_player_value"),
-    path("players", views.players, name="players"),
+
+    path("players/<str:page>/<str:team>/<str:position>/", views.players, name="players"),
+
     path("get_player_details/<str:id>", views.get_player_details, name="get_player_details"),
 
     path("market", market_views.market, name="market"),

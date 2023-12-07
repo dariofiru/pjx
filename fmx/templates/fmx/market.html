@@ -67,39 +67,36 @@
 
     <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
     <div class="row border bg-light">
-      <div class="col-4 border bg-light">
+      <div class="col-4   bg-light">
 
-        <div class="container">
-        <div class="row">
-          <div class="col-6"> 
-            <details data-dropdown>
-              <summary>
-               Team:
-              </summary>
-              <ul role="menu">
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-              </ul>
-            </details>
-           
-
+        <div class="container text-center">
+            <!-- start search box-->
+        <div class="row   ">
+          <div class="col-6  " > Team:
+            <form>
+            <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+               
+            </select>
           </div>
-          <div class="col-5"> <details data-dropdown>
-            <summary>
-             Position:
-            </summary>
-            <ul role="menu">
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Goalkeepers</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Defenders</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Midlfielders</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Attackers</a></li>
-            </ul>
-          </details></div>
+          <div  class="col-6 "> Position:
+            <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+              <option value="Goalkeeper">Goalkeepers</option>
+              <option value="Defender">Defenders</option>
+              <option value="Midlfielder">Midlfielders</option>
+              <option value="Attacker">Attackers</option>
+            </select>
+             
         </div>
+      </form>
+    </div>
+      <!-- end search box-->
+
+        
         <div class="row">
            
-          <div class="col-10 text-left border"> 
+          <div class="col-10 text-left  "> 
             <br>
             <div id="player-list"></div>
           </div>
@@ -256,83 +253,10 @@
  
 <br><hr> 
 
-<div class="container-fluid border bg-light" style="  margin:10px;padding:10px;">
- 
 
  
-</div>
-  </div>
-    <div class="col bg-body-secondary field  col-md-4" style="display: block;">
-    
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Defender 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Defender-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Defender 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Defender-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Defender 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Defender-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Defender 4</div>
-        </div>
-        <div  class="row  w-50 bs-success-bg-subtle">
-          <div  id="Defender-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-            Defender 5</div>
-        </div>
-      </div>
 
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Midfielder-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Midfielder 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Midfielder-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Midfielder 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Midfielder-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Midfielder 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Midfielder-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Midfielder 4</div>
-        </div>
-        <div  class="row  w-50 bs-success-bg-subtle">
-          <div  id="Midfielder-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-            Midfielder 5</div>
-        </div>
-      </div>
-
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Attacker 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Attacker 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Attacker 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Attacker 4</div>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-</div>
+ 
 
 <!---<div id="players-list">
 </div>
@@ -350,5 +274,5 @@ var  initial_budget=Number(initial_budget_str)
 </script> 
 
 <script src="{% static 'fmx/fmx market.js' %}"></script>
-{% static 'fmx/fmx market.js' %}
+ 
 {% endblock %}

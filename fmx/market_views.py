@@ -27,3 +27,8 @@ def user_club(request, id):
           return HttpResponse("empty")
 
      return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
+
+def get_teams(request):
+     teams = Team.objects.filter(active=True)
+     teams = teams.order_by("-name").all()
+     return JsonResponse([team.serialize() for team in teams], safe=False)
