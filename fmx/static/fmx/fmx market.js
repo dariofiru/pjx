@@ -131,7 +131,7 @@ async function fetchPlayers(page, team, position) {
           fetch(`players/${page}/${team}/${position}` )
             .then(response => response.text())
             .then(text => {
-                 console.log(text)
+                  
                  
                 var player = JSON.parse(text);
                 const player_list= document.getElementById('player-list')
@@ -162,9 +162,19 @@ async function fetchPlayers(page, team, position) {
                     player_name.setAttribute("draggable", "true")
                     player_name.setAttribute("ondragstart", "drag(event)")
                     player_name.innerHTML=`<b>${player[i].name}</b> `;
-                    
+ 
                     player_name.style.padding="4px"
-                    player_name.classList.add('player_name', 'text-primary-emphasis', 'bg-success-subtle')
+                    player_name.classList.add('player_name', 'text-primary-emphasis','bg-subtle')
+                    /* if (player[i].position ==="Attacker"){
+                        player_name.classList.add( 'bg-success-subtle')    
+                    } else if (player[i].position ==="Midfielder"){
+                        player_name.classList.add('bs-warning-bg-subtle')
+                    }
+                    else if (player[i].position ==="Defender"){
+                        console.log("quiiiiiiii")
+                        player_name.classList.add('bs-info-bg-subtle')
+                    } */
+                     
                     //player_name.classList.add('border-primary-subtle');
                     player_name.classList.add('fs-6');
                     const player_img = document.createElement("img");

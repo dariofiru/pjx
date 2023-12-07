@@ -222,7 +222,7 @@ def players(request,page,team,position):
     
 
     
-    paginator = Paginator(players, 6)
+    paginator = Paginator(players, 10)
     players = paginator.get_page(page)
      
     json_final =[]
