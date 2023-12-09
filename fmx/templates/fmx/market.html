@@ -11,11 +11,7 @@
  function allowDrop(ev) {
     ev.preventDefault();
   }
-  
-  function hello(){
-    console.log("HELLO!")
-}
-
+ 
 
   function drag(ev) {
      
@@ -46,13 +42,29 @@
 <!-- The Modal -->
  
 
-<!-- The Modal -->
+<!-- The Modal --> <!--confirm/congratulation page for sign-->
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    <p id="buy_confirm"></p>
+    
+      
+
+      <table id="headline" style="width:480px;height:218px;display:none"><tr><td></td></tr>
+        <tr>
+            <td   style="width:480px;height:218px;text-align:center;background-image: url('static/fmx/headline.png');">
+    
+                 
+                <h1 style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:40px"> ciao</h1> 
+         
+        </td></tr>
+        </table>
+
+
+        <p id="buy_confirm">
+      Sure?</p>
+    <div id="confirm_sign_btn" class="col-6"><button type="button" class="btn btn-success">Confirm</button> </div>
   </div>
 
 </div>
@@ -67,39 +79,36 @@
 
     <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
     <div class="row border bg-light">
-      <div class="col-4 border bg-light">
+      <div class="col-4   bg-light">
 
-        <div class="container">
-        <div class="row">
-          <div class="col-6"> 
-            <details data-dropdown>
-              <summary>
-               Team:
-              </summary>
-              <ul role="menu">
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-                <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Dropdown item</a></li>
-              </ul>
-            </details>
-           
-
+        <div class="container text-center">
+            <!-- start search box-->
+        <div class="row   ">
+          <div class="col-6  " > Team:
+            <form>
+            <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+               
+            </select>
           </div>
-          <div class="col-5"> <details data-dropdown>
-            <summary>
-             Position:
-            </summary>
-            <ul role="menu">
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Goalkeepers</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Defenders</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Midlfielders</a></li>
-              <li><a href="#" style="font-weight:bold;text-decoration:none;color:black">Attackers</a></li>
-            </ul>
-          </details></div>
+          <div  class="col-6 "> Position:
+            <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+              <option value="Goalkeeper">Goalkeepers</option>
+              <option value="Defender">Defenders</option>
+              <option value="Midfielder">Midfielders</option>
+              <option value="Attacker">Attackers</option>
+            </select>
+             
         </div>
+      </form>
+    </div>
+      <!-- end search box-->
+
+        
         <div class="row">
            
-          <div class="col-10 text-left border"> 
+          <div class="col-10 text-left  "> 
             <br>
             <div id="player-list"></div>
           </div>
@@ -110,43 +119,42 @@
        <div id ="canvas_test" class="col-8"> 
         
     <!-- player positions start-->
-    <div class="container  internal-field rounded-3 text-center ">
-      <div class="row w-60 bs-success-bg-subtle ">
+    <div class="container  internal-field rounded-2 text-center ">
+      <div class="row w-60   ">
         <div class="col" >
-          <div class="row w-100 bs-success-bg-subtle " >
+          <div class="row w-100   " >
         <div id="Goalkeeper-1" value="ciao" ondrop="drop(event)" ondragover="allowDrop(event)" data-playerid='0' 
-         class="col p-1 player-box-market rounded-3 bg-success text-white order-1  ">
-          Goalkeeper 1</div>
+         class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black order-1  "  style="font-weight: bold;" >Goalkeeper 1</div>
         </div>
-        <div class="row w-100 bs-success-bg-subtle ">
-        <div id="Goalkeeper-2" data-playerid='0' ondrop="drop(event)" ondragover="allowDrop(event)" class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-          goalkeeper 2</div>
-      </div>
-      <div class="row w-100 bs-success-bg-subtle ">
+        <div class="row w-100 ">
+        <div id="Goalkeeper-2" data-playerid='0' ondrop="drop(event)" ondragover="allowDrop(event)" 
+        class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black order-2" style="font-weight: bold;">Goalkeeper 2</div>
+      </div> 
+      <div class="row w-100   ">
         <div   class="col  "><hr>
            </div>
       </div>
 
 
-      <div class="row w-100 bs-success-bg-subtle ">
-        <div id="Midfielder-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-          Midfielder 1</div>
+      <div class="row w-100   ">
+        <div id="Midfielder-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
+            text-black order-1" style="font-weight: bold;">Midfielder 1</div>
       </div>
       <div   class="row w-100 bs-success-bg-subtle ">
-        <div id="Midfielder-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-          Midfielder 2</div>
+        <div id="Midfielder-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
+          text-black order-2" style="font-weight: bold;">Midfielder 2</div>
       </div>
       <div   class="row  w-100 bs-success-bg-subtle">
-        <div id="Midfielder-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-          Midfielder 3</div>
+        <div id="Midfielder-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
+          text-black order-3" style="font-weight: bold;">Midfielder 3</div>
       </div>
       <div   class="row  w-100 bs-success-bg-subtle">
-        <div id="Midfielder-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-          Midfielder 4</div>
+        <div id="Midfielder-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
+          text-black order-4" style="font-weight: bold;">Midfielder 4</div>
       </div>
       <div  class="row  w-100 bs-success-bg-subtle">
-        <div  id="Midfielder-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-          Midfielder 5</div>
+        <div  id="Midfielder-5" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
+          text-black order-5" style="font-weight: bold;">Midfielder 5</div>
       </div>
 
 
@@ -155,24 +163,24 @@
     </div>
        <div class="col">
         <div class="row w-100 bs-success-bg-subtle ">
-          <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Defender 1</div>
+          <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
+            text-black order-1"style="font-weight: bold;">Defender 1</div>
         </div>
         <div   class="row w-100 bs-success-bg-subtle ">
-          <div id="Defender-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Defender 2</div>
+          <div id="Defender-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
+            text-black order-2" style="font-weight: bold;">Defender 2</div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Defender-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Defender 3</div>
+          <div id="Defender-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
+            text-black order-3" style="font-weight: bold;">Defender 3</div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Defender-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Defender 4</div>
+          <div id="Defender-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle 
+           text-black order-4" style="font-weight: bold;">Defender 4</div>
         </div>
-        <div  class="row  w-100 bs-success-bg-subtle">
-          <div  id="Defender-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-            Defender 5</div>
+        <div  class="row  w-100 bs-success-bg-subtle"> 
+          <div  id="Defender-5" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
+           text-black order-5" style="font-weight: bold;">Defender 5</div>
         </div>
         <div class="row w-100 bs-success-bg-subtle ">
           <div   class="col  "><hr>
@@ -181,20 +189,20 @@
 
 
         <div class="row w-100 bs-success-bg-subtle ">
-          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Attacker 1</div>
+          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success
+           text-black order-1" style="font-weight: bold;">Attacker 1</div>
         </div>
         <div   class="row w-100 bs-success-bg-subtle ">
-          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Attacker 2</div>
+          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success 
+          text-black order-2" style="font-weight: bold;">Attacker 2</div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Attacker 3</div>
+          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success
+           text-black order-3" style="font-weight: bold;">Attacker 3</div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Attacker 4</div>
+          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success 
+          text-black order-4" style="font-weight: bold;">Attacker 4</div>
         </div>
       </div>
 
@@ -202,6 +210,7 @@
 
 
       </div>
+      <div id="save_btn" class="col-6"><button type="button" class="btn btn-success">save</button> </div>
     </div> 
 
 
@@ -213,17 +222,21 @@
         <div >dsds</div>
       </div>
       <div class="col-4 text-left border"> 
+        <!------------>
+        <!---side panel with player details and sign button-->
         <div ><div id="mySidenav" class="sidenav">
  
           <div class="row">
             <div class="col-2"></div>
             <div  class="col-8 text-center">
-              <img id="det_player_photo" class="rounded "style="border:1px solid gray; margin:5px" data-playerid='0' src="#" style="width: 90px;">
-              <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:5px">s</div>
+              <div id="det_player_id" style="display:none"></div>
+              <div id="det_player_position" style="display:none"></div>
+                            <img id="det_player_photo" class="rounded "style="border:1px solid gray; margin:5px" data-playerid='0' src="#" style="width: 90px;">
+              <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">s</div>
             </div>
             <div class="col-2"></div>
           </div>
-          <div class="row m-3">
+          <div class="row m-2">
             <div id="det_player_1" class="col-6  text-white">x</div>
             <div id="det_player_2" class="col-6  text-white">d</div>
              
@@ -235,8 +248,13 @@
               <div id="stat_player_2" class="col-6  text-white">d</div>
               
             </div>
+            <div class="row m-3   border-success-subtle text-center border-white">
+  
+              <div id="sign_btn" class="col-6"><button type="button" class="btn btn-success">Sign</button> </div>
+               
               
-              
+            </div>
+              <!---end panel-->
             
 
 
@@ -256,83 +274,10 @@
  
 <br><hr> 
 
-<div class="container-fluid border bg-light" style="  margin:10px;padding:10px;">
- 
 
  
-</div>
-  </div>
-    <div class="col bg-body-secondary field  col-md-4" style="display: block;">
-    
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Defender 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Defender-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Defender 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Defender-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Defender 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Defender-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Defender 4</div>
-        </div>
-        <div  class="row  w-50 bs-success-bg-subtle">
-          <div  id="Defender-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-            Defender 5</div>
-        </div>
-      </div>
 
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Midfielder-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Midfielder 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Midfielder-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Midfielder 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Midfielder-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Midfielder 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Midfielder-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Midfielder 4</div>
-        </div>
-        <div  class="row  w-50 bs-success-bg-subtle">
-          <div  id="Midfielder-5" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-5">
-            Midfielder 5</div>
-        </div>
-      </div>
-
-      <div  class="container  internal-field rounded-3 text-center ">
-        <div class="row w-50 bs-success-bg-subtle ">
-          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-1">
-            Attacker 1</div>
-        </div>
-        <div   class="row w-50 bs-success-bg-subtle ">
-          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-2">
-            Attacker 2</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-3">
-            Attacker 3</div>
-        </div>
-        <div   class="row  w-50 bs-success-bg-subtle">
-          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-3 bg-success text-white order-4">
-            Attacker 4</div>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-</div>
+ 
 
 <!---<div id="players-list">
 </div>
@@ -350,5 +295,5 @@ var  initial_budget=Number(initial_budget_str)
 </script> 
 
 <script src="{% static 'fmx/fmx market.js' %}"></script>
-{% static 'fmx/fmx market.js' %}
+ 
 {% endblock %}

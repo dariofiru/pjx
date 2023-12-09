@@ -193,7 +193,7 @@
           right: 0;
           background-color: black;
           overflow-x: hidden; /* Disable horizontal scroll */
-          padding-top: 60px; /* Place content 60px from the top */
+          padding-top: 15px; /* Place content 60px from the top */
           transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
         }
  
@@ -228,17 +228,7 @@
           clear: both;
         }
         
-        .red {
-          background-color: red;
-        }
-        
-        .green {
-          background-color: green;
-        }
-        
-        .blue {
-          background-color: blue;
-        }
+  
 /* modal */
         .modal {
           display: none; /* Hidden by default */
@@ -260,6 +250,7 @@
           padding: 20px;
           border: 1px solid #888;
           width: 80%; /* Could be more or less, depending on screen size */
+          height:300px;
         }
         
         /* The Close Button */
