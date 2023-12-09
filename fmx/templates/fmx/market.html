@@ -80,7 +80,17 @@
     <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
     <div class="row border bg-light">
       <div class="col-4   bg-light">
+      <div class="col-4   bg-light">
 
+        <div class="container text-center">
+            <!-- start search box-->
+        <div class="row   ">
+          <div class="col-6  " > Team:
+            <form>
+            <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+               
+            </select>
         <div class="container text-center">
             <!-- start search box-->
         <div class="row   ">
@@ -100,7 +110,21 @@
               <option value="Attacker">Attackers</option>
             </select>
              
+          <div  class="col-6 "> Position:
+            <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
+              <option value="0" selected>All</option>
+              <option value="Goalkeeper">Goalkeepers</option>
+              <option value="Defender">Defenders</option>
+              <option value="Midfielder">Midfielders</option>
+              <option value="Attacker">Attackers</option>
+            </select>
+             
         </div>
+      </form>
+    </div>
+      <!-- end search box-->
+
+        
       </form>
     </div>
       <!-- end search box-->
@@ -108,6 +132,7 @@
         
         <div class="row">
            
+          <div class="col-10 text-left  "> 
           <div class="col-10 text-left  "> 
             <br>
             <div id="player-list"></div>
@@ -122,6 +147,7 @@
     <div class="container  internal-field rounded-2 text-center ">
       <div class="row w-60   ">
         <div class="col" >
+          <div class="row w-100   " >
           <div class="row w-100   " >
         <div id="Goalkeeper-1" value="ciao" ondrop="drop(event)" ondragover="allowDrop(event)" data-playerid='0' 
          class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black order-1  "  style="font-weight: bold;" >Goalkeeper 1</div>
@@ -237,6 +263,7 @@
             <div class="col-2"></div>
           </div>
           <div class="row m-2">
+          <div class="row m-2">
             <div id="det_player_1" class="col-6  text-white">x</div>
             <div id="det_player_2" class="col-6  text-white">d</div>
              
@@ -279,6 +306,10 @@
 
  
 
+ 
+
+ 
+
 <!---<div id="players-list">
 </div>
  --->
@@ -295,5 +326,6 @@ var  initial_budget=Number(initial_budget_str)
 </script> 
 
 <script src="{% static 'fmx/fmx market.js' %}"></script>
+ 
  
 {% endblock %}

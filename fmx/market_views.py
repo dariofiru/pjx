@@ -31,7 +31,11 @@ def user_club(request, id):
 def get_teams(request):
      teams = Team.objects.filter(active=True)
      teams = teams.order_by("-name").all()
+<<<<<<< HEAD
      return JsonResponse([team.serialize() for team in teams], safe=False)
 
 def save_squad(request):
      squad = json.loads(request.body)
+=======
+     return JsonResponse([team.serialize() for team in teams], safe=False)
+>>>>>>> 1af29120019a8e419dcc51e7892921916337a4f0

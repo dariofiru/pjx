@@ -192,6 +192,7 @@ async function get_data(){
             }else{
                 var user_data = JSON.parse(text);
                 
+                
             }
         });
     }
@@ -201,6 +202,10 @@ sign_btn.addEventListener('click', event => {
            confirm_sign_player()
 });     
 async function get_player_details(id){
+    //////////////
+    // creates the side bar with player statistics.
+    //
+    //////////////
     //////////////
     // creates the side bar with player statistics.
     //
@@ -234,13 +239,17 @@ async function get_player_details(id){
             <b>Height:</b> ${player_data[i].height}<br><br> `;
             }
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
+            stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
+            Assists: ${player_data[i].assists}<br></span>`;
+            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
             Assists: ${player_data[i].assists}<br></span>`;
             stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
             width=15px>: ${player_data[i].yellowcard}<br> 
             <img src="https://png2.cleanpng.com/sh/fd5049e50e3d24a2343c26b68ce164bc/L0KzQYm3U8I5N6Zuj5H0aYP2gLBuTgBmdpJxjOs2Y3H1dH7okCNwa5pmjNt4bj3pf7F7gvFtdF53fdhucnXoPcHzgglmel5oeeRtLUXkcrO6UsFnQGc2SNM6Lka6QoWCVsIyOWY3SqQ6N0WzQ4a7WcEveJ9s/kisspng-penalty-card-association-football-referee-player-card-5abb321f8610a1.6724962115222175035491.png"
             width=15px>:
              ${player_data[i].redcard}<br>
+            Pen won:${player_data[i].penaltywon}<br></span>`; 
             Pen won:${player_data[i].penaltywon}<br></span>`; 
             return false;
     });
@@ -282,14 +291,22 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
 async function fetchPlayers(page, team, position) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.log("link"+`players/${page}/${team}/${position}`)
+async function fetchPlayers(page, team, position) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log("link"+`players/${page}/${team}/${position}`)
         var my_likesR = [];
+          fetch(`players/${page}/${team}/${position}` )
           fetch(`players/${page}/${team}/${position}` )
             .then(response => response.text())
             .then(text => {
                   
                  
+                  
+                 
                 var player = JSON.parse(text);
                 const player_list= document.getElementById('player-list')
+                        player_list.innerHTML=""
+                        for (var i in player) {
                         player_list.innerHTML=""
                         for (var i in player) {
                     let player_id=player[i].id;
@@ -306,6 +323,7 @@ async function fetchPlayers(page, team, position) {
  
 
                     // drag drop start
+
 
 
                     // drag drop end 
@@ -354,6 +372,7 @@ async function fetchPlayers(page, team, position) {
                     //player_img.src = `${player[i].photo}`;
   
                     const player_stats = document.createElement("div");
+                    player_stats.classList.add('player_stats','fw-normal');
                     player_stats.classList.add('player_stats','fw-normal');
                     player_stats.id='player_stats';
                     //player_stats.innerHTML=`<b>Position:</b> ${player[i].position}<br>
@@ -421,6 +440,22 @@ async function fetchPlayers(page, team, position) {
         }
         
 
+
+
+
+function fetchPlayers_bug(page, team, position){
+    console.log("try: " + `players/${page}/${team}/${position}` )
+    fetch(`players/${page}/${team}/${position}`  )
+            .then(response => response.text())
+            .then(text => {
+                 console.log(" =>" +text)
+                });
+            }
+
+get_teams() // get team names for search options  
+//fetchPlayers_bug(1, "0", "0")
+fetchPlayers(1, "0", "0") // fetch players for first time
+ 
 
 
 
