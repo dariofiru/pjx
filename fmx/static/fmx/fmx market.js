@@ -237,8 +237,8 @@ async function get_player_details(id){
             <b>Nationality:</b> ${player_data[i].nationality} `;
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
             <b>Height:</b> ${player_data[i].height}<br><br> `;
-            }
-            stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
+            
+             
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
             Assists: ${player_data[i].assists}<br></span>`;
@@ -249,7 +249,6 @@ async function get_player_details(id){
             <img src="https://png2.cleanpng.com/sh/fd5049e50e3d24a2343c26b68ce164bc/L0KzQYm3U8I5N6Zuj5H0aYP2gLBuTgBmdpJxjOs2Y3H1dH7okCNwa5pmjNt4bj3pf7F7gvFtdF53fdhucnXoPcHzgglmel5oeeRtLUXkcrO6UsFnQGc2SNM6Lka6QoWCVsIyOWY3SqQ6N0WzQ4a7WcEveJ9s/kisspng-penalty-card-association-football-referee-player-card-5abb321f8610a1.6724962115222175035491.png"
             width=15px>:
              ${player_data[i].redcard}<br>
-            Pen won:${player_data[i].penaltywon}<br></span>`; 
             Pen won:${player_data[i].penaltywon}<br></span>`; 
             return false;
     });
