@@ -1,21 +1,78 @@
 {% extends "fmx/layout.html" %}
 
 {% block body %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var logo_drop = document.getElementById("logo_drop");
+    
+    for (let i = 1; i<25; i++){
+        const box=document.createElement("a");
+        box.href="#"
+        const logo = document.createElement("img");
+    logo.src=`static/fmx/squads/pic${i}.png`
+    logo.classList.add("team-logo")
+    logo.style.width="60px"
+     
+    logo.addEventListener('click', chosen_logo, false);
+    logo.addEventListener('hoover', hoover_pic, false);
+    let chance = Math.floor(Math.random() * 7) + 1;
+    console.log(chance)
+    if(chance<3){
+        box.append(logo)
+        logo_drop.prepend(box)
+    }else if(chance==3){
+        box.append(logo)
+        logo_drop.append(box)
+    }
+            
 
+}
+function chosen_logo()  {
+    var img = document.getElementById("logo_img");
+    var img_id = document.getElementById("logo_hidden");
+    img_id.value=event.target.src
+    img.src=event.target.src
+    img.style.display='block'
+    var tst = document.getElementById("reg_form");
+}
+function hoover_pic(){
+    event.target.style.border="2px solid black"
+}
+});
+</script>
     <h2>Register</h2>
 
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
+ --  {{what1}} ---- {{what2}}<br><br>
+ <div class="row  ">
+    <div class="col-4">
+    <div class="dropdown"> 
+    <button class="dropbtn"> 
+        Select team logo 
+    </button> 
+    <div id="logo_drop" class="dropdown-content">     </div> 
+    </div>
+    </div>
+    <div class="col-4"><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img"></div></div>
+        
 
-    <form action="{% url 'register' %}" method="post">
+     
+        
+     
+   
+</div>  <br><br>
+    <form id="reg_form" action="{% url 'register' %}" method="post">
+        <input type="hidden" id="logo_hidden" name="logo" value="">
         {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="club" placeholder="Club Name">
+        </div>
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </div>
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="avatar" placeholder="Copy avatar image link here">
-        </div>
+ 
         <div class="form-group">
             <input class="form-control" type="email" name="email" placeholder="Email Address">
         </div>

@@ -49,58 +49,62 @@
   <div class="modal-content">
     <span class="close">&times;</span>
     
-      
+      <div class="row"><div class="col">
+        <div class="content-main">
+        <div id="content-box" class="content-box" style="display:none">
+          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <p id="headline-txt">Enthusiastically leverage other's effective users via client-centric </p>
+        </div> 
+      </div>
+    </div>
+      <div class="col">
+        <div class="row">Are you sure? <br><br>
+          <button id="confirm_sign_btn" type="button" class="btn btn-success">Confirm</button>
 
-      <table id="headline" style="width:480px;height:218px;display:none"><tr><td></td></tr>
-        <tr>
-            <td   style="width:480px;height:218px;text-align:center;background-image: url('static/fmx/headline.png');">
-    
-                 
-                <h1 style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:40px"> ciao</h1> 
-         
-        </td></tr>
-        </table>
+        </div>
+        <div class="row"> 
+          <img id="shaking-gif" src="https://i.gifer.com/RH2h.gif" style="width:140px; display:none">
+        </div> 
+      </div>
+      
+    </div>
+    <!-- <div class="content-main"> -->
+      
+    <!-- </div> -->
+      
 
 
         <p id="buy_confirm">
-      Sure?</p>
-    <div id="confirm_sign_btn" class="col-6"><button type="button" class="btn btn-success">Confirm</button> </div>
+       </p>
+    
   </div>
 
 </div>
-<!-- The Modal -->
+<!-- The Modal end-->
 
 
 
 <div class="container-fluid text-info center   overlay" style="background-image: url('static/fmx/bg_3.jpg');"> 
   <div class="row w-50 bs-success-bg-subtle  "></div>
-<div class=" col opacity-75 center border  bg-light   " style="  margin:60px;padding:10px;">
+<div class=" col opacity-75 center border  bg-light   " style="  margin:30px;padding:0px;">
   <div class="  text-black border "  > 
 
     <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
     <div class="row border bg-light">
       <div class="col-4   bg-light">
-      <div class="col-4   bg-light">
+       
 
         <div class="container text-center">
             <!-- start search box-->
         <div class="row   ">
-          <div class="col-6  " > Team:
-            <form>
-            <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
-              <option value="0" selected>All</option>
-               
-            </select>
-        <div class="container text-center">
-            <!-- start search box-->
-        <div class="row   ">
-          <div class="col-6  " > Team:
+          <div class="col-6  " > Team:  
             <form>
             <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
                
             </select>
           </div>
+      
           <div  class="col-6 "> Position:
             <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
@@ -110,30 +114,19 @@
               <option value="Attacker">Attackers</option>
             </select>
              
-          <div  class="col-6 "> Position:
-            <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
-              <option value="0" selected>All</option>
-              <option value="Goalkeeper">Goalkeepers</option>
-              <option value="Defender">Defenders</option>
-              <option value="Midfielder">Midfielders</option>
-              <option value="Attacker">Attackers</option>
-            </select>
-             
+        
         </div>
       </form>
     </div>
       <!-- end search box-->
 
-        
-      </form>
-    </div>
-      <!-- end search box-->
+    
 
         
         <div class="row">
            
           <div class="col-10 text-left  "> 
-          <div class="col-10 text-left  "> 
+          
             <br>
             <div id="player-list"></div>
           </div>
@@ -141,20 +134,38 @@
         </div>
         </div>
       
-       <div id ="canvas_test" class="col-8"> 
+       <div   id ="canvas_test" class="col-8"> 
         
     <!-- player positions start-->
-    <div class="container  internal-field rounded-2 text-center ">
-      <div class="row w-60   ">
+    <div class="container   border rounded-2 text-center "><!--internal-field-->
+      <div class="row w-60">
+        <div class="col"><img id="logo" src="" style="width:60px;border:1px solid black"><br>
+          <div   id="club_name"></div>
+        </div>
+        <div class="col-6 rounded-5 border   " >
+          <div class="row"><div class="col"><h6>Current Budget:</h6></div></div>
+          <div class="row"><div class="col rounded-3 border text-bg-success "><div id="budget" style="color:black;">2222</div></div></div>
+          
+          
+          </div>
+        <div class="col"></div> 
+      </div>
+       
+
+      <div class="row w-100   ">
         <div class="col" >
-          <div class="row w-100   " >
-          <div class="row w-100   " >
+          <div class="row     w-100 " >
+             
+          <div id="Goalkeeper-1-pic" class="col-2 p-1"></div>
         <div id="Goalkeeper-1" value="ciao" ondrop="drop(event)" ondragover="allowDrop(event)" data-playerid='0' 
-         class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black order-1  "  style="font-weight: bold;" >Goalkeeper 1</div>
+         class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black"  style="font-weight: bold;" >Goalkeeper 1</div>
+         <div id="Goalkeeper-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close' >&times;</span> </div>
         </div>
         <div class="row w-100 ">
+          <div id="Goalkeeper-2-pic" class="col-2 p-1"></div>
         <div id="Goalkeeper-2" data-playerid='0' ondrop="drop(event)" ondragover="allowDrop(event)" 
-        class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black order-2" style="font-weight: bold;">Goalkeeper 2</div>
+        class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black " style="font-weight: bold;">Goalkeeper 2</div>
+        <div id="Goalkeeper-2-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div> 
       <div class="row w-100   ">
         <div   class="col  "><hr>
@@ -163,24 +174,34 @@
 
 
       <div class="row w-100   ">
+        <div id="Midfielder-1-pic" class="col-2 p-1"></div>
         <div id="Midfielder-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
-            text-black order-1" style="font-weight: bold;">Midfielder 1</div>
+            text-black  " style="font-weight: bold;">Midfielder 1</div>
+            <div id="Midfielder-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div>
       <div   class="row w-100 bs-success-bg-subtle ">
+        <div id="Midfielder-2-pic" class="col-2 p-1"></div>
         <div id="Midfielder-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
-          text-black order-2" style="font-weight: bold;">Midfielder 2</div>
+          text-black  " style="font-weight: bold;">Midfielder 2</div>
+          <div id="Midfielder-2-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div>
       <div   class="row  w-100 bs-success-bg-subtle">
+        <div id="Midfielder-3-pic" class="col-2 p-1"></div>
         <div id="Midfielder-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
-          text-black order-3" style="font-weight: bold;">Midfielder 3</div>
+          text-black  " style="font-weight: bold;">Midfielder 3</div>
+          <div id="Midfielder-3-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div>
       <div   class="row  w-100 bs-success-bg-subtle">
+        <div id="Midfielder-4-pic" class="col-2 p-1"></div>
         <div id="Midfielder-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
-          text-black order-4" style="font-weight: bold;">Midfielder 4</div>
+          text-black  " style="font-weight: bold;">Midfielder 4</div>
+          <div id="Midfielder-4-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div>
       <div  class="row  w-100 bs-success-bg-subtle">
+        <div id="Midfielder-5-pic" class="col-2 p-1"></div>
         <div  id="Midfielder-5" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-primary-subtle
-          text-black order-5" style="font-weight: bold;">Midfielder 5</div>
+          text-black  " style="font-weight: bold;">Midfielder 5</div>
+          <div id="Midfielder-5-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div>
 
 
@@ -189,24 +210,34 @@
     </div>
        <div class="col">
         <div class="row w-100 bs-success-bg-subtle ">
+          <div id="Defender-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
-            text-black order-1"style="font-weight: bold;">Defender 1</div>
+            text-black  "style="font-weight: bold;">Defender 1</div>
+            <div id="Defender-1-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row w-100 bs-success-bg-subtle ">
+          <div id="Defender-2-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div id="Defender-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
-            text-black order-2" style="font-weight: bold;">Defender 2</div>
+            text-black  " style="font-weight: bold;">Defender 2</div>
+            <div id="Defender-2-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
+          <div id="Defender-3-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div id="Defender-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
-            text-black order-3" style="font-weight: bold;">Defender 3</div>
+            text-black  " style="font-weight: bold;">Defender 3</div>
+            <div id="Defender-3-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
+          <div id="Defender-4-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div id="Defender-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle 
-           text-black order-4" style="font-weight: bold;">Defender 4</div>
+           text-black  " style="font-weight: bold;">Defender 4</div>
+           <div id="Defender-4-pic" class="col-2 p-1"></div>
         </div>
         <div  class="row  w-100 bs-success-bg-subtle"> 
+          <div id="Defender-5-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div  id="Defender-5" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle
-           text-black order-5" style="font-weight: bold;">Defender 5</div>
+           text-black  " style="font-weight: bold;">Defender 5</div>
+           <div id="Defender-5-pic" class="col-2 p-1"></div>
         </div>
         <div class="row w-100 bs-success-bg-subtle ">
           <div   class="col  "><hr>
@@ -215,20 +246,28 @@
 
 
         <div class="row w-100 bs-success-bg-subtle ">
-          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success
-           text-black order-1" style="font-weight: bold;">Attacker 1</div>
+          <div id="Attacker-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
+          <div id="Attacker-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success-subtle
+           text-black  " style="font-weight: bold;">Attacker 1</div>
+           <div id="Attacker-1-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row w-100 bs-success-bg-subtle ">
-          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success 
-          text-black order-2" style="font-weight: bold;">Attacker 2</div>
+          <div id="Attacker-2-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
+          <div id="Attacker-2" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success-subtle 
+          text-black  " style="font-weight: bold;">Attacker 2</div>
+          <div id="Attacker-2-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success
-           text-black order-3" style="font-weight: bold;">Attacker 3</div>
+          <div id="Attacker-3-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
+          <div id="Attacker-3" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success-subtle
+           text-black  " style="font-weight: bold;">Attacker 3</div>
+           <div id="Attacker-3-pic" class="col-2 p-1"></div>
         </div>
         <div   class="row  w-100 bs-success-bg-subtle">
-          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success 
-          text-black order-4" style="font-weight: bold;">Attacker 4</div>
+          <div id="Attacker-4-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
+          <div id="Attacker-4" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-success-subtle 
+          text-black  " style="font-weight: bold;">Attacker 4</div>
+          <div id="Attacker-4-pic" class="col-2 p-1"></div>
         </div>
       </div>
 
@@ -236,7 +275,8 @@
 
 
       </div>
-      <div id="save_btn" class="col-6"><button type="button" class="btn btn-success">save</button> </div>
+       
+       <div id="save_btn" class="col-6"><button type="button" class="btn btn-success">save</button> </div> 
     </div> 
 
 
@@ -256,6 +296,7 @@
             <div class="col-2"></div>
             <div  class="col-8 text-center">
               <div id="det_player_id" style="display:none"></div>
+              <div id="det_player_value" style="display:none"></div>
               <div id="det_player_position" style="display:none"></div>
                             <img id="det_player_photo" class="rounded "style="border:1px solid gray; margin:5px" data-playerid='0' src="#" style="width: 90px;">
               <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">s</div>
@@ -278,7 +319,7 @@
             <div class="row m-3   border-success-subtle text-center border-white">
   
               <div id="sign_btn" class="col-6"><button type="button" class="btn btn-success">Sign</button> </div>
-               
+              <div id="close_nav_btn" class="col-6"><button type="button" class="btn btn-secondary">Close</button> </div>
               
             </div>
               <!---end panel-->
@@ -321,7 +362,10 @@
  
 var  user_name='{{ user.username  }}'
 var  user_id='{{ user.id  }}'
-var  initial_budget_str='{{ user.initial_budget  }}'
+//var     initial_budget_str='{{ user.initial_budget  }}'
+var initial_budget_str='{{ user.club_details.initial_budget  }}'
+var  logo = '{{ user.club_details.logo  }}'
+var  club_name='{{ user.club_details.club  }}'
 var  initial_budget=Number(initial_budget_str)
 </script> 
 

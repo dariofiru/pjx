@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 import requests
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User
+from .models import Team, Player, Fixture, User, Club_details
 # Create your views here.
 
 def utilities(request, cmd):
@@ -26,9 +26,16 @@ def utilities(request, cmd):
         .annotate(dcount=Count('week'))
         .order_by()
         )
+    elif cmd=="round-update":
+        fixtures = Fixture.objects.all() 
+        for fixture in fixtures:
+            round=fixture.round
+            round=round[-2:]
+            Fixture.objects.filter(pk=fixture.id).update(round_num=round) 
+
     return render(request, "fmx/index.html",
              {
-               "api":  week
+               "api":  "ok"
                })
 
 
@@ -318,7 +325,8 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
+        logo = request.POST["logo"]
+        club = request.POST["club"]
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
@@ -331,6 +339,8 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            club_details= Club_details(user=user, club= club, logo=logo)
+            club_details.save()
         except IntegrityError:
             return render(request, "fmx/register.html", {
                 "message": "Username already taken."

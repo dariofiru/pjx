@@ -245,7 +245,7 @@
         
         /* Modal Content/Box */
         .modal-content {
-          background-color: #fefefe;
+          background-color: gray;
           margin: 15% auto; /* 15% from the top and centered */
           padding: 20px;
           border: 1px solid #888;
@@ -268,3 +268,200 @@
           cursor: pointer;
         }
         /* end modal */
+
+        
+        @keyframes example {
+          from {background-color:white;}
+          to {background-color: green;}
+        }
+
+        .lineup {
+          width: 100px;
+          height: 100px;
+          background-color: green;
+          animation-name: example;
+          animation-duration: 4s;
+        }
+        
+        /* animation  for goalkeepers */ 
+        @keyframes anim_goalkeeper {
+          from {background-color:white;}
+          to {background-color: #F8D7DA;}
+        }
+        .lineup_goalkeeper {
+          width: 100px;
+          height: 100px;
+          background-color: #F8D7DA;
+          animation-name: anim_goalkeeper;
+          animation-duration: 4s;
+        }
+        /* end animation golakeepers */
+
+        /* animation  for defenders */ 
+        @keyframes anim_defender {
+          from {background-color:white;}
+          to {background-color: #E9ECEF;}
+        }
+        .lineup_defender {
+          width: 100px;
+          height: 100px;
+          background-color: #E9ECEF;
+          animation-name: anim_defender;
+          animation-duration: 4s;
+        }
+        /* end animation defenders */
+
+        /* animation  for midfielders */ 
+        @keyframes anim_midfielder {
+          from {background-color:white;}
+          to {background-color: #CFE2FF;}
+        }
+        .lineup_midfielder {
+          width: 100px;
+          height: 100px;
+          background-color: #CFE2FF;
+          animation-name: anim_midfielder;
+          animation-duration: 4s;
+        }
+        /* end animation midfielders */
+
+        /* animation  for midfielders */ 
+        @keyframes anim_attacker {
+          from {background-color:white;}
+          to {background-color: #D1E7DD;}
+        }
+        .lineup_attacker {
+          width: 100px;
+          height: 100px;
+          background-color: #D1E7DD;
+          animation-name: anim_attacker;
+          animation-duration: 4s;
+        }
+        /* end animation midfielders */
+
+        @keyframes lineup_text {
+          from {color:white;}
+          to {color:black;}
+        }
+        
+        /* The element to apply the animation to */
+        .lineup_txt {
+          display:block;
+          animation-name: lineup_text;
+          animation-duration: 3s;
+        }
+
+
+/* testing ripped paper effect */
+
+ 
+
+p {
+  line-height: 25px;
+}
+
+.content-main {
+  position: relative;
+  width: 400px;
+  margin: 40px auto;
+  
+  .content-box {
+    height: auto;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+  
+    &:before, &:after {
+      content: ""; height: 2px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      -webkit-clip-path: polygon(0% 0%, 5%  100%, 10% 0%, 15%  100%, 20% 0%, 25% 100%, 30% 0%, 35%  100%, 40% 0%, 45%  100%, 50% 0%, 55%  100%, 60% 0%, 65%  100%, 70% 0%, 75%  100%, 80% 0%, 85%  100%, 90% 0%, 95%  100%, 100% 0%);
+    }
+    &:before {
+      background-color: gray;
+      top: 0;
+    }
+    &:after {
+      background-color: white;
+      bottom: -2px;
+    }
+  }
+}
+
+/* end ripped paper effect */
+
+/* double border for headline */
+ 
+.double-bar {
+  &:after {
+    content: "";
+    border-bottom: 1px solid black;
+    width: 100%;
+    position: absolute;
+    top: 39px;
+    left: 0;
+    z-index: 1;
+  }
+  
+  &:before {
+    content: "";
+    border-bottom: 1px solid black;
+    width: 100%;
+    position: absolute;
+    top: 43px;
+    left: 0;
+    z-index: 1;    
+  }
+}
+   
+
+/* end double border for headline */
+
+.dropbtn { 
+  background-color: gray; 
+  border-radius:  5px;
+  color: white; 
+  padding: 6px; 
+  font-size: 16px; 
+  border: none; 
+  cursor: pointer; 
+} 
+
+.dropdown { 
+  position: relative; 
+  display: inline-block; 
+} 
+
+.dropdown-content { 
+  display: none; 
+  position: absolute; 
+  text-align: center;
+  background-color: #f9f9f9; 
+  min-width: 120px; 
+  box-shadow: 0px 8px 16px 
+    0px rgba(0, 0, 0, 0.2); 
+  z-index: 1; 
+} 
+
+.dropdown-content a { 
+  color: black; 
+  padding: 6px 6px; 
+  text-decoration: none; 
+  display: block; 
+} 
+
+.dropdown-content a:hover { 
+  background-color: #f1f1f1;
+  border:2px solid black;
+} 
+
+.dropdown:hover .dropdown-content { 
+  display: block; 
+} 
+
+.dropdown:hover .dropbtn { 
+  background-color: #3e8e41; 
+} 
