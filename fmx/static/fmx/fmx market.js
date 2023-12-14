@@ -108,7 +108,6 @@ async function get_teams(){ // returns all team names for the search dropdown
         fetch( "get_teams")
         .then(response => response.text())
         .then(text => {
-           
                 var teams_data = JSON.parse(text);
                 for (var i in teams_data) {
                     var option = document.createElement("option");
