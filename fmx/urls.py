@@ -25,6 +25,9 @@ urlpatterns = [
     path("lineup", lineup_views.lineup, name="lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
+    path("test_import_round", lineup_views.test_import_round, name="test_import_round"),
+
+    
     path("get_fixture_ratings/<str:id>", lineup_views.get_fixture_ratings, name="get_fixture_ratings"),# calc players rating for fixture
     path("lineup_scores/<str:id>", lineup_views.lineup_scores, name="lineup_scores"), #sums player rating per lineup
     

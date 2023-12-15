@@ -40,15 +40,23 @@ function hoover_pic(){
 </script>
 <div class="container-fluid text-info     " style="background-image: url('static/fmx/bg_3.jpg');"> 
 
-    <div class=" col opacity-75 center    " style="  margin: 0px;padding:0px;">
+    <div class=" col   center    " style="  margin: 0px;padding:0px;">
 
     <h2 class="text-black">Register</h2>
 
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
- --  {{what1}} ---- {{what2}}<br><br>
+ -- <div class="text-back" style="color:black"> {{what1}} <br><hr><br> {{what2}}<br>
+ {% for c in what1 %}
 
+  {{c }}<br>
+
+   
+
+{% endfor %}
+ <br>
+</div>
 
 
  
