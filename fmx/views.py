@@ -32,11 +32,23 @@ def utilities(request, cmd):
             round=fixture.round
             round=round[-2:]
             Fixture.objects.filter(pk=fixture.id).update(round_num=round) 
-
+    elif cmd=="round-match":
+            fixtures = Fixture.objects.filter(round_num=4).all() 
+    return render(request, "fmx/register.html",
+             {
+               "what1":  fixtures
+               })
     return render(request, "fmx/index.html",
              {
                "api":  "ok"
                })
+
+
+def match(request):
+     return render(request, "fmx/match.html")
+            #, {
+             #   "PostForm": form, "check":"yes"
+            #})
 
 
 def index(request):
@@ -100,12 +112,14 @@ def importPlayers(request):
         }
         response = requests.get(url, headers=headers, params=querystring)
 
-        players_data= response.json()
+        players_data= response.text 
+        players_data = players_data.replace('null', '0' )
+        players_data=json.loads(players_data)
 
         for players in players_data['response']:
                 for i in range(len(players['statistics'])):
                     if(players['statistics'][i]['games']['appearences']):
-                        if players['statistics'][i]['games']['appearences']>11:
+                        if players['statistics'][i]['games']['appearences']>21:
                             tst=tst+ " " + players['player']['name'] + " "  +str(players['statistics'][i]['team']['id'])
                             try: 
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
@@ -135,12 +149,14 @@ def importPlayers(request):
             querystring = {"team":team_id_api,"league":"39","season":"2021", "page":paging}
             response = requests.get(url, headers=headers, params=querystring)
 
-            players_data=response.json()
+            players_data= response.text 
+            players_data = players_data.replace('null', '0' )
+            players_data=json.loads(players_data)
 
             for players in players_data['response']:
                 for i in range(len(players['statistics'])):
                     if(players['statistics'][i]['games']['appearences']):
-                        if players['statistics'][i]['games']['appearences']>11:
+                        if players['statistics'][i]['games']['appearences']>21:
                             tst=tst+ " " + players['player']['name'] + " "  +str(players['statistics'][i]['team']['id'])
                             try: 
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
@@ -222,27 +238,28 @@ def players(request,page,team,position):
             HttpResponse("error")
         
         players= players.filter(team_id__in=team_tmp).all()
-    
     if position!="0":
         try:    
             players= players.filter(position=position) 
         except Player.DoesNotExist:
             HttpResponse("error")
     
-    #return JsonResponse([team.serialize() for team in team_tmp], safe=False)
-    
-
-    
-    paginator = Paginator(players, 10)
+    paginator = Paginator(players, 30)
     players = paginator.get_page(page)
      
     json_final =[]
-    #  for player in players:
-    #      player=player.serialize()
-    #      json_tmp=player.serialize()
-    #      json_tmp["team name"]=team_tmp
-    #      player.append(json_tmp)  
-    #return JsonResponse(json_final, safe=False)
+    for player in players:
+            # try:
+            #     team_data = Team.objects.filter(id=player.team_id)
+            # except Team.DoesNotExist:
+            #     HttpResponse("error")
+          #player=player.serialize()
+            json_tmp=player.serialize()
+            json_tmp["team_name"]=player.team_id.name
+            json_tmp["team_logo"]=player.team_id.logo
+
+            json_final.append(json_tmp)  
+    return JsonResponse(json_final, safe=False)
     return JsonResponse([player.serialize() for player in players], safe=False)
 
 
@@ -252,6 +269,23 @@ def get_player_details(request,id):
         playerT = Player.objects.filter(id=id)
     except Player.DoesNotExist:
         HttpResponse("error")
+
+    json_final =[]
+    for player in playerT:
+            # try:
+            #     team_data = Team.objects.filter(id=player.team_id)
+            # except Team.DoesNotExist:
+            #     HttpResponse("error")
+          #player=player.serialize()
+            json_tmp=player.serialize()
+            json_tmp["team_name"]=player.team_id.name
+            json_tmp["team_logo"]=player.team_id.logo
+
+            json_final.append(json_tmp)  
+    return JsonResponse(json_final, safe=False)
+        
+    #team_tmp = Team.objects.filter(id=playerT.team_id)
+
     return JsonResponse([player.serialize() for player in playerT], safe=False)
 
 
@@ -350,3 +384,5 @@ def register(request):
     else:
         return render(request, "fmx/register.html")
     
+
+ 

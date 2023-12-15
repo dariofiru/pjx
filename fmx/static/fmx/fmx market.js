@@ -36,6 +36,7 @@ async function get_data(){
 
 function check_signed(player_id, position){
         // check if a player in the main list is already bought
+         
         let pos_counter=0;
         if(position==="Goalkeeper"){
             pos_counter=2;
@@ -59,9 +60,9 @@ function check_signed(player_id, position){
 function confirm_sign_player() {    
     var modal = document.getElementById("myModal");
     const content_box=document.getElementById("content-box");
-    const gif=document.getElementById("shaking-gif");
-    content_box.style.display='none'
-    gif.style.display='none'
+    //const gif=document.getElementById("shaking-gif");
+    //content_box.style.display='none'
+    //gif.style.display='none'
     modal.style.display = "block";
     const confirm_sign_btn=document.getElementById("confirm_sign_btn");
     const det_player_id  =document.getElementById("det_player_id");
@@ -73,16 +74,18 @@ function confirm_sign_player() {
     fetch( "random_headline")
     .then(response => response.text())
     .then(text => {
-             console.log("=>"+text)
+              
              const headline_txt=document.getElementById("headline-txt");
               
              var headline = JSON.parse(text);
               
              for (var i in headline) {
-                console.log("==>"+headline[i])
+                 
                 headline = headline[i]
                 headline=headline.replace("*name*",det_player_name.innerHTML)
                 headline=headline.replace("*team*",club_name)
+                headline=headline.replace("*Name*",det_player_name.innerHTML)
+                headline=headline.replace("*Team*",club_name)
                  
                 headline_txt.innerHTML=headline 
              }
@@ -94,13 +97,14 @@ function confirm_sign_player() {
 
     confirm_sign_btn.addEventListener('click', event => { // main function for saving the player info
         const content_box=document.getElementById("content-box");
-        const gif=document.getElementById("shaking-gif");
+       // const gif=document.getElementById("shaking-gif");
         content_box.style.display='block'
-        gif.style.display='block'
+        //gif.style.display='block'
 
         let pl_value=Number(det_player_value.innerHTML)
         var budget_box=document.getElementById("budget");
         let curr_budget=Number(budget_box.innerHTML) 
+        console.log("=>"+curr_budget+" - "+pl_value)
         //if (pl_value>curr_budget){
           //  alert("not enough money");
             //return false;
@@ -146,7 +150,7 @@ function confirm_sign_player() {
             return false
         }
         else if (box.innerHTML === why) {
-           // modal.style.display = "none";
+            modal.style.display = "none";
             return false
         }
         box =document.getElementById("Goalkeeper-2");
@@ -405,6 +409,9 @@ async function get_player_details(id){
     
     det_player_id.innerHTML=`${id}`
     // sign button eventhandler 
+    const sign_btn_disable  =document.getElementById("sign_btn");
+    sign_btn_disable.style.display="block"
+    
 
     fetch( `get_player_details/${id}`)
     .then(response => response.text())
@@ -412,6 +419,7 @@ async function get_player_details(id){
         
             var player_data = JSON.parse(text);
             for (var i in player_data) {
+                  
             det_player_value.innerHTML=`${player_data[i].value}`
             det_player_photo.src=`${player_data[i].photo}`
             det_player_position.innerHTML=`${player_data[i].position}`
@@ -426,14 +434,23 @@ async function get_player_details(id){
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
             Assists: ${player_data[i].assists}<br></span>`;
-            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
-            Assists: ${player_data[i].assists}<br></span>`;
-            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
+ 
+            stat_player_2.innerHTML=`<span style="font-size:14px">
+            <img src="static/fmx/yellowcard.jpg"
             width=15px>: ${player_data[i].yellowcard}<br> 
-            <img src="https://png2.cleanpng.com/sh/fd5049e50e3d24a2343c26b68ce164bc/L0KzQYm3U8I5N6Zuj5H0aYP2gLBuTgBmdpJxjOs2Y3H1dH7okCNwa5pmjNt4bj3pf7F7gvFtdF53fdhucnXoPcHzgglmel5oeeRtLUXkcrO6UsFnQGc2SNM6Lka6QoWCVsIyOWY3SqQ6N0WzQ4a7WcEveJ9s/kisspng-penalty-card-association-football-referee-player-card-5abb321f8610a1.6724962115222175035491.png"
+            <img src="static/fmx/redcard.jpg"
             width=15px>:
              ${player_data[i].redcard}<br>
-            Pen won:${player_data[i].penaltywon}<br></span>`; 
+            Pen won: ${player_data[i].penaltywon}<br></span>`; 
+
+
+            let is_signed=check_signed(player_data[i].id, player_data[i].position)
+             
+            if(is_signed){
+                const sign_btn_disable  =document.getElementById("sign_btn");
+                sign_btn_disable.style.display="none"
+
+            }
             return false;
             }
     });
@@ -453,7 +470,7 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
                     if (i==5){
                         let full = player_slot.getElementsByClassName('buy_btn');
                         for (i in full) {
-                            console.log("=>"+full[i].innerHTML)
+                            
                             full[i].classList.remove('btn-outline-success')
                             full[i].classList.add('btn-danger')
                             }

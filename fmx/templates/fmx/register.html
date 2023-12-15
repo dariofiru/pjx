@@ -24,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
         box.append(logo)
         logo_drop.append(box)
     }
-            
-
 }
 function chosen_logo()  {
     var img = document.getElementById("logo_img");
@@ -40,51 +38,74 @@ function hoover_pic(){
 }
 });
 </script>
-    <h2>Register</h2>
+<div class="container-fluid text-info     " style="background-image: url('static/fmx/bg_3.jpg');"> 
+
+    <div class=" col opacity-75 center    " style="  margin: 0px;padding:0px;">
+
+    <h2 class="text-black">Register</h2>
 
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
  --  {{what1}} ---- {{what2}}<br><br>
- <div class="row  ">
-    <div class="col-4">
-    <div class="dropdown"> 
-    <button class="dropbtn"> 
-        Select team logo 
-    </button> 
-    <div id="logo_drop" class="dropdown-content">     </div> 
-    </div>
-    </div>
-    <div class="col-4"><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img"></div></div>
+
+
+
+ 
         
 
      
         
      
-   
-</div>  <br><br>
+    <br><br>
+    <div class="row  ">
+        <div class="col-2"></div>
+        <div class="col-4">
+            
+
+                 
     <form id="reg_form" action="{% url 'register' %}" method="post">
         <input type="hidden" id="logo_hidden" name="logo" value="">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="club" placeholder="Club Name">
-        </div>
+        </div><br>
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </div>
- 
+        <br>
         <div class="form-group">
             <input class="form-control" type="email" name="email" placeholder="Email Address">
         </div>
+        <br>
         <div class="form-group">
             <input class="form-control" type="password" name="password" placeholder="Password">
         </div>
+        <br>
         <div class="form-group">
             <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
+        <br>
+        <input class="btn btn-success" type="submit" value="Register">
     </form>
+     
+    <span style="color:white">Already have an account? <a href="{% url 'login' %}">Log In here.</a></span>
+</div>
+<div class="col-4">
+    <div class="row  text-center">
+        <div class="col-6">
+        <div class="dropdown"> 
+        <button class="dropbtn"> 
+            Select team logo 
+        </button> 
+        <div id="logo_drop" class="dropdown-content btn-primary">     </div> 
+        </div>
+        </div>
+        <div class="col-4"><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img">
+        </div></div>
 
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
 
+</div>
+</div></div>
+</div>
 {% endblock %}

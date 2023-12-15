@@ -43,54 +43,39 @@
  
 
 <!-- The Modal --> <!--confirm/congratulation page for sign-->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal overlay">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content overlay">
     <span class="close">&times;</span>
-    
-      <div class="row"><div class="col">
+      <div class="row">
+        <div class="col">
         <div class="content-main">
-        <div id="content-box" class="content-box" style="display:none">
+        <div id="content-box" class="content-box" style="display:block">
           <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
           <p id="headline-txt">Enthusiastically leverage other's effective users via client-centric </p>
         </div> 
+    </div>
+      <div class="col text-center">
+         Do you really want to signup this player? <br> 
+        <button id="confirm_sign_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
+        <button id="cancel_sign_btn" onclick="document.getElementById('myModal').style.display='none'" type="button" class="btn btn-secondary p-2">Cancel</button>
+      </div>
       </div>
     </div>
-      <div class="col">
-        <div class="row">Are you sure? <br><br>
-          <button id="confirm_sign_btn" type="button" class="btn btn-success">Confirm</button>
-
-        </div>
-        <div class="row"> 
-          <img id="shaking-gif" src="https://i.gifer.com/RH2h.gif" style="width:140px; display:none">
-        </div> 
-      </div>
-      
-    </div>
-    <!-- <div class="content-main"> -->
-      
-    <!-- </div> -->
-      
-
-
-        <p id="buy_confirm">
-       </p>
-    
   </div>
-
 </div>
 <!-- The Modal end-->
 
 
 
-<div class="container-fluid text-info center   overlay" style="background-image: url('static/fmx/bg_3.jpg');"> 
-  <div class="row w-50 bs-success-bg-subtle  "></div>
-<div class=" col opacity-75 center border  bg-light   " style="  margin:30px;padding:0px;">
-  <div class="  text-black border "  > 
+<div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');"> 
+  <div class="row w-50 bs-success-bg-subtle  ">dsds</div>
+<div class=" col opacity-75 center      " style="  margin:30px;padding:0px;">
+  <div class="  text-black   "  > 
 
-    <div class="container-fluid   bg-light" style="  margin:20px;padding:10px;">
-    <div class="row border bg-light">
+    <div class="container     " style="  margin:0px;padding:10px;">
+    <div class="row  rounded-2 bg-light" style="  margin:0px;padding:20px;">
       <div class="col-4   bg-light">
        
 
@@ -123,9 +108,9 @@
     
 
         
-        <div class="row">
+        <div class="row ">
            
-          <div class="col-10 text-left  "> 
+          <div class="col-12 text-left  "> 
           
             <br>
             <div id="player-list"></div>
@@ -137,23 +122,28 @@
        <div   id ="canvas_test" class="col-8"> 
         
     <!-- player positions start-->
-    <div class="container   border rounded-2 text-center "><!--internal-field-->
-      <div class="row w-60">
+    <div class="container   bg-light    text-center "><!--internal-field-->
+      <div class="row ">
         <div class="col"><img id="logo" src="" style="width:60px;border:1px solid black"><br>
           <div   id="club_name"></div>
         </div>
-        <div class="col-6 rounded-5 border   " >
-          <div class="row"><div class="col"><h6>Current Budget:</h6></div></div>
-          <div class="row"><div class="col rounded-3 border text-bg-success "><div id="budget" style="color:black;">2222</div></div></div>
-          
+        <div class="col rounded-5      " >
+          <div class="row">
+             
+            <div class="col-10"><h6>Current Budget:</h6></div>
+          <div class="col-2"></div></div>
+          <div class="row">
+             
+            <div class="col-10 rounded-3 border text-bg-success "><div id="budget" style="color:black;">2222</div></div> 
+            <div class="col-2"></div>
           
           </div>
-        <div class="col"></div> 
+       
       </div>
        
 
       <div class="row w-100   ">
-        <div class="col" >
+        <div class="col nopadding" >
           <div class="row     w-100 " >
              
           <div id="Goalkeeper-1-pic" class="col-2 p-1"></div>
@@ -276,7 +266,7 @@
 
       </div>
        
-       <div id="save_btn" class="col-6"><button type="button" class="btn btn-success">save</button> </div> 
+       <div id="save_btn" class="col-5"><button type="button" class="btn btn-success">save</button> </div> 
     </div> 
 
 
@@ -284,10 +274,11 @@
     <!-- player position end -->
     <div class="row">
            
-      <div class="col-8 text-left border"> 
-        <div >dsds</div>
+      <div class="col-7 text-left border"> 
+        <div ></div>
       </div>
       <div class="col-4 text-left border"> 
+
         <!------------>
         <!---side panel with player details and sign button-->
         <div ><div id="mySidenav" class="sidenav">
@@ -298,10 +289,17 @@
               <div id="det_player_id" style="display:none"></div>
               <div id="det_player_value" style="display:none"></div>
               <div id="det_player_position" style="display:none"></div>
+
+
+
+               
                             <img id="det_player_photo" class="rounded "style="border:1px solid gray; margin:5px" data-playerid='0' src="#" style="width: 90px;">
-              <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">s</div>
+              
+              
+              
+                            <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">s</div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-2"> </div>
           </div>
           <div class="row m-2">
           <div class="row m-2">

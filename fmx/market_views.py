@@ -183,7 +183,8 @@ def get_headlines(request):
      headline_list=""
      url = "https://open-ai25.p.rapidapi.com/ask"
 
-     payload = { "query": "create 40 newspaper headlines on a soccer player called *name* transfer to a team called *team* each one should start and end with @  use different styles  " }
+    # payload = { "query": "create 40 newspaper headlines on a soccer player called *name* transfer to a team called *team* each one should start and end with @  use different styles  " }
+     payload = { "query": "create 30 newspaper headlines on a soccer player called *name* rumored of transfering to a team called *team* each phrase should start and end with @  use different styles" } 
      headers = {
 	"content-type": "application/json",
 	"X-RapidAPI-Key": "4310cb923emsh4f65160b63c1034p1fbf64jsn1c68913a9032",

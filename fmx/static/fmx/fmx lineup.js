@@ -2,6 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+
+    const save_btn=document.getElementById("save_btn");
+    const clear_btn=document.getElementById("clear_btn");
+    save_btn.style.display="none"
+    clear_btn.style.display="none"
+
     const l_352=document.getElementById("352");
     const l_532=document.getElementById("532");
     const l_442=document.getElementById("442");
@@ -12,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
             cleaner[i].classList.remove('lineup', 'player-box-market', 'lineup_attacker','lineup_defender','lineup_midfielder');
             cleaner[i].innerHTML=""
         }
+        clear_btn.style.display="block"
+        save_btn.style.display="block"
         return false;
     }
 
@@ -332,7 +340,7 @@ position_search.addEventListener("change", function() {
 });
 
 // listener for save team (temporary)
-const save_btn=document.getElementById("save_btn");
+ 
 save_btn.addEventListener("click", function() {
     const chosen_formation=document.getElementById("chosen_formation");
     formation=chosen_formation.innerHTML;

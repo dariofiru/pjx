@@ -91,7 +91,7 @@ class Player(models.Model):
 
     def __str__(self) -> str:
        # return f"{self.team_id.name} - {self.name}: {self.position} - {self.rating}"
-        return f"{self.name}: {self.appearences} -  {self.lineups} -  {self.goals} -  {self.assists} - {self.rating}"
+        return f"{self.team_id.name} - {self.name} "
 
 class Fixture_round(models.Model):
     fixture = models.ForeignKey("Fixture", on_delete=models.CASCADE, related_name="fixture_ids")
@@ -106,7 +106,7 @@ class Fixture_round(models.Model):
    
 
     def __str__(self) -> str:
-       return f"{self.fixture} - {self.player}: {self.rating}"
+       return f"{self.fixture} - {self.player}: G: {self.goals} C: {self.conceded} - R: {self.redcard} - Y: {self.yellowcard}"
 
 
 class Fixture(models.Model):
@@ -147,6 +147,7 @@ class Lineup(models.Model):
     player_10 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p10", null=True)
     player_11 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p11", null=True)
     round = models.TextField(blank=True,null=True)
+    score=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
 
     def __str__(self) -> str:
         return f"{self.user}: {self.club} - {self.round}"
