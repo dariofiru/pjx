@@ -39,10 +39,31 @@
   }
   </script> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- The Modal -->
- 
+<!-- Modal confirming save squad-->
+<div id="Modal-saved-squad" class="modal overlay">
 
-<!-- The Modal --> <!--confirm/congratulation page for sign-->
+  <!-- Modal content -->
+  <div class="modal-content overlay">
+    <span class="close">&times;</span>
+      <div class="row">
+        <div class="col">
+         
+      <div class="col text-center">
+        Congratulations! <br>
+        Your squad is not complete. You'll be entered into the FMX League as soon as you create your first lineup.<br><br>
+         Would you like to create you team lineup? <br> 
+        <button id="create_lineup_btn" type="button" class="btn btn-success p-2 m-3">Yes please</button>
+        <button id="cancel_lineup_btn" 
+        onclick="document.getElementById('Modal-saved-squad').style.display='none'"
+         type="button" class="btn btn-secondary p-2">Not yet, Thanks</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div> 
+ <!-- END Modal confirming save squad-->
+
+<!-- The Modal --> <!--confirm/congratulation page for signing a player -->
 <div id="myModal" class="modal overlay">
 
   <!-- Modal content -->

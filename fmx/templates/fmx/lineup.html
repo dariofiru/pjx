@@ -37,7 +37,29 @@
   }
   </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- The Modal -->
+<!-- Modal confirming save squad-->
+<div id="Modal-saved-squad" class="modal overlay">
+
+  <!-- Modal content -->
+  <div class="modal-content overlay">
+    <span class="close">&times;</span>
+      <div class="row">
+        <div class="col">
+         
+      <div class="col text-center">
+        Congratulations! <br>
+        Your lineup has been saved! <br>
+        You're have now officially entered the FMX League, the next round will be in 10 minutes. 
+        <button id="create_lineup_btn" type="button" class="btn btn-success p-2 m-3">Yes please</button>
+        <button id="cancel_lineup_btn" 
+        onclick="document.getElementById('Modal-saved-squad').style.display='none'"
+         type="button" class="btn btn-secondary p-2">Not yet, Thanks</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div> 
+ <!-- END Modal confirming save squad-->
 
 <!-- The Modal --> <!--confirm/congratulation page for sign-->
 <div id="myModal" class="modal">
@@ -67,16 +89,15 @@
 </div>
 <!-- The Modal -->
 
-<div class="container-fluid text-info center   overlay"
+<div class="container-fluid text-info center   big_ball_img"
   style="background-image: url('static/fmx/bg_3.jpg');">
   <div class="row w-50 bs-success-bg-subtle  "></div>
-  <div class=" col opacity-75 center border  bg-light   "
-    style="  margin:30px;padding:0px;">
-    <div class="  text-black border ">
+  <div class=" col opacity-75 center  " style="  margin:30px;padding:0px;">
+    <div class="  text-black   ">
 
-      <div class="container-fluid   bg-light"
-        style="  margin:20px;padding:10px;">
-        <div class="row border bg-light">
+      <div class="container "
+        style="  margin:0px;padding:10px;">
+        <div class="row rounded-2  border   bg-light" >
           <div class="col-4   bg-light">
 
             <div class="container text-center">
@@ -109,7 +130,7 @@
 
               <div class="row">
 
-                <div class="col-10 text-left  ">
+                <div class="col-12 text-left  ">
 
                   <br>
                   <div id="player-list"></div>

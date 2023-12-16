@@ -177,7 +177,7 @@ def save_squad(request):
                attacker_5 = attacker_5
                 )
      squad.save()
-     HttpResponse("done")
+     return HttpResponseRedirect("/")
 
 def get_headlines(request):
      headline_list=""

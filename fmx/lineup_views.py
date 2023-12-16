@@ -10,7 +10,7 @@ import json
 import requests
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round
+from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
 # Create your views here.
 
 def lineup(request):
@@ -182,21 +182,16 @@ def save_lineup(request):
      lineup= Lineup(
                user= request.user,
                club=user_club,
-               player_1 = player_1,
-               player_2 = player_2,
-               player_3 = player_3,
-               player_4 = player_4,
-               player_5 = player_5,
-               player_6 = player_6,
-               player_7 = player_7,
-               player_8 = player_8,
-               player_9 = player_9,
-               player_10 = player_10,
-               player_11 = player_11
-                )
+               player_1 = player_1,player_2 = player_2, player_3 = player_3, player_4 = player_4, player_5 = player_5,
+               player_6 = player_6, player_7 = player_7, player_8 = player_8, player_9 = player_9,
+               player_10 = player_10, player_11 = player_11 )
      lineup.save()
-     HttpResponse("done")
-
+     #HttpResponse("done")
+     # adding lineup to next round
+     round=Round.objects.filter(next=True).values("round_num")
+     lineup_round=Lineup_round(user=request.user,lineup=lineup, round_num=round)
+     lineup_round.save()  
+     return HttpResponseRedirect("/")
 
 def test_import_round(request):
      team_list="empty"

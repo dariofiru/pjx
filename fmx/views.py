@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 import requests
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User, Club_details
+from .models import Team, Player, Fixture, User, Club_details, Round
 # Create your views here.
 
 def utilities(request, cmd):
@@ -34,6 +34,10 @@ def utilities(request, cmd):
             Fixture.objects.filter(pk=fixture.id).update(round_num=round) 
     elif cmd=="round-match":
             fixtures = Fixture.objects.filter(round_num=4).all() 
+    elif cmd=="insert-round": #todelete
+            for i in range(1,38):
+                round=Round(round_num=i,next=False)
+                round.save()
     return render(request, "fmx/register.html",
              {
                "what1":  fixtures

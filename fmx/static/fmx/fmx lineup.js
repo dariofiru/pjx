@@ -395,7 +395,10 @@ save_btn.addEventListener("click", function() {
             squad_name: club_name
         })
     }).then(response=>response.text())
-    .then(data=>{ console.log("hello "+data); })
+    .then(data=>{ console.log("hello "+data); 
+    document.getElementById('Modal-saved-squad').style.display='block'
+    console.log("Modal?")
+    })
 
     //console.log(JSON.stringify(jsonSquad))
 });

@@ -17,7 +17,7 @@ class Club_details(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     club = models.TextField(blank=True)
     logo = models.TextField(blank=True)
-    initial_budget =models.FloatField(default=680)
+    initial_budget =models.FloatField(default=760)
 
 class Team(models.Model):
     id = models.PositiveIntegerField(primary_key = True)
@@ -148,14 +148,44 @@ class Lineup(models.Model):
     player_11 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p11", null=True)
     round = models.TextField(blank=True,null=True)
     score=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    active=models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return f"{self.user}: {self.club} - {self.round}"
     
+class Lineup_round(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users_lineup_round")
+    lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup")
+    round_num = models.PositiveIntegerField(blank=True,null=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user}:  {self.round_num}"
 
+class Table(models.Model):
+    lineup_1=models.ForeignKey("Lineup_round", on_delete=models.CASCADE, related_name="lineup_table1")
+    lineup_2=models.ForeignKey("Lineup_round", on_delete=models.CASCADE, related_name="lineup_table2")
+    score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    round_num = models.PositiveIntegerField(blank=False,null=False)
 
+    def __str__(self) -> str:
+        return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "round_num": self.round_num,
+            "lineup_1": self.lineup_1.lineup.id,
+            "lineup_2": self.lineup_2.lineup.id,
+            "score_1": self.score_1,
+            "score_2": self.score_2
+        }
 
+class Round(models.Model):
+    round_num = models.PositiveIntegerField(blank=False,null=False)
+    next=models.BooleanField(default=False)
+    def __str__(self) -> str:
+        return f"{self.round_num}:  {self.next}"
 
 class User_club(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users")
@@ -184,7 +214,7 @@ class User_club(models.Model):
     attacker_4 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="a4", null=True)
     attacker_5 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="a5", null=True)
 
-    initial_budget = models.FloatField(default=680)
+    initial_budget = models.FloatField(default=760)
     remaining_budget = models.FloatField(default=0)
 
     initial_account = models.FloatField(default=0)
@@ -198,7 +228,7 @@ class User_club(models.Model):
  
 
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.user}"
     
     def serialize(self):
         return {

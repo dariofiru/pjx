@@ -1,4 +1,10 @@
 {% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+
+
+{% endblock %}
+
 
 {% block body %}
 
@@ -54,4 +60,18 @@
         </div>
       </div>
 
-    {% endblock %}
+      <script>
+ 
+        // var  user_name='{{ user.username  }}'
+        // var  user_id='{{ user.id  }}'
+        // //var     initial_budget_str='{{ user.initial_budget  }}'
+        // var initial_budget_str='{{ user.club_details.initial_budget  }}'
+        // var  logo = '{{ user.club_details.logo  }}'
+        // var  club_name='{{ user.club_details.club  }}'
+        // var  initial_budget=Number(initial_budget_str)
+        </script> 
+        
+        <script src="{% static 'fmx/fmx match.js' %}"></script>
+         
+         
+        {% endblock %}
