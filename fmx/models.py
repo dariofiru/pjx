@@ -6,7 +6,7 @@ class User(AbstractUser):
     pass
 
     def __str__(self) -> str:
-        return f"{self.id} => {self.username}"
+        return f"{self.id} - {self.username}"
 
     def serialize(self):
         return {
@@ -18,6 +18,15 @@ class Club_details(models.Model):
     club = models.TextField(blank=True)
     logo = models.TextField(blank=True)
     initial_budget =models.FloatField(default=760)
+    elo = models.DecimalField(max_digits=7,decimal_places=2,blank=True,null=True, default=1000)
+
+    def __str__(self) -> str:
+        return f"{self.user}: {self.club}  "
+
+    def serialize(self):
+        return {
+            "logo": self.logo
+        }
 
 class Team(models.Model):
     id = models.PositiveIntegerField(primary_key = True)
@@ -91,7 +100,7 @@ class Player(models.Model):
 
     def __str__(self) -> str:
        # return f"{self.team_id.name} - {self.name}: {self.position} - {self.rating}"
-        return f"{self.team_id.name} - {self.name} "
+        return f"{self.id} - {self.name} "
 
 class Fixture_round(models.Model):
     fixture = models.ForeignKey("Fixture", on_delete=models.CASCADE, related_name="fixture_ids")
@@ -149,9 +158,10 @@ class Lineup(models.Model):
     round = models.TextField(blank=True,null=True)
     score=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     active=models.BooleanField(default=True)
+    ai =models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.user}: {self.club} - {self.round}"
+        return f" {self.id}: {self.active}- {self.user.username}"
     
 class Lineup_round(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users_lineup_round")
@@ -162,11 +172,14 @@ class Lineup_round(models.Model):
         return f"{self.user}:  {self.round_num}"
 
 class Table(models.Model):
-    lineup_1=models.ForeignKey("Lineup_round", on_delete=models.CASCADE, related_name="lineup_table1")
-    lineup_2=models.ForeignKey("Lineup_round", on_delete=models.CASCADE, related_name="lineup_table2")
+    squad_1=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club1",blank=True,null=True)
+    squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club2",blank=True,null=True)
+    lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table1")
+    lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table2")
     score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     round_num = models.PositiveIntegerField(blank=False,null=False)
+    next_round = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
@@ -175,11 +188,19 @@ class Table(models.Model):
         return {
             "id": self.id,
             "round_num": self.round_num,
-            "lineup_1": self.lineup_1.lineup.id,
-            "lineup_2": self.lineup_2.lineup.id,
+            "lineup_1": self.lineup_1.id,
+            "lineup_2": self.lineup_2.id,
+            "club_1_id": self.lineup_1.club.id,
+            "club_2_id": self.lineup_2.club.id,
+            "lineup_1_name": self.lineup_1.club.name,
+            "lineup_2_name": self.lineup_2.club.name,
+            "lineup_1_username": self.lineup_1.user.username,
+            "lineup_2_username": self.lineup_2.user.username,
             "score_1": self.score_1,
             "score_2": self.score_2
         }
+    class Meta:
+        unique_together = ('lineup_1', 'lineup_2', 'round_num')
 
 class Round(models.Model):
     round_num = models.PositiveIntegerField(blank=False,null=False)
@@ -225,7 +246,27 @@ class User_club(models.Model):
     total_lost = models.PositiveIntegerField(default=0)
     
     current_points = models.FloatField(default=0)
- 
+    
+    @property
+    def list_players_club(self):
+        player_list=[]
+        player_list.append(self.goalkeeper_1.id)
+        player_list.append(self.goalkeeper_2.id)
+        player_list.append(self.defender_1.id)
+        player_list.append(self.defender_2.id)
+        player_list.append(self.defender_3.id)
+        player_list.append(self.defender_4.id)
+        player_list.append(self.defender_5.id)
+        player_list.append(self.midfielder_1.id)
+        player_list.append(self.midfielder_2.id)
+        player_list.append(self.midfielder_3.id)
+        player_list.append(self.midfielder_4.id)
+        player_list.append(self.midfielder_5.id)
+        player_list.append(self.attacker_1.id)
+        player_list.append(self.attacker_2.id)
+        player_list.append(self.attacker_3.id)
+        player_list.append(self.attacker_4.id)
+        return player_list
 
     def __str__(self) -> str:
         return f"{self.user}"
@@ -271,3 +312,9 @@ class Headline(models.Model):
         return {
             "headline": self.headline
         }
+    
+class Elo_table(models.Model):
+    difference = models.PositiveIntegerField(blank=True,null=True)
+    probability = models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
+    def __str__(self) -> str:
+        return f"{self.difference} - {self.probability} "

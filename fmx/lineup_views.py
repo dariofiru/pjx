@@ -6,10 +6,12 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 from decimal import Decimal
+import logging
 import json
 import requests
 import http.client
 import datetime
+from . import table_views 
 from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
 # Create your views here.
 
@@ -98,6 +100,8 @@ def user_club(request, id):
  
 
 def save_lineup(request):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')   
      squad = json.loads(request.body)
       
      player_1 = None
@@ -178,17 +182,42 @@ def save_lineup(request):
                except Player.DoesNotExist:
                     HttpResponse("error")
      user_club = User_club.objects.filter(user=request.user).get()
-
-     lineup= Lineup(
+     ## check to see if is first lineup. if first lineup add to table
+     ## else update lineup reference in table for future matches ONLY
+     existing=False
+     try:
+          existing_lineup=Lineup.objects.filter(user=request.user, active=True).get()
+          logger.info(f'already a lineup: {existing_lineup}')
+          round = Round.objects.filter(next=True).values("round_num").first()
+          games_home = Table.objects.filter(round_num__gte=round["round_num"],lineup_1=existing_lineup).count()
+          games_away = Table.objects.filter(round_num__gte=round["round_num"],lineup_2=existing_lineup).count()
+          games = games_home+games_away
+          if games>0:
+               existing=True
+               
+          logger.info(f'games: {games}')
+     except Lineup.DoesNotExist:
+          existing=False
+          pass
+     Lineup.objects.filter(user=request.user).update(active=False) # deactivate old lineups
+     lineup= Lineup(     
                user= request.user,
                club=user_club,
                player_1 = player_1,player_2 = player_2, player_3 = player_3, player_4 = player_4, player_5 = player_5,
                player_6 = player_6, player_7 = player_7, player_8 = player_8, player_9 = player_9,
-               player_10 = player_10, player_11 = player_11 )
+               player_10 = player_10, player_11 = player_11, active=True )
      lineup.save()
+     if existing: # update table lineup id
+          Table.objects.filter(round_num__gte=round["round_num"],lineup_1=existing_lineup).update(lineup_1=lineup)
+          Table.objects.filter(round_num__gte=round["round_num"],lineup_2=existing_lineup).update(lineup_2=lineup)
+     else: # add team/lineup to match table
+          round = Round.objects.filter(next=True).values("round_num").first()
+          logger.info(f'no lineups yet: {lineup.id}')
+          round=round['round_num']
+          table_views.new_team_in_table(None, lineup.id)
      #HttpResponse("done")
      # adding lineup to next round
-     round=Round.objects.filter(next=True).values("round_num")
+     round=Round.objects.filter(next=True).values("round_num") # probably TODELETE
      lineup_round=Lineup_round(user=request.user,lineup=lineup, round_num=round)
      lineup_round.save()  
      return HttpResponseRedirect("/")
@@ -223,6 +252,8 @@ def test_import_round(request):
                    
 
 def calculate_round(request, id):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
      team_list="empty"
      #players= Player.objects.all()
      #for player in players:
@@ -257,8 +288,10 @@ def calculate_round(request, id):
                 for i in range(len(players['players'])):
                          
                          team_list=team_list+ " " + players['players'][i]['player']['name'] + " "  +str(players['players'][i]['player']['id'])
-                         player = Player.objects.filter(id=players['players'][i]['player']['id']).first()
-                          
+                         try: 
+                              player = Player.objects.filter(id=players['players'][i]['player']['id']).first()
+                         except TypeError: 
+                              pass
                          try: 
                                new_fixture_round=Fixture_round(
                                     fixture=fixture,
@@ -279,7 +312,7 @@ def calculate_round(request, id):
             })   
 
 
-def get_fixture_ratings(request,id):
+def get_fixture_ratings(request,id): #calculates  total score for each PLAYER in fixure_round
      tst=""
      fixture_rounds = Fixture_round.objects.filter(rating=Decimal('0.0')).all()
      for fixture_round in fixture_rounds:
@@ -322,7 +355,7 @@ def lineup_scores(request, id): # calculates total point for each lineup/round
      # return render(request, "fmx/register.html", {
      #           "what1": fixture
      #       })   
-     lineups= Lineup.objects.all()
+     lineups= Lineup.objects.all() #to fix and test only active lineups
      fixtures= Fixture.objects.filter(round_num=id).all()
      x="--"
      scores = []
@@ -332,67 +365,67 @@ def lineup_scores(request, id): # calculates total point for each lineup/round
                     #Player.objects.filter(f"player_{x}"=f"player_{x}")
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_1).get()
-                         x=x+"("+lineup.club+")"+fixture_player.player.name+"="+str(fixture_player.score)+">"+str(lineup.player_1.rating)
+                        # x=x+"("+lineup.club+")"+fixture_player.player.name+"="+str(fixture_player.score)+">"+str(lineup.player_1.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_1.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_1.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_2.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_2.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_2.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_2.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_3).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_3.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_3.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_3.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_3.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_4).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_4.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_4.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_4.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_4.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_5).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_5.rating)
+                         #x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_5.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_5.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_5.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_6).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_6.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_6.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_6.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_6.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_7).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_7.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_7.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_7.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_7.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_8).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_8.rating)
+                         #x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_8.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_8.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_8.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_9).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_9.rating)
+                         #x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_9.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_9.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_9.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_10).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_10.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_10.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_10.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_10.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_11).get()
-                         x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_11.rating)
+                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_11.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_11.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_11.rating)

@@ -6,11 +6,12 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 import json
+import logging
 from django.core.paginator import Paginator
 import requests
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User, Club_details, Round
+from .models import Team, Player, Fixture, User, Club_details, Round, User_club
 # Create your views here.
 
 def utilities(request, cmd):
@@ -225,11 +226,26 @@ def get_player_value(request):
                "players": players, "avg" : avg
                })
 
-def players(request,page,team,position):
+def players(request,page,team,position, id):
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger('fmx')
     #############
     # Retrieves the main list of available players
     # and takes care of filtering or search requests
     #
+    #############
+    #model._meta.get_fields()
+    userT = User.objects.filter(id=id) 
+    try:
+          user_clubT = User_club.objects.filter(user__in=userT).get() 
+          logger.info(user_clubT)
+          player_id_list=user_clubT.list_players_club 
+          logger.info(player_id_list) 
+          #user_clubT =  user_clubT.first()
+    except User_club.DoesNotExist:
+          pass
+    
+            #player_test= Player.objects.filter(id=).all()
     #############
     players= Player.objects.all()
     players = players.order_by("-position").all()
@@ -259,6 +275,10 @@ def players(request,page,team,position):
             #     HttpResponse("error")
           #player=player.serialize()
             json_tmp=player.serialize()
+            # if player.id in player_id_list:
+            #     json_tmp["in_squad"]=True
+            # else:
+            json_tmp["in_squad"]=False 
             json_tmp["team_name"]=player.team_id.name
             json_tmp["team_logo"]=player.team_id.logo
 

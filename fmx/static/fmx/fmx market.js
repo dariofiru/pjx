@@ -19,17 +19,11 @@ async function get_data(){
         .then(response => response.text())
         .then(text => {
             if(text==="empty"){
-
+                return text;
             }else{
                 var club_data = JSON.parse(text);
-                for (var i in club_data) {
-                    var budget_box=document.getElementById("budget");
-                    budget_box.innerHTML = club_data[i].initial_budget;
-                    option.value = teams_data[i].id;
-                    team_search.add(option);
-                }
-                
-                
+                 
+           
             }
         });
     }
@@ -294,8 +288,11 @@ function remove_sign(player_box, box, boxclose, position, empty_position, color)
     boxclose.dataset.playerid="0"
     box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.classList.remove(`bg-${color}`,`text-white`) 
+     
+        player_box.classList.remove(`bg-${color}`,`text-white`) 
+     
     player_box.classList.add(`bg-${color}-subtle`,`text-black`)
-    player_box.classList.remove(`bg-${color}`,`text-white`) 
+    
  
     box.innerHTML=empty_position
 
@@ -494,17 +491,18 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
 
 async function fetchPlayers(page, team, position) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    console.log("link"+`players/${page}/${team}/${position}`)
+    console.log("link"+`players/${page}/${team}/${position}/`)
         var my_likesR = [];
-
-          fetch(`players/${page}/${team}/${position}` )
+          
+          fetch(`players/${page}/${team}/${position}/${user_id}` )
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
+                 
                 const player_list= document.getElementById('player-list')
-                        player_list.innerHTML=""
-                        for (var i in player) {
-
+                player_list.innerHTML=""
+                for (var i in player) {
+                    console.log(player[i].in_squad)
                     let player_id=player[i].id;
                     let player_value=player[i].value;
                     let player_position = player[i].position
@@ -538,24 +536,24 @@ async function fetchPlayers(page, team, position) {
                     player_name.classList.add('player_name', 'text-primary-emphasis')
                     //player_name.classList.add('bg-primary-subtle');
                      if (player[i].position ==="Attacker"){
-                        if(is_signed) 
+                        if(is_signed || player[i].in_squad) 
                             player_name.classList.add( 'bg-success');
                         else
                             player_name.classList.add( 'bg-success-subtle')    
                     } else if (player[i].position ==="Midfielder"){
-                        if(is_signed) 
+                        if(is_signed || player[i].in_squad) 
                             player_name.classList.add( 'bg-primary');
                         else
                             player_name.classList.add( 'bg-primary-subtle')
                     }
                     else if (player[i].position ==="Defender"){
-                        if(is_signed) 
+                        if(is_signed || player[i].in_squad) 
                             player_name.classList.add( 'bg-secondary');
                         else
                             player_name.classList.add( 'bg-secondary-subtle')
                     } 
                     else if (player[i].position ==="Goalkeeper"){
-                        if(is_signed) 
+                        if(is_signed || player[i].in_squad) 
                             player_name.classList.add( 'bg-danger');
                         else
                             player_name.classList.add( 'bg-danger-subtle')
@@ -611,8 +609,11 @@ async function fetchPlayers(page, team, position) {
                         player_name.append(player_name_extra_info);
                         //player_name.append(show_details_btn);
                         player_stats.append(show_details_btn);
-   
-                        
+                        //// qqq
+                        if(player[i].in_squad){
+                            console.log(player)
+                            fillup_squad(player_position, player_fullname, player_id, player[i].photo, player_value)
+                        }
                         //// end offcanvas
 
 
@@ -642,6 +643,13 @@ async function fetchPlayers(page, team, position) {
                     });             
                     }                                       
             });
+
+////
+      
+////
+
+
+
             return false 
         }
         
@@ -662,7 +670,7 @@ function get_club_details( ){
 get_teams() // get team names for search options  
 //fetchPlayers_bug(1, "0", "0")
 fetchPlayers(1, "0", "0") // fetch players for first time
-//get_data()
+get_data()
 
  
     
@@ -672,6 +680,73 @@ fetchPlayers(1, "0", "0") // fetch players for first time
   close.onclick = function() {
     span.style.display = "none";
   }
+
+function fillup_squad(position, player_name, player_id, photo, value){
+    if(position==="Goalkeeper"){
+        let why = player_name
+ 
+        let box =document.getElementById("Goalkeeper-1");
+         
+     
+        if(box.innerHTML==="Goalkeeper 1"){
+            let position=box.innerHTML
+            boxpic =document.getElementById("Goalkeeper-1-pic");
+            boxclose =document.getElementById("Goalkeeper-1-close");
+            let player_box=document.getElementById(`player-${player_id}`);
+            boxclose.style.display="block"
+            boxclose.dataset.playerid=player_id
+            boxclose.onclick = () => { remove_sign(player_box,box, boxclose,  "Goalkeeper-1", "Goalkeeper 1", "danger"); };
+            //boxclose.addEventListener("click", remove_sign(boxclose));
+            boxpic.innerHTML=`<img src="${photo}" style="width:35px;border-radius: 50%;border:1px solid black">`
+            box.innerHTML=player_name
+            box.dataset.playerid=player_id
+            box.classList.remove('bg-danger-subtle','text-black')
+            box.classList.add('bg-danger','text-white') 
+
+            // modifing player box design and funcionality
+           // player_box.classList.remove('bg-danger-subtle');
+           // player_box.classList.add('bg-danger','text-white');
+           // modal.style.display = "none";
+
+             
+
+            return false
+        }
+        else if (box.innerHTML === why) {
+             
+            return false
+        }
+        box =document.getElementById("Goalkeeper-2");
+        if(box.innerHTML==="Goalkeeper 2"){
+            boxpic =document.getElementById("Goalkeeper-2-pic");
+            boxclose =document.getElementById("Goalkeeper-2-close");
+            let player_box=document.getElementById(`player-${player_id}`);
+            boxclose.style.display="block"
+            boxclose.dataset.playerid=player_id
+            boxclose.onclick = () => { remove_sign(player_box,box, boxclose,  "Goalkeeper-2", "Goalkeeper 2", "danger"); };
+
+            boxpic.innerHTML=`<img src="${photo}" style="width:35px;border-radius: 50%;border:1px solid black">`
+            boxclose =document.getElementById("Goalkeeper-2-close");
+            box.innerHTML=player_name
+            box.dataset.playerid=player_id
+            box.classList.remove('bg-danger-subtle','text-black')
+            box.classList.add('bg-danger','text-white') 
+            //player_box.classList.remove('bg-danger-subtle');
+           // player_box.classList.add('bg-danger','text-white');
+
+              
+                return false
+        }
+        else if (box.innerHTML === why) {
+            
+            return false
+        }
+                    console.log("full")
+     } // end goalkeeper
+
+
+
+}
 
 
 });

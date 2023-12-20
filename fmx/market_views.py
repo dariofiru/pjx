@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 import json
 import requests
+import logging
 import http.client
 import datetime
 import re
@@ -23,13 +24,16 @@ def market(request):
             #})
 
 def user_club(request, id):
-     userT = User.objects.filter(id=id)
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger(__name__)
+     userT = User.objects.filter(id=id) 
      try:
-           user_clubT = User_club.objects.filter(user__in=userT).get()
+          user_clubT = User_club.objects.filter(user__in=userT).get()
+          #user_clubT =  user_clubT.get()
      except User_club.DoesNotExist:
           return HttpResponse("empty")
-
-     return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
+     return JsonResponse(user_clubT.serialize(), safe=False)
+     #return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
 
 def get_teams(request):
      teams = Team.objects.filter(active=True)

@@ -11,7 +11,7 @@ urlpatterns = [
     path("get_teams", market_views.get_teams, name="get_teams"),
     path("get_player_value", views.get_player_value, name="get_player_value"),
 
-    path("players/<str:page>/<str:team>/<str:position>/", views.players, name="players"),
+    path("players/<str:page>/<str:team>/<str:position>/<str:id>", views.players, name="players"),
 
     path("get_player_details/<str:id>", views.get_player_details, name="get_player_details"),
 
@@ -37,6 +37,10 @@ urlpatterns = [
     path("match",  views.match, name="match"),
 
     path("round_results/<str:id>", table_views.round_results, name="round_results"),
+    path("create_table/<str:id>", table_views.create_table, name="create_table"),
+    path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
+    
+    
 
 
     path("login", views.login_view, name="login"),
