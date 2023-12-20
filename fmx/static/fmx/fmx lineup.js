@@ -352,37 +352,26 @@ save_btn.addEventListener("click", function() {
         let box = document.getElementById(`Goalkeeper-1`);
         console.log("json: "+box.innerHTML)
         let j = 1; 
-        jsonSquad.push({
-            position: `player-${j}`,
-            id: box.dataset.playerid
-        }); // const box=document.getElementById(`${player_position}-${i}-${line}`);
+        jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid }); 
+        // const box=document.getElementById(`${player_position}-${i}-${line}`);
     for (var i = 1; i <= D_line; i++) {
         j++;
         const box=document.getElementById(`Defender-${i}-${D_line}`);
          
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `player-${j}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     for (var i = 1; i <= M_line; i++) {
         j++;
         let box = document.getElementById(`Midfielder-${i}-${M_line}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `player-${j}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     for (var i = 1; i <= A_line; i++) {
         j++;
         let box = document.getElementById(`Attacker-${i}-${A_line}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `player-${j}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     console.log(jsonSquad)
     fetch(`/save_lineup`, {
@@ -397,12 +386,15 @@ save_btn.addEventListener("click", function() {
     }).then(response=>response.text())
     .then(data=>{ console.log("hello "+data); 
     document.getElementById('Modal-saved-squad').style.display='block'
-    console.log("Modal?")
+     
     })
 
     //console.log(JSON.stringify(jsonSquad))
 });
-
+const run_round_btn=document.getElementById("run_round_btn");
+run_round_btn.addEventListener("click", function() {
+    console.log("run round!")
+ });
 
     
 async function get_player_details(id){

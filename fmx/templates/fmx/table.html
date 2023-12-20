@@ -1,0 +1,48 @@
+{% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+
+
+{% endblock %}
+
+
+{% block body %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:600px">
+      
+      <div class="row w-50 bs-success-bg-subtle  "> </div>
+      <div class=" col opacity-75 center    " style="  margin:30px;padding:0px;">
+        <div id="table_box" class="container bg-light   border rounded-2 text-center  " style="  margin:0px;padding:0px;">
+   
+            <div id="table_row" class="row  rounded-2  text-black" style="  margin:0px;padding: 0px;">
+              <div class="col-1  "  > </div>
+              <div class="col-2  ">Team Name</div>
+             <div class="col-2  "  >Points </div>
+             
+            <div class="col-1  "  >Total  </div>
+            <div class="col-1  "  >Home </div>
+            <div class="col-1  "  >Away </div>
+            </div>   
+      </div>
+    </div>
+  </div>
+         
+     
+
+      <script>
+ 
+        // var  user_name='{{ user.username  }}'
+        // var  user_id='{{ user.id  }}'
+        // //var     initial_budget_str='{{ user.initial_budget  }}'
+        // var initial_budget_str='{{ user.club_details.initial_budget  }}'
+        // var  logo = '{{ user.club_details.logo  }}'
+        // var  club_name='{{ user.club_details.club  }}'
+        // var  initial_budget=Number(initial_budget_str)
+        </script> 
+        
+        <script src="{% static 'fmx/fmx table.js' %}"></script>
+         
+         
+        {% endblock %}

@@ -288,7 +288,7 @@
           height: 100px;
           background-color: green;
           animation-name: example;
-          animation-duration: 4s;
+          animation-duration: 2s;
         }
         
         /* animation  for goalkeepers */ 
@@ -301,7 +301,7 @@
           height: 100px;
           background-color: #F8D7DA;
           animation-name: anim_goalkeeper;
-          animation-duration: 4s;
+          animation-duration: 2s;
         }
         /* end animation golakeepers */
 
@@ -315,7 +315,7 @@
           height: 100px;
           background-color: #E9ECEF;
           animation-name: anim_defender;
-          animation-duration: 4s;
+          animation-duration: 2s;
         }
         /* end animation defenders */
 
@@ -329,7 +329,7 @@
           height: 100px;
           background-color: #CFE2FF;
           animation-name: anim_midfielder;
-          animation-duration: 4s;
+          animation-duration: 2s;
         }
         /* end animation midfielders */
 
@@ -343,7 +343,7 @@
           height: 100px;
           background-color: #D1E7DD;
           animation-name: anim_attacker;
-          animation-duration: 4s;
+          animation-duration: 2s;
         }
         /* end animation midfielders */
 

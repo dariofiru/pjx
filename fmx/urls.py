@@ -26,6 +26,8 @@ urlpatterns = [
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
     path("test_import_round", lineup_views.test_import_round, name="test_import_round"),
+    path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
+    
 
     
     path("get_fixture_ratings/<str:id>", lineup_views.get_fixture_ratings, name="get_fixture_ratings"),# calc players rating for fixture
@@ -36,7 +38,9 @@ urlpatterns = [
 
     path("match",  views.match, name="match"),
 
-    path("round_results/<str:id>", table_views.round_results, name="round_results"),
+    path("table", table_views.table, name="table"),
+    path("get_table", table_views.get_table, name="get_table"),
+    path("round_results", table_views.round_results, name="round_results"),
     path("create_table/<str:id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     

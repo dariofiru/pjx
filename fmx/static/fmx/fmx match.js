@@ -3,13 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function get_matches(){
     console.log("try")
-        fetch( `round_results/5`)
+        fetch( `round_results`)
         .then(response => response.text())
         .then(text => {
             console.log(text)
             if(text==="empty"){
 
             }else{
+                console.log(text)
                 var matches = JSON.parse(text);
                 var table_box=document.getElementById("table_box");
                 for (var i in matches) {

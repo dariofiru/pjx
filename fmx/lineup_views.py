@@ -249,9 +249,28 @@ def test_import_round(request):
      return render(request, "fmx/register.html", {
             "what1": player, "what2":team_list
              })   
-                   
 
-def calculate_round(request, id):
+def check_for_round_data(request):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     round = Round.objects.filter(next=True).values("round_num").first() # retrieve round number                    
+     round=round['round_num']
+     fixture= Fixture.objects.filter(round_num=round).first()
+     logger.info(f'fixture: {fixture} ')
+     downloaded_fixture=Fixture_round.objects.filter(fixture=fixture).count()
+     logger.info(f'downloaded_fixture: {downloaded_fixture} ')
+     if downloaded_fixture>0:
+          get_fixture_ratings(None, round) # calculate players score 
+          lineup_scores(None, round)
+     else:
+          calculate_round(None,round)
+          get_fixture_ratings(None, round) # calculate players score 
+          lineup_scores(None, round)
+     return HttpResponse(json.dumps({"x":"x", "y":"y"}), content_type="application/json")     
+
+
+
+def calculate_round(request, id): # downloads from API all players stats for fixures in round
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      team_list="empty"
@@ -346,7 +365,8 @@ def get_fixture_ratings(request,id): #calculates  total score for each PLAYER in
           })  
 
 def lineup_scores(request, id): # calculates total point for each lineup/round
-
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx') 
      # for row in Fixture_round.objects.all().reverse():
      #      if Fixture_round.objects.filter(fixture=row.fixture,player=row.player).count() > 1:
      #            row.delete()
@@ -355,7 +375,7 @@ def lineup_scores(request, id): # calculates total point for each lineup/round
      # return render(request, "fmx/register.html", {
      #           "what1": fixture
      #       })   
-     lineups= Lineup.objects.all() #to fix and test only active lineups
+     lineups= Lineup.objects.filter(active=True).all() #to fix and test only active lineups
      fixtures= Fixture.objects.filter(round_num=id).all()
      x="--"
      scores = []
@@ -382,6 +402,7 @@ def lineup_scores(request, id): # calculates total point for each lineup/round
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_3.rating)
                     try:
+                         logger.info(f"error:{fixture} - {lineup.player_4}")
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_4).get()
                         # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_4.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_4.rating)

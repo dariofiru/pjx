@@ -16,12 +16,42 @@ import http.client
 import datetime
 from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
 # Create your views here.
+def table(request):
+     return render(request, "fmx/table.html")
 
-def round_results(request,id): # returns winner/looser for each round and updates ELO
+def get_table(request):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     club_dets=Club_details.objects.all()
+     club_dets=club_dets.order_by('-elo')
+     json_final =[]
+     for club_det in club_dets:
+
+          club= User_club.objects.filter(user=club_det.user).first()
+          json_tmp=club.serialize()
+     
+    # for club in clubs:
+          round = Round.objects.filter(next=True).values("round_num").first()
+          home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
+          away_played = Table.objects.filter(round_num__lte=round["round_num"], squad_2=club).count()
+          total_played = home_played+away_played
+          logger.info(f"{club.name} - {home_played} ")
+          json_tmp=club.serialize() 
+          json_tmp["elo"]=club_det.elo
+          json_tmp["home_played"]=home_played
+          json_tmp["away_played"]=away_played
+          json_tmp["total_played"]=total_played
+          #json_tmp["elo_1"]=elo_1['elo']
+          #json_tmp["elo_2"]=elo_2['elo']
+          
+          json_final.append(json_tmp) 
+     return JsonResponse(json_final, safe=False) 
+
+def round_results(request): # returns winner/looser for each round and updates ELO
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
         round = Round.objects.filter(next=True).values("round_num").first() # retrieve round number 
-        games = Table.objects.filter(round_num=id).all() # retrieve all the matches in round
+        games = Table.objects.filter(round_num=round["round_num"]).all() # retrieve all the matches in round
         
         json_final =[]
         for game in games: # retrive lineup scores, user and team data

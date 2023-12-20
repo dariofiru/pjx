@@ -113,10 +113,11 @@ class Fixture_round(models.Model):
     redcard = models.PositiveIntegerField(blank=True,null=True, default=0)
     score = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
    
-
     def __str__(self) -> str:
        return f"{self.fixture} - {self.player}: G: {self.goals} C: {self.conceded} - R: {self.redcard} - Y: {self.yellowcard}"
 
+    class Meta:
+        unique_together = ('fixture', 'player')
 
 class Fixture(models.Model):
     id = models.PositiveIntegerField(primary_key = True)

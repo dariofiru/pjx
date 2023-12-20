@@ -47,13 +47,29 @@
         <div class="col">
          
       <div class="col text-center">
-        Congratulations! <br>
-        Your lineup has been saved! <br>
-        You're have now officially entered the FMX League, the next round will be in 10 minutes. 
-        <button id="create_lineup_btn" type="button" class="btn btn-success p-2 m-3">Yes please</button>
-        <button id="cancel_lineup_btn" 
+        Congratulations, your lineup has been saved! <br>
+        You're have now officially entered the FMX League table, the next round will be in 10 minutes. <br>
+        
+        <div class="progress progress-striped active"> 
+          <div class="progress-bar progress-bar-success"
+              style="width: 0%"> 
+          </div> 
+      </div> 
+    
+      <script> 
+    
+          // Set the width to animate the progress bar 
+          // Along with time duration in milliseconds 
+          $(".progress-bar").animate({ 
+                  width: "70%", 
+          }, 2500); 
+      </script> 
+      
+        <br>
+        <button id="run_round_btn" type="button" class="btn btn-success p-2 m-3">Simulate round</button>
+        <button id="close_box_btn" 
         onclick="document.getElementById('Modal-saved-squad').style.display='none'"
-         type="button" class="btn btn-secondary p-2">Not yet, Thanks</button>
+         type="button" class="btn btn-secondary p-2">Perfect! I can wait</button>
       </div>
       </div>
     </div>
