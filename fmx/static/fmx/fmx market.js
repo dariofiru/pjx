@@ -15,6 +15,7 @@ logo_box.src=`${logo}`
 var club_name_box=document.getElementById("club_name");
 club_name_box.innerHTML=`${club_name}`
 async function get_data(){
+    let curr_budget=initial_budget
         fetch( `user_club/${user_id}`)
         .then(response => response.text())
         .then(text => {
@@ -22,8 +23,47 @@ async function get_data(){
                 return text;
             }else{
                 var club_data = JSON.parse(text);
-                 
-           
+                var budget_box=document.getElementById("budget");
+                var remaining_budget=club_data[0].remaining_budget
+                budget_box.innerHTML=`${remaining_budget}`
+                for (i in club_data){
+                //console.log(club_data)
+                let box =document.getElementById(`${club_data[i].position}`);
+                boxpic =document.getElementById(`${club_data[i].position}-pic`);
+                boxclose =document.getElementById(`${club_data[i].position}-close`);
+                let player_box=document.getElementById(`player-${club_data[i]['id']}`);
+                //console.log("=>"+player_box)
+                boxclose.style.display="block"
+                boxclose.dataset.playerid=club_data[i]['id']
+                boxclose.onclick = () => { sell_player(player_box,box, boxclose,  "Goalkeeper-1", "Goalkeeper 1", "danger"); };
+                //boxclose.addEventListener("click", remove_sign(boxclose));
+                boxpic.innerHTML=`<img src="${club_data[i]['photo']}" style="width:35px;border-radius: 50%;border:1px solid black">`
+                box.innerHTML=club_data[i]['name']
+                box.dataset.playerid=club_data[i]['id']
+                if(club_data[i]['position'].includes('Goalkeeper')){
+                    box.classList.remove('bg-danger-subtle','text-black')
+                    box.classList.add('bg-danger','text-white') 
+                }else if(club_data[i]['position'].includes('Defender')){
+                    box.classList.remove('bg-secondary-subtle','text-black')
+                    box.classList.add('bg-secondary','text-white') 
+                }
+                else if(club_data[i]['position'].includes('Midfielder')){
+                    box.classList.remove('bg-primary-subtle','text-black')
+                    box.classList.add('bg-primary','text-white') 
+                }
+                else if(club_data[i]['position'].includes('Attacker')){
+                    box.classList.remove('bg-success-subtle','text-black')
+                    box.classList.add('bg-success','text-white') 
+                }
+                // modifing player box design and funcionality
+                //player_box.classList.remove('bg-danger-subtle');
+                //player_box.classList.add('bg-danger','text-white');
+            // modal.style.display = "none";
+
+                //let remaning_budget = curr_budget-pl_value
+                //budget_box.innerHTML=`${remaning_budget.toFixed(1)}`
+                //curr_budget=remaning_budget
+                }
             }
         });
     }
@@ -278,6 +318,10 @@ function confirm_sign_player() {
 
         }
 
+function sell_player(player_box, box, boxclose, position, empty_position, color){
+//TODO
+}
+
 function remove_sign(player_box, box, boxclose, position, empty_position, color){
     console.log(boxclose.dataset.playerid+ " - "+ empty_position+" - "+player_box)
     boxpic =document.getElementById(`${position}-pic`);
@@ -498,7 +542,7 @@ async function fetchPlayers(page, team, position) {
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
-                 
+                //console.log(player)
                 const player_list= document.getElementById('player-list')
                 player_list.innerHTML=""
                 for (var i in player) {
@@ -612,7 +656,7 @@ async function fetchPlayers(page, team, position) {
                         //// qqq
                         if(player[i].in_squad){
                             console.log(player)
-                            fillup_squad(player_position, player_fullname, player_id, player[i].photo, player_value)
+                            //fillup_squad(player_position, player_fullname, player_id, player[i].photo, player_value)
                         }
                         //// end offcanvas
 
@@ -643,13 +687,6 @@ async function fetchPlayers(page, team, position) {
                     });             
                     }                                       
             });
-
-////
-      
-////
-
-
-
             return false 
         }
         

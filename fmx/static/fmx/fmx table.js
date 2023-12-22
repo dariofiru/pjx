@@ -6,11 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch( `get_table`)
             .then(response => response.text())
             .then(text => {
-                console.log(text)
                 if(text==="empty"){
     
                 }else{
-                    console.log(text)
+                    //console.log(text)
                     var squads = JSON.parse(text);
                     var table_box=document.getElementById("table_box");
                     for (var i in squads) {
@@ -62,7 +61,15 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
     get_table()
+
+
     
-    console.log("=> "+table_box)    
+
+    tst_btn.addEventListener('click', function () {
+        var countDownDate = new Date().getTime() + 600000;
+        sessionStorage.setItem('countDownDate', countDownDate);
+        countdown()
+    });
+    //console.log("=> "+table_box)    
        
     });

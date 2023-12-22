@@ -12,6 +12,7 @@ import logging
 import random
 import json
 import requests
+from django.db.models import F
 import http.client
 import datetime
 from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
@@ -33,13 +34,23 @@ def get_table(request):
     # for club in clubs:
           round = Round.objects.filter(next=True).values("round_num").first()
           home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
+          home_won=0
+          if home_played>0:
+               home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2')).count()
+          
           away_played = Table.objects.filter(round_num__lte=round["round_num"], squad_2=club).count()
+          away_won=0
+          if away_played>0:
+               away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1')).count()
+          
           total_played = home_played+away_played
-          logger.info(f"{club.name} - {home_played} ")
+          logger.info(f"{club.name} - {home_played} - {home_won}")
           json_tmp=club.serialize() 
           json_tmp["elo"]=club_det.elo
           json_tmp["home_played"]=home_played
+          json_tmp["home_won"]=home_won
           json_tmp["away_played"]=away_played
+          json_tmp["away_won"]=away_won
           json_tmp["total_played"]=total_played
           #json_tmp["elo_1"]=elo_1['elo']
           #json_tmp["elo_2"]=elo_2['elo']

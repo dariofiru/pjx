@@ -35,6 +35,11 @@ function get_matches(){
                     away_team.innerHTML=matches[i].lineup_2_name;
                     home_score.innerHTML=matches[i].score_1;
                     away_score.innerHTML=matches[i].score_2;
+                    if (matches[i].lineup_1_name===club_name){
+                        home_team.style.fontWeight="bold"
+                    }else if (matches[i].lineup_2_name===club_name){
+                        away_team.style.fontWeight="bold"
+                    }
                     table_row.append(div1)
                     table_row.append(home_team)
                     table_row.append(home_score)
@@ -58,5 +63,7 @@ function get_matches(){
 
 get_matches()
 
-
+ 
+    countdown()
+ 
 });

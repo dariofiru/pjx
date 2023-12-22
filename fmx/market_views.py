@@ -32,7 +32,96 @@ def user_club(request, id):
           #user_clubT =  user_clubT.get()
      except User_club.DoesNotExist:
           return HttpResponse("empty")
-     return JsonResponse(user_clubT.serialize(), safe=False)
+     json_final =[]
+     #json_tmp=user_clubT.serialize() 
+     player=Player.objects.filter(id=user_clubT.goalkeeper_1.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Goalkeeper-1"
+     json_tmp["photo"]=player.photo   
+     json_tmp["remaining_budget"]=user_clubT.remaining_budget  
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.goalkeeper_2.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Goalkeeper-2"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.defender_1.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Defender-1"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.defender_2.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Defender-2"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.defender_3.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Defender-3"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.defender_4.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Defender-4"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.defender_5.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Defender-5"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+          
+     
+     player=Player.objects.filter(id=user_clubT.midfielder_1.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Midfielder-1"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.midfielder_2.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Midfielder-2"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.midfielder_3.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Midfielder-3"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.midfielder_4.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Midfielder-4"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.midfielder_5.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Midfielder-5"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     
+     player=Player.objects.filter(id=user_clubT.attacker_1.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Attacker-1"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.attacker_2.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Attacker-2"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp)
+     player=Player.objects.filter(id=user_clubT.attacker_3.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Attacker-3"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+     player=Player.objects.filter(id=user_clubT.attacker_4.id).first()
+     json_tmp=player.serialize()
+     json_tmp["position"]="Attacker-4"
+     json_tmp["photo"]=player.photo
+     json_final.append(json_tmp) 
+
+
+     return JsonResponse(json_final, safe=False)
+
      #return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
 
 def get_teams(request):
@@ -214,3 +303,4 @@ def get_headlines(request):
 def random_headline(request):
      headline=Headline.objects.order_by('?').first()
      return JsonResponse(headline.serialize() , safe=False)
+
