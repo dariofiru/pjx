@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from . import views, market_views, lineup_views, table_views
 
 urlpatterns = [
@@ -18,7 +18,7 @@ urlpatterns = [
     path("market", market_views.market, name="market"),
     path("save_squad", market_views.save_squad, name="save_squad"),
     #path("get_headlines", market_views.get_headlines, name="get_headlines"),
-    path("random_headline", market_views.random_headline, name="random_headline"),
+    path("random_headline/<str:type>", market_views.random_headline, name="random_headline"),
     
     
     path("club_players", lineup_views.club_players, name="club_players"),
@@ -52,5 +52,6 @@ urlpatterns = [
     path("register", views.register, name="register")
     
 
-
+   # path('notifications/', include('notifications.urls', namespace='notifications')),
+    
 ]

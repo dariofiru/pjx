@@ -12,6 +12,7 @@ import requests
 import http.client
 import datetime
 from .models import Team, Player, Fixture, User, Club_details, Round, User_club
+#from notifications.signals import notify
 # Create your views here.
 
 def utilities(request, cmd):
@@ -226,7 +227,7 @@ def get_player_value(request):
                "players": players, "avg" : avg
                })
 
-def players(request,page,team,position, id):
+def players(request,page,team,position,id):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')
     #############
@@ -236,6 +237,7 @@ def players(request,page,team,position, id):
     #############
     #model._meta.get_fields()
     userT = User.objects.filter(id=id) 
+    #notify.send(userT, recipient=userT, verb='You have a new notification.')
     try:
           user_clubT = User_club.objects.filter(user__in=userT).get() 
           logger.info(user_clubT)

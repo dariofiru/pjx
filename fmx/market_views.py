@@ -277,7 +277,9 @@ def get_headlines(request):
      url = "https://open-ai25.p.rapidapi.com/ask"
 
     # payload = { "query": "create 40 newspaper headlines on a soccer player called *name* transfer to a team called *team* each one should start and end with @  use different styles  " }
-     payload = { "query": "create 30 newspaper headlines on a soccer player called *name* rumored of transfering to a team called *team* each phrase should start and end with @  use different styles" } 
+     #payload = { "query": "create 30 newspaper headlines on a soccer player called *name* rumored of transfering to a team called *team* each phrase should start and end with @  use different styles" } 
+     payload = { "query": "create 20 newspaper headlines on a soccer player called *name* dropped by a team called *team* each separate full phrase should start and end with @  use different styles" } 
+     
      headers = {
 	"content-type": "application/json",
 	"X-RapidAPI-Key": "4310cb923emsh4f65160b63c1034p1fbf64jsn1c68913a9032",
@@ -292,7 +294,7 @@ def get_headlines(request):
  
      headlines = re.findall('@(.+?)@', response.text)
      for i in headlines:
-          headline=Headline(headline=i)
+          headline=Headline(headline=i, type="sell")
           headline.save()
 
 
@@ -300,7 +302,7 @@ def get_headlines(request):
                 "what1": response.text, "what2":headlines
             })   
 
-def random_headline(request):
-     headline=Headline.objects.order_by('?').first()
+def random_headline(request, type):
+     headline=Headline.objects.filter(type=type).order_by('?').first()
      return JsonResponse(headline.serialize() , safe=False)
 

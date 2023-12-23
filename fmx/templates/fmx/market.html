@@ -88,6 +88,33 @@
 </div>
 <!-- The Modal end-->
 
+<!--confirm page for selling a player -->
+<div id="myModal-sell" class="modal overlay">
+
+  <!-- Modal content -->
+  <div class="modal-content overlay">
+    <span class="close">&times;</span>
+      <div class="row">
+        <div class="col">
+        <div class="content-main">
+        <div id="content-box-sell" class="content-box" style="display:block">
+          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <p id="headline-txt-sell">Enthusiastically leverage other's effective users via client-centric </p>
+        </div> 
+    </div>
+      <div class="col text-center">
+         Do you really want to sell this player? <br> 
+        <div id="sell_player_id" style="display: none;"></div>
+        <div id="sell_player_name" style="display: none;"></div>
+        <button id="confirm_sell_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
+        <button id="cancel_sell_btn" onclick="document.getElementById('myModal-sell').style.display='none'" type="button" class="btn btn-secondary p-2">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- The Modal end-->
+
 
 
 <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');"> 
@@ -96,14 +123,14 @@
   <div class="  text-black   "  > 
 
     <div class="container     " style="  margin:0px;padding:10px;">
-    <div class="row  rounded-2   bg-light" style=" border:1px solid black; margin:0px;padding:20px;">
-      <div class="col-4   bg-light">
+    <div class="row  rounded-2   bg-light" style=" border:1px solid black; margin:0px;padding:0px;">
+      <div class="col-4 rounded-2  bg-light">
        
 
-        <div class="container text-center">
+        <div class="container     text-center">
             <!-- start search box-->
-        <div class="row   ">
-          <div class="col-6  " > Team:  
+        <div class="row rounded-2">
+          <div class="col-md-6 p-1 " > Team:  
             <form>
             <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
@@ -111,7 +138,7 @@
             </select>
           </div>
       
-          <div  class="col-6 "> Position:
+          <div  class="col-md-6 p-1"> Position:
             <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
               <option value="Goalkeeper">Goalkeepers</option>
@@ -131,7 +158,7 @@
         
         <div class="row ">
            
-          <div class="col-12 text-left  "> 
+          <div class="col-12 text-left p-0 "> 
           
             <br>
             <div id="player-list"></div>
@@ -164,7 +191,7 @@
        
 
       <div class="row w-100   ">
-        <div class="col nopadding" >
+        <div class="col-md-6 nopadding" >
           <div class="row     w-100 " >
              
           <div id="Goalkeeper-1-pic" class="col-2 p-1"></div>
@@ -219,7 +246,7 @@
 
 
     </div>
-       <div class="col">
+       <div class="col-md-6">
         <div class="row w-100 bs-success-bg-subtle ">
           <div id="Defender-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
           <div id="Defender-1" data-playerid='0' class="col p-1 player-box-market rounded-2 bg-secondary-subtle

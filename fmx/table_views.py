@@ -58,7 +58,7 @@ def get_table(request):
           json_final.append(json_tmp) 
      return JsonResponse(json_final, safe=False) 
 
-def round_results(request): # returns winner/looser for each round and updates ELO
+def round_results(request): # returns winner/looser for each round and updates ELO TOFIX
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
         round = Round.objects.filter(next=True).values("round_num").first() # retrieve round number 
