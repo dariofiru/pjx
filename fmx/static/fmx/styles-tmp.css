@@ -301,7 +301,7 @@
           height: 100px;
           background-color: #F8D7DA;
           animation-name: anim_goalkeeper;
-          animation-duration: 2s;
+          animation-duration: 1s;
         }
         /* end animation golakeepers */
 
@@ -315,7 +315,7 @@
           height: 100px;
           background-color: #E9ECEF;
           animation-name: anim_defender;
-          animation-duration: 2s;
+          animation-duration: 1s;
         }
         /* end animation defenders */
 
@@ -329,7 +329,7 @@
           height: 100px;
           background-color: #CFE2FF;
           animation-name: anim_midfielder;
-          animation-duration: 2s;
+          animation-duration: 1s;
         }
         /* end animation midfielders */
 
@@ -343,7 +343,7 @@
           height: 100px;
           background-color: #D1E7DD;
           animation-name: anim_attacker;
-          animation-duration: 2s;
+          animation-duration: 1s;
         }
         /* end animation midfielders */
 
@@ -356,7 +356,7 @@
         .lineup_txt {
           display:block;
           animation-name: lineup_text;
-          animation-duration: 3s;
+          animation-duration: 1s;
         }
 
 

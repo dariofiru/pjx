@@ -227,7 +227,7 @@ def get_player_value(request):
                "players": players, "avg" : avg
                })
 
-def players(request,page,team,position,id):
+def players(request,page,team,position,value, order, id):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')
     #############
@@ -250,7 +250,10 @@ def players(request,page,team,position,id):
             #player_test= Player.objects.filter(id=).all()
     #############
     players= Player.objects.all()
-    players = players.order_by("-position").all()
+    if order=="name":
+        players = players.order_by(f"{order}").all()
+    else:
+        players = players.order_by(f"-{order}").all()
     team_tmp="no team"
     position_tmp="no position"
     if team!="0":
@@ -265,8 +268,22 @@ def players(request,page,team,position,id):
             players= players.filter(position=position) 
         except Player.DoesNotExist:
             HttpResponse("error")
-    
-    paginator = Paginator(players, 30)
+    if value=="40":
+        try:    
+            players= players.filter(value__lte=40) 
+        except Player.DoesNotExist:
+            HttpResponse("error")
+    if value=="4060":
+        try:    
+            players= players.filter(value__range=(40, 60)) 
+        except Player.DoesNotExist:
+            HttpResponse("error")
+    if value=="60":
+        try:    
+            players= players.filter(value__gte=60) 
+        except Player.DoesNotExist:
+            HttpResponse("error")
+    paginator = Paginator(players, 6)
     players = paginator.get_page(page)
      
     json_final =[]

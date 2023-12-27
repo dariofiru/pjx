@@ -322,4 +322,33 @@ class Elo_table(models.Model):
     def __str__(self) -> str:
         return f"{self.difference} - {self.probability} "
     
- 
+class One2one(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    squad_1=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club11",blank=True,null=True)
+    squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club21",blank=True,null=True)
+    lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table11")
+    lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table21")
+    score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    round_num = models.PositiveIntegerField(blank=False,null=False)
+    bet = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+
+    def __str__(self) -> str:
+        return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "timestamp": self.timestamp,
+            "round_num": self.round_num,
+            "lineup_1": self.lineup_1.id,
+            "lineup_2": self.lineup_2.id,
+            "club_1_id": self.lineup_1.club.id,
+            "club_2_id": self.lineup_2.club.id,
+            "lineup_1_name": self.lineup_1.club.name,
+            "lineup_2_name": self.lineup_2.club.name,
+            "lineup_1_username": self.lineup_1.user.username,
+            "lineup_2_username": self.lineup_2.user.username,
+            "score_1": self.score_1,
+            "score_2": self.score_2
+        }

@@ -118,26 +118,27 @@
 
 
 <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');"> 
-  <div class="row w-50 bs-success-bg-subtle  ">dsds</div>
+  <div class="row w-50 bs-success-bg-subtle  "></div>
 <div class=" col opacity-75 center      " style="  margin:30px;padding:0px;">
   <div class="  text-black   "  > 
 
     <div class="container     " style="  margin:0px;padding:10px;">
-    <div class="row  rounded-2   bg-light" style=" border:1px solid black; margin:0px;padding:0px;">
+    <div class="row  rounded-2   bg-light" style=" border:1px solid black; margin:0px;padding:10px;">
       <div class="col-4 rounded-2  bg-light">
        
 
         <div class="container     text-center">
             <!-- start search box-->
-        <div class="row rounded-2">
-          <div class="col-md-6 p-1 " > Team:  
-            <form>
+            <div class="container text-bg-secondary rounded-2 ">
+        <div class="row  p-0">
+          <div class="col-md-6 p-1  " > Team:  
+          
             <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
                
             </select>
           </div>
-      
+          
           <div  class="col-md-6 p-1"> Position:
             <select id="position_search" class="form-select form-select-sm" aria-label="Default select example">
               <option value="0" selected>All</option>
@@ -149,18 +150,55 @@
              
         
         </div>
-      </form>
+     
     </div>
+
+
+    <div class="row text-bg-secondary p-0 rounded-2">
+      <div class="col-md-6 p-1 " > Value range:  
+        <select id="price_search" class=" form-select form-select-sm" aria-label="Default select example">
+          <option value="0" selected>All</option>
+          <option value="40" ><$40</option>
+          <option value="4060">$40 - $60</option>
+          <option value="60">>$60</option>
+        </select>
+      </div>
+      
+      <div  class="col-md-6 p-1"> Order by:
+        <select id="order_search" class="form-select form-select-sm" aria-label="Default select example">
+          <option value="name" selected>Name</option>
+          <option value="value">Price</option>
+          <option value="goals">Goals #</option>
+          <option value="lineups">Lineups #</option> 
+
+        </select>
+         
+    
+    </div>
+</div> </div>
+
+
       <!-- end search box-->
 
     
 
         
-        <div class="row ">
+        <div class="row pt-2">
            
-          <div class="col-12 text-left p-0 "> 
-          
-            <br>
+          <div class="  col-12 text-left p-0 "> 
+             <div class="container " >
+            <nav  class="text-center" aria-label="...">
+              <ul   class="pagination pagination-sm justify-content-center ">
+                <li class="page-item disabled" id="page-item-Previous" value="0">
+                  <a id="page-item-Previous-link" class="page-link" href="#">Previous</a>
+                </li>
+            
+                <li class="page-item" id="page-item-Next" value="2">
+                  <a id="page-item-Next-link" class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
             <div id="player-list"></div>
           </div>
         </div>
@@ -351,15 +389,15 @@
           </div>
           <div class="row m-2">
           <div class="row m-2">
-            <div id="det_player_1" class="col-6  text-white">x</div>
-            <div id="det_player_2" class="col-6  text-white">d</div>
+            <div id="det_player_1" class="col-6  text-white">Loading...</div>
+            <div id="det_player_2" class="col-6  text-white"></div>
              
             </div>
             <div class="container  ">
             <div class="row m-3 border border-success-subtle  border-white">
   
-              <div id="stat_player_1" class="col-6 text-white">x</div>
-              <div id="stat_player_2" class="col-6  text-white">d</div>
+              <div id="stat_player_1" class="col-6 text-white"></div>
+              <div id="stat_player_2" class="col-6  text-white"></div>
               
             </div>
             <div class="row m-3   border-success-subtle text-center border-white">

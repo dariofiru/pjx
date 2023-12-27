@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from . import views, market_views, lineup_views, table_views
+from . import views, market_views, lineup_views, table_views, one2one_views
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -11,7 +11,7 @@ urlpatterns = [
     path("get_teams", market_views.get_teams, name="get_teams"),
     path("get_player_value", views.get_player_value, name="get_player_value"),
 
-    path("players/<str:page>/<str:team>/<str:position>/<str:id>", views.players, name="players"),
+    path("players/<str:page>/<str:team>/<str:position>/<str:value>/<str:order>/<str:id>", views.players, name="players"),
 
     path("get_player_details/<str:id>", views.get_player_details, name="get_player_details"),
 
@@ -44,8 +44,8 @@ urlpatterns = [
     path("create_table/<str:id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     
-    
-
+    path("one2one", one2one_views.one2one, name="one2one"),
+    path("get_one2one_teams", one2one_views.get_one2one_teams, name="get_one2one_teams"),
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),

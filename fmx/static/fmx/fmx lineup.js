@@ -1,7 +1,8 @@
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
     const save_btn=document.getElementById("save_btn");
     const clear_btn=document.getElementById("clear_btn");
@@ -247,10 +248,10 @@ document.addEventListener('DOMContentLoaded', function () {
         Defender_3_line.display="none" 
         Defender_4_line.display="block" 
 
-        D_1.classList.add('lineup', 'player-box-market')
-        D_2.classList.add('lineup', 'player-box-market')
-        D_3.classList.add('lineup', 'player-box-market')
-        D_4.classList.add('lineup', 'player-box-market')
+        D_1.classList.add('lineup_defender', 'player-box-market')
+        D_2.classList.add('lineup_defender', 'player-box-market')
+        D_3.classList.add('lineup_defender', 'player-box-market')
+        D_4.classList.add('lineup_defender', 'player-box-market')
         M_1=document.getElementById("Midfielder-1-3");
         M_2=document.getElementById("Midfielder-2-3");
         M_3=document.getElementById("Midfielder-3-3");
@@ -262,9 +263,9 @@ document.addEventListener('DOMContentLoaded', function () {
         Midfielder_5_line.display="none" 
         Midfielder_3_line.display="block" 
 
-        M_1.classList.add('lineup', 'player-box-market')
-        M_2.classList.add('lineup', 'player-box-market')
-        M_3.classList.add('lineup', 'player-box-market')
+        M_1.classList.add('lineup_midfielder', 'player-box-market')
+        M_2.classList.add('lineup_midfielder', 'player-box-market')
+        M_3.classList.add('lineup_midfielder', 'player-box-market')
         //M_5.classList.add('lineup', 'player-box-market')
 
         A_1=document.getElementById("Attacker-1-3");
@@ -330,11 +331,9 @@ async function get_data(){
  
  
 /// listeners for search dropdowns (teams and position)
-const team_search=document.getElementById("team_search"); 
+ 
 const position_search=document.getElementById("position_search");
-team_search.addEventListener("change", function() {
-   fetchPlayers(1, team_search.value, position_search.value)
-});
+ 
 position_search.addEventListener("change", function() {
     fetchPlayers(1, team_search.value, position_search.value)
 });
@@ -490,14 +489,14 @@ async function fetchPlayers(page, team, position) {
                     
                     //player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                     player_name.innerHTML=` <div class="row align-items-start">
-                    <div class="col-3 text-start">
+                    <div class="col-md-3 text-center">
                     <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" >
                     </div>
-                    <div class="col-6 text-start">
+                    <div class="col-md-6 text-start">
                     <b style="color:black">${player[i].name}</b> <br>
                       ${player[i].position} 
                     </div> 
-                    <div id="add_box-${player[i].id}" class="col-3 text-start">
+                    <div id="add_box-${player[i].id}" class="col-md-3 text-center border">
                      
                     </div> 
                       </div>
@@ -567,7 +566,7 @@ async function fetchPlayers(page, team, position) {
                     add_box=document.getElementById(`add_box-${player[i].id}`)
                     const add_lineup_btn = document.createElement("button");
                      
-                    add_lineup_btn.classList.add('btn', 'btn-sm',  'btn-outline-success')
+                    add_lineup_btn.classList.add('btn', 'btn-sm',  'btn-dark', 'p-1', 'm-0')
                     add_lineup_btn.innerHTML ="<span class=close > &plus;  </span>";  
                     add_lineup_btn.id=`${player[i].id}`      
                     add_box.innerHTML=""

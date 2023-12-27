@@ -1,0 +1,76 @@
+{% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+
+
+{% endblock %}
+
+
+{% block body %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div id="myModal-chll" class="modal overlay">
+
+  <!-- Modal content -->
+  <div class="modal-content overlay">
+    <span class="close">&times;</span>
+      <div class="row">
+        <div class="col">
+        <div class="content-main">
+        <div id="content-box-sell" class="content-box" style="display:block">
+          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <p id="headline-txt-sell">Enthusiastically leverage other's effective users via client-centric </p>
+        </div> 
+    </div>
+      <div class="col text-center">
+         Do you what to challenge this team? <br> 
+        <div id="sell_player_id" style="display: none;"></div>
+        <div id="sell_player_name" style="display: none;"></div>
+        <button id="confirm_sell_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
+        <button id="cancel_sell_btn" onclick="document.getElementById('myModal-chll').style.display='none'" 
+        type="button" class="btn btn-secondary p-2">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:800px">
+      
+      <div class="row w-50   ">One 2 one </div>
+      <div class=" col opacity-75 center    " style="  margin:30px;padding:0px;">
+        <div id="table_box" class="container     rounded-2 text-center  " style="  margin:0px;padding:0px;">
+  <!--
+            <div id="table_row" class="row  rounded-2 bg-light" style="  margin:0px;padding:20px;">
+           <div class="col-2  "> </div>
+            <div id="home_team" class="col-3 text-black text-start"  style="font-weight: bold;">dsadadas</div>
+            <div class="col-1  " id="home_score"> </div>
+            <div class="col-1  " id="away_score"> </div>
+            <div id="away_team" class="col-3 text-black text-end"  style="font-weight: bold;">efwrf</div>
+            <div class="col-2 "> </div> 
+            </div>  
+      </div>-->
+    </div>
+  </div>
+       
+     
+
+      <script>
+ 
+        // var  user_name='{{ user.username  }}'
+        // var  user_id='{{ user.id  }}'
+        // //var     initial_budget_str='{{ user.initial_budget  }}'
+        // var initial_budget_str='{{ user.club_details.initial_budget  }}'
+        // var  logo = '{{ user.club_details.logo  }}'
+         var  club_name='{{ user.club_details.club  }}'
+        // var  initial_budget=Number(initial_budget_str)
+        </script> 
+        
+        <script src="{% static 'fmx/fmx one2one.js' %}"></script>
+         
+         
+        {% endblock %}

@@ -2,6 +2,46 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+
+previous = document.getElementById("page-item-Previous")
+next = document.getElementById("page-item-Next")
+
+//console.log("p:"+previous_link+ " n: "+next_link)
+next.addEventListener('click', event => {
+    const team_search=document.getElementById("team_search"); 
+    const position_search=document.getElementById("position_search");
+    const price_search=document.getElementById("price_search"); 
+    const order_search=document.getElementById("order_search"); 
+    fetchPlayers(next.value, team_search.value, position_search.value, price_search.value, order_search.value)
+    if(next.value===2){
+        previous.classList.remove('disabled')
+    }
+     
+    previous.value = previous.value + 1
+    next.value = next.value + 1
+    console.log("p:"+ previous.value+ " n: "+next.value)
+     
+
+    return false;
+    });
+previous.addEventListener('click', event => {
+    const team_search=document.getElementById("team_search"); 
+    const position_search=document.getElementById("position_search");
+    const price_search=document.getElementById("price_search"); 
+    const order_search=document.getElementById("order_search"); 
+    fetchPlayers(next.value, team_search.value, position_search.value, price_search.value, order_search.value)
+    
+    previous.value = previous.value - 1
+    next.value = next.value - 1
+    if(next.value===2){
+        previous.classList.add('disabled')
+    }
+    console.log("p:"+ previous.value+ " n: "+next.value)
+    //fetchPlayers(1, "0", "0", "0", "name") 
+
+    return false;
+    });
+
 const side_nav_close=document.getElementById("mySidenav"); 
 side_nav_close.addEventListener('click', event => {
     //const side_nav=document.getElementById("mySidenav");
@@ -426,13 +466,20 @@ async function get_teams(){ // returns all team names for the search dropdown
 /// listeners for search dropdowns (teams and position)
 const team_search=document.getElementById("team_search"); 
 const position_search=document.getElementById("position_search");
+const price_search=document.getElementById("price_search"); 
+const order_search=document.getElementById("order_search"); 
 team_search.addEventListener("change", function() {
-   fetchPlayers(1, team_search.value, position_search.value)
+   fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
 position_search.addEventListener("change", function() {
-    fetchPlayers(1, team_search.value, position_search.value)
+    fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
-
+price_search.addEventListener("change", function() {
+    fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
+});
+order_search.addEventListener("change", function() {
+    fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
+});
 // listener for save team (temporary)
 const save_btn=document.getElementById("save_btn");
 save_btn.addEventListener("click", function() {
@@ -597,12 +644,12 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
     
  
 
-async function fetchPlayers(page, team, position) {
+async function fetchPlayers(page, team, position, price, order) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.log("link"+`players/${page}/${team}/${position}/`)
         var my_likesR = [];
           
-          fetch(`players/${page}/${team}/${position}/${user_id}` )
+          fetch(`players/${page}/${team}/${position}/${price}/${order}/${user_id}` )
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
@@ -621,8 +668,8 @@ async function fetchPlayers(page, team, position) {
                    // player_hidden_id.id=`player-${player[i].id}`
                     player_hidden_id.innerHTML=`${player[i].id}`
                     player_hidden_id.style.display="none";
-                    player_box.classList.add('border', 'rounded-3', 'player-details', 'bg-bs-light');
- 
+                    player_box.classList.add( 'rounded-3', 'player-details', 'bg-bs-light');
+                    player_box.style.border="1px solid black"
 
                     // drag drop start
                      let is_signed=check_signed(player_id, player_position) // check player already bought      
@@ -639,9 +686,9 @@ async function fetchPlayers(page, team, position) {
                     player_name.setAttribute("ondragstart", "drag(event)")
                     player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                             
-                    player_name.style.padding="4px"
+                    player_name.style.padding="0px"
                     //player_name.classList.add('player_name', 'text-primary-emphasis','bg-subtle','bs-info-bg-subtle')
-                    player_name.classList.add('player_name', 'text-primary-emphasis')
+                    player_name.classList.add('player_name', 'text-primary-emphasis','rounded-top-3')
                     //player_name.classList.add('bg-primary-subtle');
                      if (player[i].position ==="Attacker"){
                         if(is_signed || player[i].in_squad) 
@@ -669,7 +716,7 @@ async function fetchPlayers(page, team, position) {
                     const player_name_extra_info = document.createElement("div"); 
                     //player_name.classList.add('border-primary-subtle');
                     player_name_extra_info.classList.add('fs-6');
-                    player_name_extra_info.innerHTML=` <div class="row"><div class="col-4">
+                    player_name_extra_info.innerHTML=` <div class="row p-0"><div class="col-md-4 p-0">
                     <img style="width:50px;" src="${player[i].photo}" ></div><div class="col-8 text-start">
                       ${player[i].position}<br>
                       $ ${player[i].value} <br>
@@ -684,7 +731,6 @@ async function fetchPlayers(page, team, position) {
   
                     const player_stats = document.createElement("div");
                     player_stats.classList.add('player_stats','fw-normal');
-                    player_stats.classList.add('player_stats','fw-normal');
                     player_stats.id='player_stats';
                
                         //// try offcanvas
@@ -694,7 +740,7 @@ async function fetchPlayers(page, team, position) {
                         //player_name.append(show_det_nice);
                         show_det_nice.style.padding="5px"
                         const show_details_btn = document.createElement("button");
-                        show_details_btn.classList.add('btn', 'btn-sm',  'btn-outline-success')
+                        show_details_btn.classList.add('btn', 'btn-sm',  'btn-outline-dark')
                         show_details_btn.id=`${player[i].id}`
                         show_details_btn.textContent ="Stats";
                         show_details_btn.style.margin="5px"
@@ -770,7 +816,7 @@ function get_club_details( ){
 
 get_teams() // get team names for search options  
 //fetchPlayers_bug(1, "0", "0")
-fetchPlayers(1, "0", "0") // fetch players for first time
+fetchPlayers(1, "0", "0", "0", "name") // fetch players for first time
 get_data()
 
  

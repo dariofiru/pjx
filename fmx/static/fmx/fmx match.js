@@ -16,21 +16,23 @@ function get_matches(){
                 for (var i in matches) {
                    
                     
-                    var table_row = document.createElement('div')
-                    var div1 =document.createElement('div')
-                    var home_team =document.createElement('div')
-                    var away_team =document.createElement('div')
-                    var home_score=document.createElement('div')
-                    var away_score=document.createElement('div')
-                    var div2 =document.createElement('div')
-                    table_row.classList.add('row',    'bg-light')
+                    var table_row = document.createElement('tr')
+                    //table_row.classList.add('row',    'bg-light')
+                    var div1 =document.createElement('td')
+                    var home_team =document.createElement('td')
+                    var away_team =document.createElement('td')
+                    var home_score=document.createElement('td')
+                    var away_score=document.createElement('td')
+                    var div2 =document.createElement('td')
+                    home_team.classList.add('text-end')
+/*                     table_row.classList.add('row',    'bg-light')
                     table_row.style.margin="10px"
                     home_team.classList.add('col-3', 'text-end', 'text-black')
                     away_team.classList.add('col-3', 'text-start', 'text-black')
                     home_score.classList.add('col-1')
                     away_score.classList.add('col-1')
                     div1.classList.add('col-2')
-                    div2.classList.add('col-2')
+                    div2.classList.add('col-2') */
                     home_team.innerHTML=matches[i].lineup_1_name;
                     away_team.innerHTML=matches[i].lineup_2_name;
                     home_score.innerHTML=matches[i].score_1;
@@ -64,6 +66,6 @@ function get_matches(){
 get_matches()
 
  
-    countdown()
+    //countdown()
  
 });
