@@ -120,9 +120,9 @@ async function get_data(){
         });
     }
 
-confirm_sell_btn.addEventListener('click', event => {
+/* confirm_sell_btn.addEventListener('click', event => {
 
-});
+}); */
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
 function sell_player(player_id, box, boxclose, position, empty_position, color){
     var sold_name= box.innerHTML

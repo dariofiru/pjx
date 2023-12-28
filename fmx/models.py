@@ -324,15 +324,22 @@ class Elo_table(models.Model):
     
 class One2one(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    squad_1=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club11",blank=True,null=True)
-    squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club21",blank=True,null=True)
-    lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table11")
-    lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table21")
+    squad_1=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club11")
+    squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club21")
+    lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table11",blank=True,null=True)
+    lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table21",blank=True,null=True)
     score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
-    round_num = models.PositiveIntegerField(blank=False,null=False)
+    round_num = models.PositiveIntegerField(blank=True,null=True)
     bet = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
-
+    status = models.CharField(
+        max_length=12,
+        choices=(
+            ("pending", "Pending"),
+            ("refused", "Refused"),
+            ("accepted", "Accepted") 
+        )
+    )
     def __str__(self) -> str:
         return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
 

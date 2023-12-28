@@ -6,7 +6,7 @@ function Challange_box(){
 }
 function get_matches(){
     console.log("try")
-        fetch( `get_one2one_teams`)
+        fetch( `my_one2one`)
         .then(response => response.text())
         .then(text => {
             //console.log(text)
@@ -15,20 +15,12 @@ function get_matches(){
             }else{
                 //console.log(text)
                 var matches = JSON.parse(text);
-                var table_box=document.getElementById("table_box");
-                var clubs=matches.length
-                var row =  document.createElement('div')
-                row.classList.add('row','m-2')
+                var table_box=document.getElementById("challenge_box");
+                 
+                
                 for (var i in matches) {
-                   
- /*                   <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>            
-</div> */
+                    var row =  document.createElement('div')
+                    row.classList.add('row','m-2')
                     var col =  document.createElement('div')
                     var card = document.createElement('div')
                     col.classList.add('col', 'm-1')

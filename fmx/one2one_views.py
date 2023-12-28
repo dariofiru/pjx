@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 from decimal import Decimal
 from itertools import permutations, combinations
+from notifications.signals import notify
 import operator
 import logging
 import random
@@ -15,17 +16,67 @@ import requests
 from django.db.models import F
 import http.client
 import datetime
-from .models import Team, Player, Fixture, User, User_club, Lineup,One2one, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
+from .models import Team, Player,One2one, Fixture, User, User_club, Lineup,One2one, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
 # Create your views here.
 
 def one2one(request):
      return render(request, "fmx/one2one.html")
+
+def my_one2one(request):
+     return render(request, "fmx/my_one2one.html")
+
+def my_one2one(request):
+     club= User_club.objects.filter(user=request.user).first()
+     my_one2one=One2one.objects.filter(squad_1=club).all()
+     my_challenges=One2one.objects.filter(squad_2=club).all()
+     json_final =[]
+     for one2one in my_one2one:
+          json_tmp={}
+
+          json_tmp["braved"]="false" 
+          json_tmp["club_name"]=one2one.squad_2.name
+          json_tmp["status"]=one2one.status
+          json_tmp["bet"]=one2one.bet
+          json_tmp["time"]=one2one.timestamp
+
+          json_final.append(json_tmp) 
+     
+     for challenge in my_challenges:
+          json_tmp={}
+
+          json_tmp["braved"]="true" 
+          json_tmp["club_name"]=challenge.squad_1.name
+          json_tmp["status"]=challenge.status
+          json_tmp["bet"]=challenge.bet
+          json_tmp["time"]=challenge.timestamp
+
+          json_final.append(json_tmp) 
+
+     return JsonResponse(json_final, safe=False)
+
+
+def challenge(request, id):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     if request.method == "PUT":
+          data = json.loads(request.body)
+          bet = data.get("bet", "")
+          logger.info(f"bet: {bet} - data: {data} ")
+          club_challanger= User_club.objects.filter(user=request.user).first()
+          club_braved=User_club.objects.filter(id=id).first()
+          
+          one2one = One2one(squad_1=club_challanger ,squad_2=club_braved,bet=bet,status="pending" )
+          one2one.save()
+     return HttpResponseRedirect("/")
+     HttpResponse("ok")
 
 def get_one2one_teams(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      club_dets=Club_details.objects.exclude(user=request.user)
      club_dets=club_dets.order_by('-elo')
+     #recipient = User.objects.get(id=1) 
+     notify.send(request.user, recipient=request.user, verb='New contact us request')
      json_final =[]
      for club_det in club_dets:
           logger.info(club_det)

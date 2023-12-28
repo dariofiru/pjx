@@ -45,13 +45,15 @@ urlpatterns = [
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     
     path("one2one", one2one_views.one2one, name="one2one"),
+    path("my_one2one", one2one_views.my_one2one, name="my_one2one"),
     path("get_one2one_teams", one2one_views.get_one2one_teams, name="get_one2one_teams"),
+    path("challenge/<str:id>", one2one_views.challenge, name="challenge"),
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
-    path("register", views.register, name="register")
+    path("register", views.register, name="register"),
     
 
-   # path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('notifications/', include('notifications.urls', namespace='notifications')),
     
 ]
