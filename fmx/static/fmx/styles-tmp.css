@@ -473,3 +473,60 @@ p {
 .dropdown:hover .dropbtn { 
   background-color: #3e8e41; 
 } 
+
+
+/* diagonal line for results box */
+.team-vs {
+  background-color: #0d0f13;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-top: -90px;
+  position: relative;
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1); }
+  .team-vs .score {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 700;
+    z-index: 2;
+    letter-spacing: .2em; }
+    @media (max-width: 991.98px) {
+      .team-vs .score {
+        font-size: 2rem;
+        left: 50%; } }
+  .team-vs h3 {
+    font-size: 20px;
+    color: #fff;
+    font-weight: 900;
+    margin-bottom: 20px; }
+  .team-vs ul {
+    color: #fff; }
+  .team-vs .team-details {
+    position: relative;
+    z-index: 2; }
+    .team-vs .team-details img {
+      width: 90px; }
+  .team-vs .team-1, .team-vs .team-2 {
+    padding: 30px; }
+  .team-vs .team-2 {
+    position: relative; }
+    .team-vs .team-2:before {
+      position: absolute;
+      background: #f6d743;
+      background: #ee1e46;
+      content: "";
+      left: -12%;
+      right: 0;
+      top: 0;
+      width: 200%;
+      height: 200%;
+      -webkit-transform: skew(-15deg);
+      -ms-transform: skew(-15deg);
+      transform: skew(-15deg); }
+/* END diagonal line for results box */

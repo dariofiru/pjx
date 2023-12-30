@@ -341,7 +341,7 @@ class One2one(models.Model):
         )
     )
     def __str__(self) -> str:
-        return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
+        return f"{self.id}-{self.round_num}:  {self.squad_1} vs {self.squad_2} - {self.status}"
 
     def serialize(self):
         return {

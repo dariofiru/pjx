@@ -367,14 +367,6 @@ def get_fixture_ratings(request,id): #calculates  total score for each PLAYER in
 def lineup_scores(request, id): # calculates total point for each lineup/round
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx') 
-     # for row in Fixture_round.objects.all().reverse():
-     #      if Fixture_round.objects.filter(fixture=row.fixture,player=row.player).count() > 1:
-     #            row.delete()
-     # fixture=Fixture_round.objects.all()
-     # fixture.order_by("-player").all()
-     # return render(request, "fmx/register.html", {
-     #           "what1": fixture
-     #       })   
      lineups= Lineup.objects.filter(active=True).all() #to fix and test only active lineups
      fixtures= Fixture.objects.filter(round_num=id).all()
      x="--"
@@ -385,13 +377,11 @@ def lineup_scores(request, id): # calculates total point for each lineup/round
                     #Player.objects.filter(f"player_{x}"=f"player_{x}")
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_1).get()
-                        # x=x+"("+lineup.club+")"+fixture_player.player.name+"="+str(fixture_player.score)+">"+str(lineup.player_1.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_1.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_1.rating)
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
-                        # x=x+"("+lineup.club.name+")"+fixture_player.player.name+"="+str(fixture_player.score)+" >"+str(lineup.player_2.rating)
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_2.rating)
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_2.rating)

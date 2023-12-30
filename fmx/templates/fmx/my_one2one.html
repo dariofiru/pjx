@@ -10,46 +10,136 @@
 {% block body %}
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<div id="myModal-chll" class="modal overlay">
-
-  <!-- Modal content -->
-  <div class="modal-content overlay">
+<!-- Modal content wait for results when accept-->
+<div id="myModal-chall" class="modal overlay">
+  <div class="modal-content overlay" style="height:400px">
     <span class="close">&times;</span>
       <div class="row">
-        <div class="col">
-          
-          <div class="form-outline">
-            <input type="number" id="typeNumber" class="form-control" value="2"/>
-            <label class="form-label" for="typeNumber">Number input</label>
-        </div>
-      <div class="col text-center">
-         <span id="chall_text"></span> <br> 
-        <div id="braved" data-bravedid="0" style="display: none;"></div>
-        <button id="confirm_chall_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
-        <button id="cancel_btn" onclick="document.getElementById('myModal-chll').style.display='none'" 
-        type="button" class="btn btn-secondary p-2">Cancel</button>
+        <div class="col  text-center"><b>Congratulations on accepting the challange!</b>
+        <div class="content-main">
+        <div id="content-box-sell" class="content-box" style="display:block">
+          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <p id="headline-txt-sell">Enthusiastically leverage other's effective users via client-centric </p>
+        </div> 
+    </div>
+      <div class="col text-center"> 
+         <span id="chall_text">In a few moments you'll be able to view the one 2 one result.</span> 
+ <br>
+ <div id="spinner" style="display:block" class="spinner-border text-success text-center" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+        <button id="view_chall_btn" style="display:none" type="button" class="btn btn-success p-2 m-2">View result</button>
+        <button id="close_chall_btn" style="display:none" onclick="document.getElementById('myModal-chall').style.display='none'" type="button" class="btn btn-secondary p-2">Cancel</button>
       </div>
       </div>
     </div>
   </div>
 </div>
+<!-- end modal-->
+
+<!-- Modal content results-->
+<div id="myModal-result" class="modal overlay">
+  <div class="modal-content overlay" style="height:400px;width:600px;">
+    <span class="score">4-1</span>
 
 
- 
+    <div class="row border"><div class="col border text-center">
+      <img id="logo_1" src="#"  alt="Image" style="width:100px;border-radius: 50%;border:3px solid green"
+      class="img-fluid">
+       
+        
+        
+       
+     </div><div class="col border text-center">
+    
+       
+        <img id="logo_2" src="#" alt="Image" style="width:100px;border-radius: 50%;border:3px solid green" class="img-fluid">
+       
+         
+      </div>
+     <div class="row">
+      <div class="col border text-center"><h3 id="club_1"> </h3></div>
+      <div class="col border text-center"> <h3 id="club_2"> </h3></div>
+
+     </div>
+     <div class="row">
+      <div class="col border text-center"><h3 id="score_1"> </h3></div>
+      <div class="col border text-center"> <h3 id="score_2"> </h3></div>
+
+     </div>
+  </div></div>
+  </div>
+ </div>
+<!-- end modal results-->
 
     <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:800px">
       <div class="row"><div class="col"> <br>
-          
+           
       </div></div>
-      <div class="row w-50   ">One 2 one </div>
-      <div class=" col opacity-75 center    " style="  margin:30px;padding:0px;">
+      <div class="row w-50   "> </div>
+      <div class="row opacity-75 center  bg-light " style="  margin:40px;padding:0px;">
+      <div class=" col  center  bg-light rounded-2  " style=" border:3px solid green;  margin:10px;padding:0px;">
+        <div class="row"><div class="col text-black text-center"><b>Your Challenges</b></div></div>
+        <div class="row text-bg-secondary m-2 rounded-2"><div class="col   ms-3 mb-2">Status: 
+          <select id="challenge_status" class="form-select form-select-sm " aria-label="Default select example">
+            <option value="0" selected>All</option>
+            <option value="accepted">Accepted</option>
+            <option value="pending">Pending</option>
+            <option value="refused">Refused</option>
+             
+          </select>
+
+        </div>
         
-      <div id="challenge_box" class="container    rounded-2 text-center  " style="  margin:0px;padding:0px;">
+        <div class="col  me-3 mb-2">Order by:
+          <select id="challenge_order" class="form-select form-select-sm" aria-label="Default select example">
+            <option value="0" selected>---</option>
+            <option value="timestamp">Date</option>
+            <option value="bet">Bet</option> 
+          </select>
+
+        </div></div>
+        <div id="challenge_box" class="  bg-light  rounded-2   " style=" margin:0px;padding:0px;">
+      
+        <div id="challenge_header" class="row   m-3 text-black"  ><div class="col-4 "><b>Team</b></div>
+        <div class="col  "><b>Bet</b></div>
+      <div class="col  "><b>Status</b></div>
+    <div class="col  "> </div>
+  </div>
+  <div id="challenge_box_in"></div>
     </div>
   </div>
-       
-     
+  <div class=" col   center   bg-light   rounded-2  " style="border:3px solid green;  margin:10px;padding:0px;">
+    <div class="row"><div class="col text-black text-center"><b>Your one2one</b></div></div>
+    <div class="row text-bg-secondary m-2 rounded-2"><div class="col   ms-3 mb-2">Status: 
+      <select id="braved_status" class="form-select form-select-sm " aria-label="Default select example">
+        <option value="0" selected>All</option>
+        <option value="accepted">Accepted</option>
+        <option value="pending">Pending</option> 
+         
+      </select>
+
+    </div>
+    
+    <div class="col  me-3 mb-2">Order by:
+      <select id="braved_order" class="form-select form-select-sm" aria-label="Default select example">
+        <option value="0" selected>---</option>
+        <option value="timestamp">Date</option>
+        <option value="bet">Bet</option> 
+      </select>
+
+    </div></div>
+    <div id="braved_box" class="  bg-light  rounded-2   " style="  margin:0px;padding:0px;">
+      <div id="braved_header" class="row   m-3 text-black" ><div class="col-4"><b>Team</b></div><div class="col"><b>Bet</b></div>
+      <div class="col"><b>Status</b></div>
+    <div class="col"> </div>
+    
+  </div>
+  <div id="braved_box_in"></div>
+
+  </div>
+</div>
+</div>
 
       <script>
  

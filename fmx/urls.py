@@ -24,7 +24,7 @@ urlpatterns = [
     path("club_players", lineup_views.club_players, name="club_players"),
     path("lineup", lineup_views.lineup, name="lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
-    path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
+    #path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
     path("test_import_round", lineup_views.test_import_round, name="test_import_round"),
     path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
     
@@ -46,8 +46,11 @@ urlpatterns = [
     
     path("one2one", one2one_views.one2one, name="one2one"),
     path("my_one2one", one2one_views.my_one2one, name="my_one2one"),
+    path("my_one2one_data/<str:ch_stat>/<str:ch_order>/<str:br_stat>/<str:br_order>", one2one_views.my_one2one_data, name="my_one2one_data"),
     path("get_one2one_teams", one2one_views.get_one2one_teams, name="get_one2one_teams"),
     path("challenge/<str:id>", one2one_views.challenge, name="challenge"),
+    path("accept_challenge/<str:id>", one2one_views.accept_challenge, name="accept_challenge"),
+    path("get_one2one/<str:id>", one2one_views.get_one2one, name="get_one2one"),
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),

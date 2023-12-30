@@ -53,6 +53,7 @@ function get_matches(){
                     chall_btn.innerHTML="Challange"
                     chall_btn.dataset.clubid=matches[i].club_id
                     chall_btn.dataset.clubname=matches[i].club_name
+                    
                     chall_btn.addEventListener('click', event => {
                         var braved=document.getElementById("braved");
                         braved.dataset.bravedid=event.target.dataset.clubid
@@ -101,6 +102,8 @@ confirm_chall_btn.addEventListener('click', event => {
         return response.text()
     }).then(data => {
          console.log("here")    
+         var modal=document.getElementById("myModal-chll");
+         modal.style.display="none"
          alert("your challange has been delivered")
     }
     );
