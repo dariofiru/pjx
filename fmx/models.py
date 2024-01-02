@@ -115,7 +115,16 @@ class Fixture_round(models.Model):
    
     def __str__(self) -> str:
        return f"{self.fixture} - {self.player}: G: {self.goals} C: {self.conceded} - R: {self.redcard} - Y: {self.yellowcard}"
-
+    def serialize(self):
+        return {
+            "fixture": self.fixture.id,
+            "player": self.player.name,
+            "rating": self.rating,
+            "goals": self.goals,
+            "assists": self.assists,
+            "score": self.score
+        }
+    
     class Meta:
         unique_together = ('fixture', 'player')
 
@@ -140,6 +149,39 @@ class Fixture(models.Model):
             "home": self.home.id,
             "away": self.away.id,
             "round_num": self.round_num
+        }
+    
+class Tmp_lineup_score(models.Model):
+    match = models.PositiveIntegerField(blank=True,null=True, default=0)
+    lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_score")
+    club = models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="club_sc")
+    player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p", null=True)
+    score=models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
+    goals = models.PositiveIntegerField(blank=True,null=True, default=0)
+    assists = models.PositiveIntegerField(blank=True,null=True, default=0)
+    yellow = models.PositiveIntegerField(blank=True,null=True, default=0)
+    red = models.PositiveIntegerField(blank=True,null=True, default=0)
+    type = models.CharField(
+        max_length=12,
+        choices=(
+            ("one2one", "one2one"),
+            ("table", "table") 
+        )
+    )
+    def __str__(self) -> str:
+        return f"{self.id}: {self.lineup}: {self.player} - {self.score}"
+     
+    def serialize(self):
+        return {
+            "club": self.club.id,
+            "lineup": self.lineup.id,
+            "player": self.player.id,
+            "name": self.player.name,
+            "score": self.score,
+            "goals": self.goals,
+            "assists": self.assists,
+            "yellow": self.yellow,
+            "red": self.red
         }
     
 class Lineup(models.Model):
@@ -294,7 +336,7 @@ class User_club(models.Model):
             "attacker_3": self.attacker_3.id,
             "attacker_4": self.attacker_4.id#,
             # "initial_budget": self.initial_budget,
-            # "remaining_budget": self.remaining_budget,
+            #"remaining_budget": self.remaining_budget
             # "initial_account": self.initial_account,
             # "remaining_account": self.remaining_account,
             # "total_won": self.total_won,
@@ -357,5 +399,6 @@ class One2one(models.Model):
             "lineup_1_username": self.lineup_1.user.username,
             "lineup_2_username": self.lineup_2.user.username,
             "score_1": self.score_1,
-            "score_2": self.score_2
+            "score_2": self.score_2,
+            "bet": self.bet
         }

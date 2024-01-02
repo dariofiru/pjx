@@ -2,7 +2,10 @@
 {% load static %}
 {% load notifications_tags %}
 {% block script %}
+<script>
+ const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
 
+</script>
 
 {% endblock %}
 
@@ -10,6 +13,11 @@
 {% block body %}
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
+
+
+
 <!-- Modal content wait for results when accept-->
 <div id="myModal-chall" class="modal overlay">
   <div class="modal-content overlay" style="height:400px">
@@ -38,35 +46,52 @@
 <!-- end modal-->
 
 <!-- Modal content results-->
-<div id="myModal-result" class="modal overlay">
-  <div class="modal-content overlay" style="height:400px;width:600px;">
-    <span class="score">4-1</span>
+<div id="myModal-result" class=" modal  overlay modal-dialog-scrollable">
+  <div id="modal_box" class="modal-content overlay" style="height:500px;width:600px;">
+    <span class="close"  >&times;</span>
 
-
-    <div class="row border"><div class="col border text-center">
-      <img id="logo_1" src="#"  alt="Image" style="width:100px;border-radius: 50%;border:3px solid green"
+    <div class="modal-body pt-0 mt-1">
+      
+   
+    <div class="row  "><div class="col   text-center">
+      <img id="logo_1" src="#"  alt="Image" style="width:100px;border-radius: 50%;border:3px solid gray"
       class="img-fluid">
-       
-        
-        
-       
-     </div><div class="col border text-center">
-    
-       
-        <img id="logo_2" src="#" alt="Image" style="width:100px;border-radius: 50%;border:3px solid green" class="img-fluid">
-       
-         
+     </div><div class="col   text-center">
+        <img id="logo_2" src="#" alt="Image" style="width:100px;border-radius: 50%;border:3px solid gray" class="img-fluid">
+      </div>
       </div>
      <div class="row">
-      <div class="col border text-center"><h3 id="club_1"> </h3></div>
-      <div class="col border text-center"> <h3 id="club_2"> </h3></div>
+      <div class="col   text-center"><h3 id="club_1"> </h3></div>
+      <div class="col   text-center"> <h3 id="club_2"> </h3></div>
+     </div>
+     <div class="row">
+      <div class="col m-0   text-center"><h3  id="score_1"> </h3></div>
+      <div class="col m-0   text-center"> <h3 id="score_2"> </h3></div>
 
      </div>
      <div class="row">
-      <div class="col border text-center"><h3 id="score_1"> </h3></div>
-      <div class="col border text-center"> <h3 id="score_2"> </h3></div>
+       
+      <div class="col  m-0 text-center"> <h3 id="result_text"> </h3></div>
 
      </div>
+     <div class="row  m-2" style="text-align:center"><div class="col-12">
+      <button id="btn_stats" data-one2oneid="0"   type="button" class="btn btn-sm btn-outline-success">View stats</button> </div></div>
+      <div class="row   " style="text-align:center"><div class="col p-0 m-0"> 
+      <div id="stats"   style="text-align:left;font-size:12px"> </div>
+    </div>
+     <!-- <button id="close_result_btn" style="display:block" onclick="document.getElementById('myModal-result').style.display='none'" type="button" class="btn btn-secondary p-2 m-2">Close</button> -->
+   
+    </div>
+
+     <div class="modal-footer">
+      <div id="bet_data" class="container"></div>
+       <button id="close_result_btn" style="display:block"  type="button" class="btn btn-secondary p-2 m-2">Close</button>
+    </div>
+     
+
+
+
+
   </div></div>
   </div>
  </div>
@@ -79,7 +104,7 @@
       <div class="row w-50   "> </div>
       <div class="row opacity-75 center  bg-light " style="  margin:40px;padding:0px;">
       <div class=" col  center  bg-light rounded-2  " style=" border:3px solid green;  margin:10px;padding:0px;">
-        <div class="row"><div class="col text-black text-center"><b>Your Challenges</b></div></div>
+        <div class="row"><div class="col text-black text-center"><b>Challenges sent</b></div></div>
         <div class="row text-bg-secondary m-2 rounded-2"><div class="col   ms-3 mb-2">Status: 
           <select id="challenge_status" class="form-select form-select-sm " aria-label="Default select example">
             <option value="0" selected>All</option>
@@ -110,7 +135,7 @@
     </div>
   </div>
   <div class=" col   center   bg-light   rounded-2  " style="border:3px solid green;  margin:10px;padding:0px;">
-    <div class="row"><div class="col text-black text-center"><b>Your one2one</b></div></div>
+    <div class="row"><div class="col text-black text-center"><b>Challenges received</b></div></div>
     <div class="row text-bg-secondary m-2 rounded-2"><div class="col   ms-3 mb-2">Status: 
       <select id="braved_status" class="form-select form-select-sm " aria-label="Default select example">
         <option value="0" selected>All</option>
@@ -149,6 +174,7 @@
         // var initial_budget_str='{{ user.club_details.initial_budget  }}'
         // var  logo = '{{ user.club_details.logo  }}'
          var  club_name='{{ user.club_details.club  }}'
+        // var  club_id='{{ user.club_details.club.id }}'
         // var  initial_budget=Number(initial_budget_str)
         </script> 
         

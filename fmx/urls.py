@@ -51,6 +51,9 @@ urlpatterns = [
     path("challenge/<str:id>", one2one_views.challenge, name="challenge"),
     path("accept_challenge/<str:id>", one2one_views.accept_challenge, name="accept_challenge"),
     path("get_one2one/<str:id>", one2one_views.get_one2one, name="get_one2one"),
+    path("get_one2one_stats/<str:id>", one2one_views.get_one2one_stats, name="get_one2one_stats"),
+
+    
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
