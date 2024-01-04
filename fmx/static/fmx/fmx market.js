@@ -50,10 +50,10 @@ side_nav_close.addEventListener('click', event => {
 
 var budget_box=document.getElementById("budget");
 budget_box.innerHTML=`${initial_budget}`
-var logo_box=document.getElementById("logo");
-logo_box.src=`${logo}`
-var club_name_box=document.getElementById("club_name");
-club_name_box.innerHTML=`${club_name}`
+// var logo_box=document.getElementById("logo");
+// logo_box.src=`${logo}`
+// var club_name_box=document.getElementById("club_name");
+// club_name_box.innerHTML=`${club_name}`
 async function get_data(){
     let curr_budget=initial_budget
         fetch( `user_club/${user_id}`)
@@ -681,9 +681,9 @@ async function fetchPlayers(page, team, position, price, order) {
                     const player_name = document.createElement("div");
                     player_name.id=`player-${player[i].id}`
                     //player_name.setAttribute("id", player_fullname)
-                    player_name.setAttribute("idreal", player_id)
-                    player_name.setAttribute("draggable", "true")
-                    player_name.setAttribute("ondragstart", "drag(event)")
+                    // player_name.setAttribute("idreal", player_id)
+                    // player_name.setAttribute("draggable", "true")
+                    // player_name.setAttribute("ondragstart", "drag(event)")
                     player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                             
                     player_name.style.padding="0px"
@@ -716,11 +716,11 @@ async function fetchPlayers(page, team, position, price, order) {
                     const player_name_extra_info = document.createElement("div"); 
                     //player_name.classList.add('border-primary-subtle');
                     player_name_extra_info.classList.add('fs-6');
-                    player_name_extra_info.innerHTML=` <div class="row p-0"><div class="col-md-4 p-0">
-                    <img style="width:50px;" src="${player[i].photo}" ></div><div class="col-8 text-start">
+                    player_name_extra_info.innerHTML=` <div class="row m-0 p-0"><div class="col-md-4 m-0 p-0 ">
+                    <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" ></div><div class="col-8 m-0 p-0 lh-sm text-start">
                       ${player[i].position}<br>
                       $ ${player[i].value} <br>
-                   
+                         hello
                       </div></div>
                     `;
                     const player_img = document.createElement("img");

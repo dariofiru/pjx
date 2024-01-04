@@ -314,8 +314,8 @@
           width: 100px;
           height: 100px;
           background-color: #E9ECEF;
-          animation-name: anim_defender;
-          animation-duration: 1s;
+       /*    animation-name: anim_defender;
+          animation-duration: 1s; */
         }
         /* end animation defenders */
 

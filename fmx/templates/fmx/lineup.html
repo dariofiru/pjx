@@ -114,22 +114,22 @@
 
             <div class="container text-center">
               <!-- start search box-->
-              <div class="row   ">
+              <div class="row  text-bg-secondary m-2  pb-2 rounded-2 ">
                
-                 
-                  <div class="col-md-6 p-1 "> Position:
+                 <div class="col-1"></div>
+                  <div class="col-10    "> Position:
                     <select id="position_search"
-                      class="form-select form-select-sm"
+                      class="form-select form-select-sm  "
                       aria-label="Default select example">
                       <option value="0" selected>All</option>
-                      <option value="Goalkeeper">Goalkeepers</option>
+                      <option value="Goalkeeper" selected>Goalkeepers</option>
                       <option value="Defender">Defenders</option>
                       <option value="Midfielder">Midfielders</option>
                       <option value="Attacker">Attackers</option>
                     </select>
-
                   </div>
-                
+                  <div class="col-1"></div>
+
               </div>
               <!-- end search box-->
 
@@ -145,20 +145,20 @@
           </div>
           <div id="canvas_test" style="display:block;" class="col-8">
             <div   class="col-12 text-center   ">
-              <h1>lineup</h1>
-              Choose system of play:<br>
+              <h3>Lineup</h3>
+              <b>Choose system of play:</b><br>
               <div id="chosen_formation" style="display:none">0</div>
               <button id="352" type="button"
-                class="btn btn-success p-2 m-2 ps-4 pe-4"
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1"
                 data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="3 defenders,
                  5 midfielders,
                   2 attackers">352</button>   
                 <button id="532" type="button"
-                class="btn btn-success p-2 ps-4 pe-4 m-2">532</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">532</button>
                 <button id="442" type="button"
-                class="btn btn-success p-2 m-2 ps-4 pe-4">442</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">442</button>
                 <button id="433" type="button"
-                class="btn btn-success p-2 m-2 ps-4 pe-4">433</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">433</button>
               </div>
             <div class="container  text-center    "  >
               <div class="row  align-items-center   " >
@@ -227,9 +227,9 @@
 
             <div class="row    align-items-center p-2 " >
                            <div id="save_btn" class="col-6 "><button type="button"
-                class="btn btn-success">Save</button> </div> 
+                class="btn btn-lg btn-success">Save</button> </div> 
                           <div id="clear_btn" class="col-6  "><button type="button"
-                class="btn  btn-secondary">Clear</button> </div> 
+                class="btn btn-lg btn-secondary">Clear</button> </div> 
 
             </div>
             </div>
@@ -237,11 +237,11 @@
 
           </div>
 
-          <!--start of squad signing-->
+          <!--start of squad signing--><!--
           <div id="canvas_test" style="display:none;" class="col-8">
 
-            <!-- player positions start-->
-            <div class="container   border rounded-2 text-center "><!--internal-field-->
+             
+            <div class="container   border rounded-2 text-center "> 
 
               <div class="row w-100   ">
                 <div class="col">
@@ -412,7 +412,7 @@
             
             </div>
 
-          </div>
+          </div> -->
           <!-- player position end -->
           <div class="row">
 
@@ -455,9 +455,8 @@
                       <div
                         class="row m-3   border-success-subtle text-center border-white">
 
-                        <div id="sign_btn" class="col-6"><button type="button"
-                            class="btn btn-success">Sign</button> </div>
-
+                       
+                            <div id="close_nav_btn" class="col-12"><button type="button" class="btn btn-lg btn-secondary">Close</button> </div>
                       </div>
                       <!---end panel-->
 

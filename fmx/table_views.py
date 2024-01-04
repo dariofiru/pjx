@@ -20,6 +20,19 @@ from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_roun
 def table(request):
      return render(request, "fmx/table.html")
 
+def get_next_match(request):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     round = Round.objects.filter(next=True).values("round_num").first()
+     user_club = User_club.objects.filter(user=request.user).first() 
+     try:
+          home_played = Table.objects.filter(round_num=round["round_num"]+1, squad_1=user_club).get()
+     except Table.DoesNotExist:
+          home_played = Table.objects.filter(round_num=round["round_num"]+1, squad_2=user_club).get()
+     logger.info(f"{round} - {user_club} - {home_played}")
+     json_final=home_played.serialize()
+     return JsonResponse(json_final, safe=False)
+
 def get_table(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')

@@ -43,6 +43,8 @@ urlpatterns = [
     path("round_results", table_views.round_results, name="round_results"),
     path("create_table/<str:id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
+    path("get_next_match", table_views.get_next_match, name="get_next_match"),
+    
     
     path("one2one", one2one_views.one2one, name="one2one"),
     path("my_one2one", one2one_views.my_one2one, name="my_one2one"),

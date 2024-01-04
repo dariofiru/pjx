@@ -45,7 +45,7 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
         Defender_4_line.display="none" 
         Defender_5_line.display="block" 
         D_1.classList.add('lineup_defender', 'player-box-market')
-        D_2.classList.add('lineup_defender', 'player-box-market')
+        D_2.classList.add( 'lineup_defender','player-box-market')
         D_3.classList.add('lineup_defender', 'player-box-market')
         D_4.classList.add('lineup_defender', 'player-box-market')
         D_5.classList.add('lineup_defender', 'player-box-market')
@@ -478,14 +478,15 @@ async function fetchPlayers(page, team, position) {
                    // player_hidden_id.id=`player-${player[i].id}`
                     player_hidden_id.innerHTML=`${player[i].id}`
                     player_hidden_id.style.display="none";
-                    player_box.classList.add('border', 'rounded-3', 'player-details', 'bg-bs-light');
- 
+                    player_box.classList.add(  'rounded-3', 'player-details', 'bg-bs-light');
+                    player_box.style.border="1px solid black"        
                     const player_name = document.createElement("div");
+                     
                     player_name.id=`player-${player[i].id}`
                     //player_name.setAttribute("id", player_fullname)
-                    player_name.setAttribute("idreal", player_id)
-                    player_name.setAttribute("draggable", "true")
-                    player_name.setAttribute("ondragstart", "drag(event)")
+                    // player_name.setAttribute("idreal", player_id)
+                    // player_name.setAttribute("draggable", "true")
+                    // player_name.setAttribute("ondragstart", "drag(event)")
                     
                     //player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                     player_name.innerHTML=` <div class="row align-items-start">
@@ -496,7 +497,7 @@ async function fetchPlayers(page, team, position) {
                     <b style="color:black">${player[i].name}</b> <br>
                       ${player[i].position} 
                     </div> 
-                    <div id="add_box-${player[i].id}" class="col-md-3 text-center border">
+                    <div id="add_box-${player[i].id}" class="col-md-3 text-center  ">
                      
                     </div> 
                       </div>
@@ -505,7 +506,8 @@ async function fetchPlayers(page, team, position) {
                       
                     player_name.style.padding="4px"
                     //player_name.classList.add('player_name', 'text-primary-emphasis','bg-subtle','bs-info-bg-subtle')
-                    player_name.classList.add('player_name', 'text-primary-emphasis')
+                     
+                    player_name.classList.add('player_name', 'text-primary-emphasis','rounded-top-3')
                     //player_name.classList.add('bg-primary-subtle');
                      if (player[i].position ==="Attacker"){
                             player_name.classList.add( 'bg-success-subtle')    
@@ -525,6 +527,9 @@ async function fetchPlayers(page, team, position) {
                     player_img.style.border = "1px solid gray"
                
                         //// try offcanvas
+                        const player_stats = document.createElement("div");
+                    player_stats.classList.add('player_stats','fw-normal');
+                    player_stats.id='player_stats';
                         const show_det_nice = document.createElement("figure");
                         show_det_nice.classList.add('text-center');
                         //show_det_nice.innerHTML=`<button class="btn btn-sm' buy_btn btn-outline-success" id="${player[i].id}">ciao</button>`
@@ -550,15 +555,15 @@ async function fetchPlayers(page, team, position) {
                         //show_det_nice.append(show_details_btn);
                        // player_name_extra_info.append(show_details_btn)
                        // player_name.append(player_name_extra_info);
-                        player_name.append(show_details_btn);
-                       // player_stats.append(show_details_btn);
+                       // player_name.append(show_details_btn);
+                        player_stats.append(show_details_btn);
    
                         
                         //// end offcanvas
 
                     player_name.append(player_hidden_id)
                     player_box.append(player_name)
-                   //player_box.append(player_stats)
+                   player_box.append(player_stats)
                     //player_box.append(player_btn_div)
 
                     player_list.append(player_box)     
@@ -566,8 +571,9 @@ async function fetchPlayers(page, team, position) {
                     add_box=document.getElementById(`add_box-${player[i].id}`)
                     const add_lineup_btn = document.createElement("button");
                      
-                    add_lineup_btn.classList.add('btn', 'btn-sm',  'btn-dark', 'p-1', 'm-0')
-                    add_lineup_btn.innerHTML ="<span class=close > &plus;  </span>";  
+                    add_lineup_btn.classList.add('btn', 'btn-sm',  'btn-outline-dark','p-1',  'm-0')
+                    add_lineup_btn.innerHTML =`<span style="font-size:12px;color:black" class=close > Add 
+                    <span style="font-size:16px">&plus;</span>  </span>`;  
                     add_lineup_btn.id=`${player[i].id}`      
                     add_box.innerHTML=""
                     add_box.append(add_lineup_btn)        
