@@ -1,0 +1,75 @@
+{% extends "fmx/layout.html" %}
+{% load static %}
+{% block script %}
+ 
+ 
+
+{% endblock %}
+
+
+{% block body %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
+
+<div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:700px">
+      
+  <div class="row w-50 bs-success-bg-subtle  "> </div>
+
+  <div class=" col   opacity-75 center    " style="  margin:30px;padding:0px;">
+    
+    <div class="row">
+      {% if user.is_authenticated %}
+      <div class="col-6 ">
+        <div class="row ">
+          <div class="col m-1"> 
+            <div class="card border-success" style="width: 18rem;">
+               
+              <div class="card-body">
+                <h5 class="card-title">Best players</h5>
+                <p id="best_players" class="card-text m-0"> </p>
+                
+                 
+              </div>
+            </div> 
+          </div>
+          <div class="col m-1">
+            <div class="card border-success" style="width: 18rem;">
+               
+              <div class="card-body">
+                <h5 class="card-title">Top Scorers</h5>
+                <p id="top_scorers" class="card-text m-0"  ></p>
+                 
+                 
+              </div>
+            </div>
+          </div>
+        </div></div>
+         
+       
+      </div>
+      {% else %}
+      <div class="col-8 text-black"> click here to login</div>
+      {% endif %}
+    </div>
+
+
+
+
+
+
+
+   
+  
+ 
+
+</div>
+</div>
+
+ 
+
+<script>var user='{{ user.username }}'</script>  
+ <script src="{% static 'fmx/fmx stats.js' %}"></script>
+{% endblock %}
+
+

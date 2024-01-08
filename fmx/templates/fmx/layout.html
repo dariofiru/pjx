@@ -28,46 +28,54 @@
   
 
 <!--- test navbar -->
-<nav class="navbar  navbar-expand-lg bg-body-tertiary " >
+<nav class="navbar  navbar-expand-lg text-bg-success " >
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="{{ user.club_details.logo  }}" alt="Bootstrap" width="60" style="border-radius: 50%;padding:2px;padding-top:4px;border:1px solid black"></a>
+    <a class="navbar-brand" href="#"><img   src="{{ user.club_details.logo  }}" alt="Bootstrap" width="60" style="border-radius: 50%;padding:2px;padding-top:4px;border:1px solid black">
+       
+    </a>
+   
+   
     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+     
+
+
     <div class="navbar-collapse collapse" id="navbarSupportedContent" >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto  ">
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">{{ user.username }}<br>
+          <a class="nav-link active" aria-current="page" href="{% url 'index' %}">{{ user.username }}<br>
            {{ user.club  }}</a>
           
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'market' %}">My Squad</a>
+        <li class="nav-item ">
+          <a class="nav-link text-white" href="{% url 'market' %}">My Squad</a>
         </li>
         
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             My Lineups
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'lineup' %}">New Lineup</a></li>
+            <li><a class="dropdown-item " href="{% url 'lineup' %}">New Lineup</a></li>
             <li><a class="dropdown-item" href="{% url 'lineup' %}">Previous Lineups</a></li>
-            <li><hr class="dropdown-divider"></li>
+            
              
           </ul>
         </li>
          
         <li class="nav-item">
-          <a class="nav-link  " href="{% url 'match' %}">Results</a>
+          <a class="nav-link text-white " href="{% url 'match' %}">Results</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="{% url 'table' %}">Table</a>
+          <a class="nav-link text-white " href="{% url 'table' %}">Table</a>
         </li>
          
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             One-to-one
           </a>
           <ul class="dropdown-menu">
@@ -78,21 +86,32 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="{% url 'table' %}">My Stats</a>
+          <a class="nav-link text-white " href="{% url 'stats' %}">My Stats</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="{% url 'logout' %}">Log Out</a>
+          <a class="nav-link text-white " href="{% url 'logout' %}">Log Out</a>
       </li>
       <li id="countdown" class="nav-item nav-link text-white">
       </a></li>
-      
+      <li  >
+        <button id="run_round" type="button" class="btn btn-secondary">Run round</button>
+    </li>
+
+
+     
+      <div class="button_x">
+        <i class="fa-solid fa-futbol"></i>
+        <span class="button__badge">2</span>
+      </div>
        
+     
+     
         {% else %}
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'login' %}">Log In</a>
+            <a class="nav-link text-white" href="{% url 'login' %}">Log In</a>
         </li>
         <li  class="nav-item">
-            <a class="nav-link " href="{% url 'register' %}">Register</a>
+            <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
         </li>
     {% endif %}
   </ul>
@@ -103,47 +122,51 @@
 </nav>
 <!--- end test navbar-->
 
-<!---
-    <nav class="navbar navbar-expand-lg  " >
-        
-      
-        <div class="container-fluid">
-          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% if user.is_authenticated %}
-                <li class="nav-item text-white">
-                    <a class="nav-link text-white" href=" "><strong>{{ user.username }}</strong></a>
-                </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'market' %}">My Squad</a>
-            </li>
-            {% if user.is_authenticated %}
-           
-              <li class="nav-item">
-              <a class="navbar-brand" href="#">
-                <img src="{{ user.club_details.logo  }}" alt="Bootstrap" width="60" style="border-radius: 50%;border:1px solid black">
-              </a>
-            </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'login' %}">Log In</a>
-                </li>
-                <li  class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
-                </li>
-            {% endif %}
-          </ul>
-          </div>
-        </div>
-      </nav> 
-   -->    
         {% block body %}
         {% endblock %}
  <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+  
+  var start_round;
+function startcheckRound(url){
+        setInterval(async function(){
+          const response = await fetch(url);
+          const text = await response.text();
+          var start = JSON.parse(text);
+          start= start['round_num'] 
+          if(start>start_round){
+            console.log("New match available: "+start+"-"+start_round)
+            start_round=start
+          }
+          else{
+            console.log("still on round: "+start+"-"+start_round)
+          }   
+        }, 20000);     
+      }
+fetch(`get_start`)
+.then(response => response.text())
+.then(text => {
+var start = JSON.parse(text);
+// 2024-01-05T22:55:32.839Z
+start_round= start['round_num'] 
+    console.log(" =>" +start_round)
+    });
+//startcheckRound('get_start')
+
+
+var run_round=document.getElementById("run_round"); 
+run_round.addEventListener('click', function () {
+  fetch( `check_for_round_data`)
+        .then(response => response.text())
+        .then(text => {
+            console.log(text)
+            
+        });
+    });
+
+
+
 function countdown(){
  var table_box=document.getElementById("countdown"); 
     var current = new Date().getTime();
@@ -191,6 +214,7 @@ var x = setInterval(function() {
 }, 1000);
 }
        // setTimeout(function(){alert("Hello")},3000); 
+      });
       </script> 
 </body>
 </html>

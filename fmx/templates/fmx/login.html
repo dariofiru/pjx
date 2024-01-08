@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div class="container-fluid text-info     " style="background-image: url('static/fmx/bg_3.jpg');"> 
+<div class="container-fluid text-info   big_ball_img  " style="background-image: url('static/fmx/bg_3.jpg');height:600px"> 
 
     <div class=" col   center    " style="  margin: 0px;padding:0px;">
 
@@ -19,8 +19,8 @@
      
     <br><br>
     <div class="row  ">
-        <div class="col-2"></div>
-        <div class="col-4">
+        <div class="col-4"></div>
+        <div class="col-4 bg-light text-center rounded-2 p-4 m-4 opacity-75 text-black" style="border:4px solid green" >
             
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
@@ -30,9 +30,9 @@
                 <div class="form-group">
                     <input class="form-control" type="password" name="password" placeholder="Password">
                 </div><br>
-                <input class="btn btn-primary" type="submit" value="Login">
+                <input class="btn btn-success btn-lg" type="submit" value="Login">
             </form>
-                 
+                 <div class="div"><div class="row "><div class="col text-black"></div></div></div>
             Don't have an account? <a href="{% url 'register' %}">Register here.</a>
      
      

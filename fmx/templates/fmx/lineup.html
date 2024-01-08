@@ -47,25 +47,16 @@
         <div class="col">
          
       <div class="col text-center">
-        Congratulations, your lineup has been saved! <br>
-        You're have now officially entered the FMX League table, the next round will be in 10 minutes. <br>
+        Your lineup has been saved! <br>
+         <br>
         
-        <div class="progress progress-striped active"> 
-           
-      </div> 
-    
-      <script> 
-    
-          // Set the width to animate the progress bar 
-          // Along with time duration in milliseconds 
-          
-      </script> 
+         
       
         <br>
-        <button id="run_round_btn" type="button" class="btn btn-success p-2 m-3">Simulate round</button>
+         
         <button id="close_box_btn" 
         onclick="document.getElementById('Modal-saved-squad').style.display='none'"
-         type="button" class="btn btn-secondary p-2">Perfect! I can wait</button>
+         type="button" class="btn btn-secondary p-2">Close</button>
       </div>
       </div>
     </div>
@@ -104,17 +95,17 @@
 <div class="container-fluid text-info center   big_ball_img"
   style="background-image: url('static/fmx/bg_3.jpg');">
   <div class="row w-50 bs-success-bg-subtle  "></div>
-  <div class=" col opacity-75 center  " style="  margin:30px;padding:0px;">
+  <div class=" col opacity-75 center  " style=" margin:30px;padding:0px;">
     <div class="  text-black   ">
 
       <div class="container "
-        style="  margin:0px;padding:10px;">
-        <div class="row rounded-2  border   bg-light" >
+        style="   margin:0px;padding:10px;">
+        <div class="row rounded-2       bg-light" style=" border:1px solid black; ">
           <div class="col-4   bg-light">
 
             <div class="container text-center">
               <!-- start search box-->
-              <div class="row  text-bg-secondary m-2  pb-2 rounded-2 ">
+              <div class="row  text-bg-secondary m-2  pb-2 rounded-2 "  >
                
                  <div class="col-1"></div>
                   <div class="col-10    "> Position:
@@ -145,7 +136,10 @@
           </div>
           <div id="canvas_test" style="display:block;" class="col-8">
             <div   class="col-12 text-center   ">
-              <h3>Lineup</h3>
+              <h3>Lineup</h3> 
+
+              
+
               <b>Choose system of play:</b><br>
               <div id="chosen_formation" style="display:none">0</div>
               <button id="352" type="button"
@@ -159,7 +153,12 @@
                 class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">442</button>
                 <button id="433" type="button"
                 class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">433</button>
+
+                <button id="current_lineup" type="button" class="btn btn-sm btn-outline-dark  ">View   lineup</button>
               </div>
+
+              
+
             <div class="container  text-center    "  >
               <div class="row  align-items-center   " >
 
@@ -421,6 +420,14 @@
             </div>
             <div class="col-4 text-left border">
               <!------------>
+
+              
+
+
+
+
+
+
               <!---side panel with player details and sign button-->
               <div><div id="mySidenav" class="sidenav">
 

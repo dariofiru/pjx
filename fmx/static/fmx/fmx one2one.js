@@ -5,7 +5,7 @@ function Challange_box(){
 
 }
 function get_matches(){
-    console.log("try")
+    //console.log("try")
         fetch( `get_one2one_teams`)
         .then(response => response.text())
         .then(text => {

@@ -117,11 +117,11 @@ def accept_challenge(request, id):
      logger.info(f'fixture: {fixture} ')
      downloaded_fixture=Fixture_round.objects.filter(fixture=fixture).count()
      logger.info(f'downloaded_fixture: {downloaded_fixture} ')
-     if downloaded_fixture>0:
-          lineup_views.get_fixture_ratings(None, one2one.round_num) # calculate players score 
-     else:
-          lineup_views.calculate_round(None,one2one.round_num)
-          lineup_views.get_fixture_ratings(None, one2one.round_num) # calculate players score 
+     if downloaded_fixture==0:
+          lineup_views.calculate_round( one2one.round_num)
+          lineup_views.get_fixture_ratings( one2one.round_num) # calculate players score 
+          #lineup_scores(round)
+      
      score_1=one2one_scores(None, lineup_1, one2one, one2one.round_num)
      score_2=one2one_scores(None, lineup_2, one2one, one2one.round_num)
      One2one.objects.filter(id=one2one.id).update(score_1=score_1)
@@ -274,10 +274,10 @@ def get_one2one_stats(request,id):
      lineup_couple = []
      lineup_1= Lineup.objects.filter(active=True, club=one2one.squad_1).first()
      lineup_2= Lineup.objects.filter(active=True, club=one2one.squad_2).first()
-     lineup_couple.append(lineup_1)
-     lineup_couple.append(lineup_2)
+     lineup_couple.append(one2one.lineup_1)
+     lineup_couple.append(one2one.lineup_2)
      fixtures= Fixture.objects.filter(round_num=one2one.round_num).all()
-      
+     logger.info(f'lineup_couple: {lineup_couple} ')  
      json_final =[]
      for fixture in fixtures:
           for lineup in lineup_couple:
@@ -400,14 +400,15 @@ def get_one2one_stats(request,id):
                                                                'yellow': 0, 'red': 0} )
                     
      scores = Tmp_lineup_score.objects.filter(type="one2one", match=id).all()
+     tot_scores=Tmp_lineup_score.objects.filter(type="one2one", match=id).count()
      #### end stats
-      
+     logger.info(f'id: {id} tot_scores: {tot_scores} ')
      json_data=[]
      json_tmp={}
      for score in scores:
           json_tmp=score.serialize()
           json_data.append(json_tmp)
-     #logger.info(f'score: {scores} ')
+          logger.info(f'player: {score} ')
      
      #json_data.append(json_tmp)
      return JsonResponse(json_data, safe=False)

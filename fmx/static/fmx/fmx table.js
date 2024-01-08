@@ -2,24 +2,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function get_table(){
-        console.log("try")
             fetch( `get_table`)
             .then(response => response.text())
             .then(text => {
                 if(text==="empty"){
-    
                 }else{
-                    console.log(text)
+                    //console.log(text)
                     var squads = JSON.parse(text);
                     var table_box=document.getElementById("table_box");
                     for (var i in squads) {
-                       
-                        
                         var table_row = document.createElement('div')
                         var div1 =document.createElement('div')
                         var team =document.createElement('div')
                         var elo =document.createElement('div')
-
                         var away =document.createElement('div')
                         var home=document.createElement('div')
                         var total=document.createElement('div')
@@ -61,11 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        // table_row.append(div2)
                         
                         table_box.append(table_row)
-                        
-    
-                    }
-                    
-                    
+                    } 
                 }
             });
         }
@@ -73,10 +64,34 @@ document.addEventListener('DOMContentLoaded', function () {
     
     get_table()
 
-
+// var start_round;
+// function startcheckRound(url){
+//         setInterval(async function(){
+//           const response = await fetch(url);
+//           const text = await response.text();
+//           var start = JSON.parse(text);
+//           start= start['round_num'] 
+//           if(start>start_round){
+//             console.log("New match available: "+start+"-"+start_round)
+//             start_round=start
+//           }
+//           else{
+//             console.log("still on round: "+start+"-"+start_round)
+//           }   
+//         }, 20000);     
+//       }
+// fetch(`get_start`)
+// .then(response => response.text())
+// .then(text => {
+// var start = JSON.parse(text);
+// // 2024-01-05T22:55:32.839Z
+// start_round= start['round_num'] 
+//     console.log(" =>" +start_round)
+//     });
+// startcheckRound('get_start')
     
 
-    tst_btn.addEventListener('click', function () {
+tst_btn.addEventListener('click', function () {
         var countDownDate = new Date().getTime() + 600000;
         sessionStorage.setItem('countDownDate', countDownDate);
         countdown()

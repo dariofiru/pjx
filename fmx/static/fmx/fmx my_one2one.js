@@ -22,7 +22,10 @@ close_result_btn.addEventListener("click", function() {
     var modal_box= document.getElementById('modal_box')
         modal_box.style.height="500px"
         var stats= document.getElementById('stats')
-        stats.innerHTML=""
+        var col_team_1= document.getElementById('col_team_1')
+        var col_team_2= document.getElementById('col_team_2')
+        col_team_1.innerHTML=""
+        col_team_2.innerHTML=""
         stats.style.display='none'
         document.getElementById('myModal-result').style.display='none'
     
@@ -108,11 +111,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You lost ${result[0].bet}, current account: xx`
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
                                         }
                                     }else{
                                         score_1.style.color="green"
@@ -120,11 +123,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
                                         }
                                     }
                                     score_1.innerHTML=`${result[0].score_1}`
@@ -134,46 +137,65 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                       fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                                       .then(response => response.text())
                                       .then(text => {
-                                           
-                                          var box=document.getElementById("stats");
-                                           box.innerHTML=""
-                                           var row_header=  document.createElement('div')
-                                           row_header.classList.add('row', 'border', 'm-0','p-0',  'text-black' )
-                                           var col_1_header =  document.createElement('div')
-                                           col_1_header.classList.add('col-5','fw-bold',  'border',  'm-0','p-0',  'text-black')
-                                           var col_2_header =  document.createElement('div')
-                                           col_2_header.classList.add('col-1','fw-bold',  'border',   'p-0',  'text-black')
-                                           var col_3_header =  document.createElement('div')
-                                           col_3_header.classList.add('col-1', 'fw-bold', 'border',   'p-0',  'text-black')
-                                           var col_4_header =  document.createElement('div')
-                                           col_4_header.classList.add('col-2','fw-bold',  'border',     'text-black'  )
-                                           var col_5_header =  document.createElement('div')
-                                           col_5_header.classList.add('col-1','fw-bold',  'border',  'p-0',  'text-black')
-                                           var col_6_header =  document.createElement('div')
-                                           col_6_header.classList.add('col-1', 'fw-bold', 'border',  'p-0',  'text-black')
-                                          col_1_header.innerHTML="Player"
-                                          col_2_header.innerHTML="G"
-                                          col_3_header.innerHTML="A"
-                                          col_4_header.style.textAlign="center!important"
-                                          col_4_header.innerHTML="Score"  
-                                          col_5_header.innerHTML="RC"
-                                          col_6_header.innerHTML="YC" 
-                                          row_header.append(col_1_header)
-                                          row_header.append(col_2_header)
-                                          row_header.append(col_3_header)
-                                          row_header.append(col_5_header)
-                                          row_header.append(col_6_header)
-                                          row_header.append(col_4_header)
-                                          
-                                          var row_top=  document.createElement('div')
-                                          row_top.classList.add('row', 'border', 'm-0','p-0',  'text-black')
-                                          var col_team_1 =  document.createElement('div')
-                                          col_team_1.classList.add('col-md-6',  'border',  'm-0','p-0',  'text-black')
-                                          var col_team_2 =  document.createElement('div')
-                                          col_team_2.classList.add('col-md-6',  'border', 'm-0','p-0',   'text-black')
-                                          let row_header2 = row_header.cloneNode(true);
-                                          col_team_2.append(row_header)
-                                          col_team_1.append(row_header2)
+                                        document.getElementById('stats').style.display='none'
+                                        var col_team_1=document.getElementById("col_team_1");
+                                        var col_team_2=document.getElementById("col_team_2");
+                                        col_team_1.innerHTML=""
+                                        col_team_2.innerHTML=""
+                                        var row_top=  document.createElement('div')
+                                        row_top.classList.add('row', 'border', 'm-0','p-0',  'text-black')  
+                                        var row_top2=  document.createElement('div')
+                                        row_top2.classList.add('row', 'border', 'm-0','p-0',  'text-black')  
+                                        var col1 = document.createElement('div')
+                                        var col2 = document.createElement('div')
+                                        var col3 = document.createElement('div')
+                                        var col4 = document.createElement('div')
+                                        var col5 = document.createElement('div')
+                                        var col6 = document.createElement('div')
+                                        col1.classList.add('col-5', 'border', 'm-0','p-0',  'text-black')  
+                                        col2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col3.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col4.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col5.classList.add('col-1', 'border',  'p-0',  'text-black')
+                                        col6.classList.add('col-2',   'text-black')  
+                                        col1.innerHTML="Player"
+                                        col2.innerHTML="G"
+                                        col3.innerHTML="A"
+                                        col4.innerHTML="YC"
+                                        col5.innerHTML="RC"
+                                        col6.innerHTML="Score"
+                                        var col1_2 = document.createElement('div')
+                                        var col2_2 = document.createElement('div')
+                                        var col3_2 = document.createElement('div')
+                                        var col4_2 = document.createElement('div')
+                                        var col5_2 = document.createElement('div')
+                                        var col6_2 = document.createElement('div')
+                                        col1_2.classList.add('col-5', 'border', 'm-0','p-0',  'text-black')  
+                                        col2_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col3_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col4_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col5_2.classList.add('col-1', 'border',  'p-0',  'text-black')
+                                        col6_2.classList.add('col-2',   'text-black')  
+                                        col1_2.innerHTML="Player"
+                                        col2_2.innerHTML="G"
+                                        col3_2.innerHTML="A"
+                                        col4_2.innerHTML="YC"
+                                        col5_2.innerHTML="RC"
+                                        col6_2.innerHTML="Score"
+                                        row_top.append(col1)
+                                        row_top.append(col2)
+                                        row_top.append(col3)
+                                        row_top.append(col4)
+                                        row_top.append(col5)
+                                        row_top.append(col6)
+                                        col_team_1.append(row_top)
+                                        row_top2.append(col1_2)
+                                        row_top2.append(col2_2)
+                                        row_top2.append(col3_2)
+                                        row_top2.append(col4_2)
+                                        row_top2.append(col5_2)
+                                        row_top2.append(col6_2)
+                                        col_team_2.append(row_top2)   
                                           var players = JSON.parse(text);
                                               console.log(players)
                                               for (var i in players) {
@@ -215,11 +237,9 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                       //console.log(col_team_2.innerHTML)
                                                   }
                                               }
-                                              box.style.display='none'
-                                              row_top.append(col_team_1)
-          
-                                              row_top.append(col_team_2)
-                                              box.append(row_top)
+                                             // box.style.display='none'
+                                               
+           
                                       });
 
                             // END create stats
@@ -332,46 +352,65 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                             fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                             .then(response => response.text())
                             .then(text => {
-                                 
-                                var box=document.getElementById("stats");
-                                 box.innerHTML=""
-                                 var row_header=  document.createElement('div')
-                                 row_header.classList.add('row', 'border', 'm-0','p-0',  'text-black' )
-                                 var col_1_header =  document.createElement('div')
-                                 col_1_header.classList.add('col-5','fw-bold',  'border',  'm-0','p-0',  'text-black')
-                                 var col_2_header =  document.createElement('div')
-                                 col_2_header.classList.add('col-1','fw-bold',  'border',   'p-0',  'text-black')
-                                 var col_3_header =  document.createElement('div')
-                                 col_3_header.classList.add('col-1', 'fw-bold', 'border',   'p-0',  'text-black')
-                                 var col_4_header =  document.createElement('div')
-                                 col_4_header.classList.add('col-2','fw-bold',  'border',     'text-black'  )
-                                 var col_5_header =  document.createElement('div')
-                                 col_5_header.classList.add('col-1','fw-bold',  'border',  'p-0',  'text-black')
-                                 var col_6_header =  document.createElement('div')
-                                 col_6_header.classList.add('col-1', 'fw-bold', 'border',  'p-0',  'text-black')
-                                col_1_header.innerHTML="Player"
-                                col_2_header.innerHTML="G"
-                                col_3_header.innerHTML="A"
-                                col_4_header.style.textAlign="center!important"
-                                col_4_header.innerHTML="Score"  
-                                col_5_header.innerHTML="RC"
-                                col_6_header.innerHTML="YC" 
-                                row_header.append(col_1_header)
-                                row_header.append(col_2_header)
-                                row_header.append(col_3_header)
-                                row_header.append(col_5_header)
-                                row_header.append(col_6_header)
-                                row_header.append(col_4_header)
-                                
-                                var row_top=  document.createElement('div')
-                                row_top.classList.add('row', 'border', 'm-0','p-0',  'text-black')
-                                var col_team_1 =  document.createElement('div')
-                                col_team_1.classList.add('col-md-6',  'border',  'm-0','p-0',  'text-black')
-                                var col_team_2 =  document.createElement('div')
-                                col_team_2.classList.add('col-md-6',  'border', 'm-0','p-0',   'text-black')
-                                let row_header2 = row_header.cloneNode(true);
-                                col_team_2.append(row_header)
-                                col_team_1.append(row_header2)
+                                        document.getElementById('stats').style.display='none'
+                                        var col_team_1=document.getElementById("col_team_1");
+                                        var col_team_2=document.getElementById("col_team_2");
+                                        col_team_1.innerHTML=""
+                                        col_team_2.innerHTML=""
+                                        var row_top=  document.createElement('div')
+                                        row_top.classList.add('row', 'border', 'm-0','p-0',  'text-black')  
+                                        var row_top2=  document.createElement('div')
+                                        row_top2.classList.add('row', 'border', 'm-0','p-0',  'text-black')  
+                                        var col1 = document.createElement('div')
+                                        var col2 = document.createElement('div')
+                                        var col3 = document.createElement('div')
+                                        var col4 = document.createElement('div')
+                                        var col5 = document.createElement('div')
+                                        var col6 = document.createElement('div')
+                                        col1.classList.add('col-5', 'border', 'm-0','p-0',  'text-black')  
+                                        col2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col3.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col4.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col5.classList.add('col-1', 'border',  'p-0',  'text-black')
+                                        col6.classList.add('col-2',   'text-black')  
+                                        col1.innerHTML="Player"
+                                        col2.innerHTML="G"
+                                        col3.innerHTML="A"
+                                        col4.innerHTML="YC"
+                                        col5.innerHTML="RC"
+                                        col6.innerHTML="Score"
+                                        var col1_2 = document.createElement('div')
+                                        var col2_2 = document.createElement('div')
+                                        var col3_2 = document.createElement('div')
+                                        var col4_2 = document.createElement('div')
+                                        var col5_2 = document.createElement('div')
+                                        var col6_2 = document.createElement('div')
+                                        col1_2.classList.add('col-5', 'border', 'm-0','p-0',  'text-black')  
+                                        col2_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col3_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col4_2.classList.add('col-1', 'border',  'p-0',  'text-black')  
+                                        col5_2.classList.add('col-1', 'border',  'p-0',  'text-black')
+                                        col6_2.classList.add('col-2',   'text-black')  
+                                        col1_2.innerHTML="Player"
+                                        col2_2.innerHTML="G"
+                                        col3_2.innerHTML="A"
+                                        col4_2.innerHTML="YC"
+                                        col5_2.innerHTML="RC"
+                                        col6_2.innerHTML="Score"
+                                        row_top.append(col1)
+                                        row_top.append(col2)
+                                        row_top.append(col3)
+                                        row_top.append(col4)
+                                        row_top.append(col5)
+                                        row_top.append(col6)
+                                        col_team_1.append(row_top)
+                                        row_top2.append(col1_2)
+                                        row_top2.append(col2_2)
+                                        row_top2.append(col3_2)
+                                        row_top2.append(col4_2)
+                                        row_top2.append(col5_2)
+                                        row_top2.append(col6_2)
+                                        col_team_2.append(row_top2)   
                                 var players = JSON.parse(text);
                                     console.log(players)
                                     for (var i in players) {
@@ -413,11 +452,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                             //console.log(col_team_2.innerHTML)
                                         }
                                     }
-                                    box.style.display='none'
-                                    row_top.append(col_team_1)
+                                    //box.style.display='none'
+                                    //row_top.append(col_team_1)
 
-                                    row_top.append(col_team_2)
-                                    box.append(row_top)
+                                    //row_top.append(col_team_2)
+                                    //box.append(row_top)
                             });
 
                             // END create stats

@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
+    'apscheduler',
+    'django_apscheduler',
     'notifications',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -55,6 +57,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mockup.urls'
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+ 
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

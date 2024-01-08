@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from . import views, market_views, lineup_views, table_views, one2one_views
+from . import views, market_views, lineup_views, table_views, one2one_views, stats_views
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -23,15 +23,16 @@ urlpatterns = [
     
     path("club_players", lineup_views.club_players, name="club_players"),
     path("lineup", lineup_views.lineup, name="lineup"),
+    path("get_lineup", lineup_views.get_lineup, name="get_lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     #path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
     path("test_import_round", lineup_views.test_import_round, name="test_import_round"),
-    path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
+    #path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
     
 
     
-    path("get_fixture_ratings/<str:id>", lineup_views.get_fixture_ratings, name="get_fixture_ratings"),# calc players rating for fixture
-    path("lineup_scores/<str:id>", lineup_views.lineup_scores, name="lineup_scores"), #sums player rating per lineup
+    #path("get_fixture_ratings/<str:id>", lineup_views.get_fixture_ratings, name="get_fixture_ratings"),# calc players rating for fixture
+    #path("lineup_scores/<str:id>", lineup_views.lineup_scores, name="lineup_scores"), #sums player rating per lineup
     
 
     path("user_club/<str:id>", market_views.user_club, name="user_club"),
@@ -44,7 +45,8 @@ urlpatterns = [
     path("create_table/<str:id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     path("get_next_match", table_views.get_next_match, name="get_next_match"),
-    
+   # path("schedule_match", table_views.schedule_match, name="schedule_match"), # test cron
+    path("get_start", table_views.get_start, name="get_start"), # test cron
     
     path("one2one", one2one_views.one2one, name="one2one"),
     path("my_one2one", one2one_views.my_one2one, name="my_one2one"),
@@ -55,7 +57,10 @@ urlpatterns = [
     path("get_one2one/<str:id>", one2one_views.get_one2one, name="get_one2one"),
     path("get_one2one_stats/<str:id>", one2one_views.get_one2one_stats, name="get_one2one_stats"),
 
-    
+    path("stats", stats_views.stats, name="stats"),
+    path("stats_player_ranking", stats_views.stats_player_ranking, name="stats_player_ranking"),
+    path("stats_goalscores", stats_views.stats_goalscores, name="stats_goalscores"),
+     
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),

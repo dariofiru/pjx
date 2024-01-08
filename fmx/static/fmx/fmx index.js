@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(text => {
                 if(text==="empty"){
                 }else{
-                    console.log(text)
+                    //console.log(text)
                     var squads = JSON.parse(text);
                     var next_match=document.getElementById("next_match");
                     next_match.innerHTML=`${squads["lineup_1_name"]} vs ${squads["lineup_2_name"]}`        
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(text => {
                 if(text==="empty"){
                 }else{
-                    console.log(text)
+                    //console.log(text)
                     var squads = JSON.parse(text);
                     var table_box=document.getElementById("table_box");
                     for (var i in squads) {

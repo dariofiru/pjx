@@ -533,7 +533,8 @@ save_btn.addEventListener("click", function() {
     }).then(response=>response.text())
     .then(data=>{ console.log("hello "+data); 
     document.getElementById('Modal-saved-squad').style.display='block'
-    console.log("Modal?") })
+    //console.log("Modal?")
+ })
     
     //console.log(JSON.stringify(jsonSquad))
 });
@@ -657,7 +658,7 @@ async function fetchPlayers(page, team, position, price, order) {
                 const player_list= document.getElementById('player-list')
                 player_list.innerHTML=""
                 for (var i in player) {
-                    console.log(player[i].in_squad)
+                    //console.log(player[i].in_squad)
                     let player_id=player[i].id;
                     let player_value=player[i].value;
                     let player_position = player[i].position
@@ -810,7 +811,7 @@ function get_club_details( ){
     fetch(`players/${page}/${team}/${position}`  )
             .then(response => response.text())
             .then(text => {
-                 console.log(" =>" +text)
+                 //console.log(" =>" +text)
                 });
             }
 

@@ -12,14 +12,14 @@
  
 
 
-<div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:600px">
+<div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:700px">
       
   <div class="row w-50 bs-success-bg-subtle  "> </div>
 
   <div class=" col   opacity-75 center    " style="  margin:30px;padding:0px;">
     
     <div class="row">
-
+      {% if user.is_authenticated %}
       <div class="col-4 ">
         <div class="row ">
           <div class="col m-2"> 
@@ -68,10 +68,10 @@
             </div>
           </div>
         </div></div>
-      
+        
       <div class="col-4   ">
         <div class="row    ">
-          <div class="col-md-10 offset-md-1" >
+          <div class="col-md-11 offset-md-1" >
             <div class="row">
               <div class="card text-center text-bg-success mb-2 mt-0 pt-0" style="border:3px solid black;max-width: 22rem;max-height:6rem;">
                 <div class="card-header pt-1 ">Next round</div>
@@ -99,7 +99,9 @@
         </div>
       </div>
       </div>
-
+      {% else %}
+      <div class="col-8 text-black"> click here to login</div>
+      {% endif %}
     </div>
 
 

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models 
+import logging
 
 # Create your models here.
 class User(AbstractUser):
@@ -25,9 +26,20 @@ class Club_details(models.Model):
 
     def serialize(self):
         return {
-            "logo": self.logo
+            "logo": self.logo 
         }
 
+class Starter(models.Model):
+    start =  models.DateTimeField(auto_now_add=True)
+    round_num = models.PositiveIntegerField(blank=True,null=True)
+    def __str__(self) -> str:
+        return f"start: {self.start} -  {self.round_num} "
+
+    def serialize(self):
+        return {
+            "start": self.start
+        }
+    
 class Team(models.Model):
     id = models.PositiveIntegerField(primary_key = True)
     name = models.TextField(blank=False)
@@ -206,6 +218,22 @@ class Lineup(models.Model):
     def __str__(self) -> str:
         return f" {self.id}: {self.active}- {self.user.username}"
     
+    def serialize(self):
+        return {
+            "id": self.id,
+            "player_1": self.player_1.name,
+            "player_2": self.player_2.name,
+            "player_3": self.player_3.name,
+            "player_4": self.player_4.name,
+            "player_5": self.player_5.name,
+            "player_6": self.player_6.name,
+            "player_7": self.player_7.name,
+            "player_8": self.player_8.name,
+            "player_9": self.player_9.name,
+            "player_10": self.player_10.name,
+            "player_11": self.player_11.name
+        }
+
 class Lineup_round(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users_lineup_round")
     lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup")
@@ -248,8 +276,9 @@ class Table(models.Model):
 class Round(models.Model):
     round_num = models.PositiveIntegerField(blank=False,null=False)
     next=models.BooleanField(default=False)
+    current=models.BooleanField(default=False)
     def __str__(self) -> str:
-        return f"{self.round_num}:  {self.next}"
+        return f"{self.round_num}:{self.current}  {self.next}"
 
 class User_club(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users")
@@ -312,7 +341,7 @@ class User_club(models.Model):
         return player_list
 
     def __str__(self) -> str:
-        return f"{self.user}"
+        return f"{self.name}"
     
     def serialize(self):
         return {
@@ -402,3 +431,7 @@ class One2one(models.Model):
             "score_2": self.score_2,
             "bet": self.bet
         }
+    
+
+
+ 

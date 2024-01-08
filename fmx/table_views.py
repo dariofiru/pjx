@@ -14,11 +14,30 @@ import json
 import requests
 from django.db.models import F
 import http.client
+from schedule import every, repeat, run_pending
 import datetime
-from .models import Team, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
+import time
+from .models import Team, Starter, Player, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
 # Create your views here.
 def table(request):
      return render(request, "fmx/table.html")
+
+
+def get_start(request):
+     starter = Starter.objects.first()
+     return JsonResponse({"start" : starter.start, "round_num" : starter.round_num }, safe=False)
+ 
+# def schedule_match():
+#      logging.basicConfig(level=logging.INFO)
+#      logger = logging.getLogger('fmx')
+#      current_time = datetime.datetime.now()
+#      logger.info(f"scheduler: {current_time}")
+      
+# while True:
+#     run_pending()
+#     time.sleep(1)
+     # json = {"time": current_time}
+      #return JsonResponse(json, safe=False)
 
 def get_next_match(request):
      logging.basicConfig(level=logging.INFO)
@@ -26,9 +45,9 @@ def get_next_match(request):
      round = Round.objects.filter(next=True).values("round_num").first()
      user_club = User_club.objects.filter(user=request.user).first() 
      try:
-          home_played = Table.objects.filter(round_num=round["round_num"]+1, squad_1=user_club).get()
+          home_played = Table.objects.filter(round_num=round["round_num"], squad_1=user_club).get()
      except Table.DoesNotExist:
-          home_played = Table.objects.filter(round_num=round["round_num"]+1, squad_2=user_club).get()
+          home_played = Table.objects.filter(round_num=round["round_num"], squad_2=user_club).get()
      logger.info(f"{round} - {user_club} - {home_played}")
      json_final=home_played.serialize()
      return JsonResponse(json_final, safe=False)
@@ -44,19 +63,19 @@ def get_table(request):
           try:
                club= User_club.objects.filter(user=club_det.user).get()
                json_tmp=club.serialize()
-               round = Round.objects.filter(next=True).values("round_num").first()
+               round = Round.objects.filter(current=True).values("round_num").first()
                home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
                home_won=0
                if home_played>0:
-                    home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2')).count()
+                    home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2'), squad_1=club).count()
                
                away_played = Table.objects.filter(round_num__lte=round["round_num"], squad_2=club).count()
                away_won=0
                if away_played>0:
-                    away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1')).count()
+                    away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1'), squad_2=club).count()
                
                total_played = home_played+away_played
-               logger.info(f"{club.name} - {home_played} - {home_won}")
+               #logger.info(f"{club.name} - {home_played} - {home_won}")
                json_tmp=club.serialize() 
                json_tmp["elo"]=club_det.elo
                json_tmp["home_played"]=home_played
@@ -74,9 +93,9 @@ def get_table(request):
 def round_results(request): # returns winner/looser for each round and updates ELO TOFIX
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
-        round = Round.objects.filter(next=True).values("round_num").first() # retrieve round number 
+        round = Round.objects.filter(current=True).values("round_num").first() # retrieve round number 
         games = Table.objects.filter(round_num=round["round_num"]).all() # retrieve all the matches in round
-        
+        #logger.info(f"round: {round}")
         json_final =[]
         for game in games: # retrive lineup scores, user and team data
             logger.info(game)
@@ -84,57 +103,27 @@ def round_results(request): # returns winner/looser for each round and updates E
                  lineup_1 = Lineup.objects.filter(id=game.lineup_1.id).values("score")
                  user_1 = Lineup.objects.filter(id=game.lineup_1.id).values("user")
                  score_1=lineup_1[0]['score']
-                 
-                 Table.objects.filter(pk=game.id).update(score_1=score_1)
             except Team.DoesNotExist:
                  pass
-            logger.info(f"{lineup_1} - {score_1}")
+            #logger.info(f"{lineup_1} - {score_1}")
 
             try:
                  lineup_2 = Lineup.objects.filter(id=game.lineup_2.id).values("score")
                  user_2 = Lineup.objects.filter(id=game.lineup_2.id).values("user")
-                  
                  score_2=lineup_2[0]['score']
-                 Table.objects.filter(pk=game.id).update(score_2=lineup_2)
             except Team.DoesNotExist:
                  pass
                
-            elo_1 = Club_details.objects.filter(user__in=user_1).values('elo').first()
-            
-            elo_2 = Club_details.objects.filter(user__in=user_2).values('elo').first()
-            logger.info(f"{elo_1} - {elo_2}")     
-            if score_1>=score_2:
-                  new_elos = elo_value(elo_1['elo'], elo_2['elo'])
-                  new_elo_1=new_elos[0]
-                  new_elo_2=new_elos[1]
-            else:
-                  new_elos = elo_value(elo_2['elo'], elo_1['elo'])
-                  new_elo_2=new_elos[0]
-                  new_elo_1=new_elos[1]
-            probability=new_elos[2]
-            
-            Club_details.objects.filter(user__in=user_1).update(elo=new_elo_1)
-            Club_details.objects.filter(user__in=user_2).update(elo=new_elo_2)
-            #return render(request, "fmx/register.html", {"what1": elo_1 , "what2":new_elo_1 }) 
             img1 = Club_details.objects.filter(user__in=user_1).values('logo').first()
             img2 = Club_details.objects.filter(user__in=user_2).values('logo').first()
             json_tmp=game.serialize() 
             json_tmp["img_1"]=img1['logo']
             json_tmp["img_2"]=img2['logo']
-
-            json_tmp["elo_1"]=elo_1['elo']
-            json_tmp["elo_2"]=elo_2['elo']
             json_tmp["score_1"]=score_1
             json_tmp["score_2"]=score_2
-
-            json_tmp["new_elo_1"]=new_elo_1
-            json_tmp["new_elo_2"]=new_elo_2
-            json_tmp["probability"]=probability
             json_final.append(json_tmp) 
         return JsonResponse(json_final, safe=False)
-           # return render(request, "fmx/register.html", {
-            #    "what1": lineup_1 , "what2":lineup_2
-           #  })  
+           
 
 def elo_value(elo_1, elo_2):
      difference = abs(elo_1-elo_2)
@@ -256,7 +245,7 @@ def new_team_in_table(request, id):
      return HttpResponse(json.dumps({"x":"x", "y":"y"}), content_type="application/json")
      
 # insert squad, then insert lineup.
-# latest lineup becomes active and added to Table TODO
+# latest lineup becomes active and added to Table 
 # when round runs, all players in a lineup gets its score (get_fixture_ratings) 
 # and the score for each lineup is calculated (lineup_scores) 
 # when round_results is called the winner of each match is calculated and the elo is updated

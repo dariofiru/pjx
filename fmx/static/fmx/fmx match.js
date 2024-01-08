@@ -2,45 +2,73 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function get_matches(){
-    console.log("try")
+   // console.log("try")
         fetch( `round_results`)
         .then(response => response.text())
         .then(text => {
-            console.log(text)
+            //console.log(text)
             if(text==="empty"){
 
             }else{
-                console.log(text)
+                //console.log(text)
                 var matches = JSON.parse(text);
                 var table_box=document.getElementById("table_box");
                 for (var i in matches) {
                    
                     
-                    var table_row = document.createElement('tr')
-                    //table_row.classList.add('row',    'bg-light')
-                    var div1 =document.createElement('td')
-                    var home_team =document.createElement('td')
-                    var away_team =document.createElement('td')
-                    var home_score=document.createElement('td')
-                    var away_score=document.createElement('td')
-                    var div2 =document.createElement('td')
+                    var table_row = document.createElement('row')
+                    table_row.classList.add('row',    'bg-light')
+                    var div1 =document.createElement('div')
+                    var home_team =document.createElement('div')
+                    var away_team =document.createElement('div')
+                    var home_score=document.createElement('div')
+                    var away_score=document.createElement('div')
+                    var div2 =document.createElement('div')
                     home_team.classList.add('text-end')
-/*                     table_row.classList.add('row',    'bg-light')
+                    table_row.classList.add('row',    'bg-light')
                     table_row.style.margin="10px"
-                    home_team.classList.add('col-3', 'text-end', 'text-black')
-                    away_team.classList.add('col-3', 'text-start', 'text-black')
+                    home_team.classList.add('col-2', 'text-end' )
+                    away_team.classList.add('col-2', 'text-start' )
                     home_score.classList.add('col-1')
                     away_score.classList.add('col-1')
-                    div1.classList.add('col-2')
-                    div2.classList.add('col-2') */
+                    div1.classList.add('col-3')
+                    div2.classList.add('col-3', 'text-start' ) 
                     home_team.innerHTML=matches[i].lineup_1_name;
                     away_team.innerHTML=matches[i].lineup_2_name;
                     home_score.innerHTML=matches[i].score_1;
                     away_score.innerHTML=matches[i].score_2;
+                    if(Number(matches[i].score_1)>=Number(matches[i].score_2)){
+                        home_team.classList.add('text-success', 'fw-bold')
+                        away_team.classList.add('text-danger', 'fw-bold')
+                        home_score.classList.add('text-success', 'fw-bold')
+                        away_score.classList.add('text-danger', 'fw-bold')
+                    }else{
+                        home_team.classList.add('text-danger', 'fw-bold')
+                        away_team.classList.add('text-success', 'fw-bold')
+                        home_score.classList.add('text-danger', 'fw-bold')
+                        away_score.classList.add('text-success', 'fw-bold')
+                    }
+
                     if (matches[i].lineup_1_name===club_name){
-                        home_team.style.fontWeight="bold"
+                        home_team.classList.add('border','bg-success-subtle')
+                        away_team.classList.add('border','bg-success-subtle')
+                        home_score.classList.add('border','bg-success-subtle')
+                        away_score.classList.add('border','bg-success-subtle')
+                        var stats_btn =document.createElement('button')
+                        stats_btn.classList.add('btn', 'btn-sm',  'btn-outline-success')
+                        stats_btn.innerHTML="View Stats"
+                        stats_btn.dataset.matchid=matches[i].id
+                        div2.append(stats_btn)
+
                     }else if (matches[i].lineup_2_name===club_name){
-                        away_team.style.fontWeight="bold"
+                        home_team.classList.add('border','bg-success-subtle')
+                        away_team.classList.add('border','bg-success-subtle')
+                        home_score.classList.add('border','bg-success-subtle')
+                        away_score.classList.add('border','bg-success-subtle')
+                        var stats_btn =document.createElement('button')
+                        stats_btn.classList.add('btn','btn-sm',  'btn-outline-success' )
+                        stats_btn.innerHTML="View Stats"
+                        div2.append(stats_btn)
                     }
                     table_row.append(div1)
                     table_row.append(home_team)

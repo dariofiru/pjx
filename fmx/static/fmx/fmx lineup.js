@@ -74,7 +74,7 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
         A_1.classList.add('lineup_attacker', 'player-box-market')
         A_2.classList.add('lineup_attacker', 'player-box-market')
 
-        console.log('before');
+        //console.log('before');
     setTimeout(function(){
         G_1.innerHTML="Goalkeeper 1"
         D_1.innerHTML="Defender 1"
@@ -297,8 +297,58 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
     },2000);
         
     });
- 
+    
+function get_lineup(){
+        fetch( `get_lineup`)
+        .then(response => response.text())
+        .then(text => {
+            if(text==="empty"){
+                const current_lineup=document.getElementById("current_lineup")
+                current_lineup.style.display='none';
+                console.log("none")
 
+            }else{
+                const current_lineup=document.getElementById("current_lineup") 
+                current_lineup.style.display='block';
+                var lineup = JSON.parse(text);
+                console.log(text)
+                for (var i in lineup) {
+                     let player_name_1=lineup[0]["player_1"]
+                     let player_name_2=lineup[0]["player_2"]
+                     let player_name_3=lineup[0]["player_3"]
+                     let player_name_4=lineup[0]["player_4"]
+                     let player_name_5=lineup[0]["player_5"]
+                     let player_name_6=lineup[0]["player_6"]
+                     let player_name_7=lineup[0]["player_7"]
+                     let player_name_8=lineup[0]["player_8"]
+                     let player_name_9=lineup[0]["player_9"]
+                     let player_name_10=lineup[0]["player_10"]
+                     let player_name_11=lineup[0]["player_11"]
+                     console.log(player_name_1)
+                }
+                
+                
+            }
+        });
+    }
+
+    get_lineup()    
+
+// const current_lineup=document.getElementById("current_lineup")
+// current_lineup.addEventListener('click', event => {
+//     const side_nav=document.getElementById("mySidenavLineup");
+//     document.getElementById("mySidenavLineup").style.width = "0";
+
+//     if(side_nav.style.width==="0px"){
+        
+//         document.getElementById("mySidenavLineup").style.width = "340px";
+//     }
+//     else{
+//         document.getElementById("mySidenavLineup").style.width = "0";
+//     }  
+
+
+// }); 
 
 const side_nav_close=document.getElementById("mySidenav"); 
 side_nav_close.addEventListener('click', event => {
@@ -383,17 +433,17 @@ save_btn.addEventListener("click", function() {
             squad_name: club_name
         })
     }).then(response=>response.text())
-    .then(data=>{ console.log("hello "+data); 
+    .then(data=>{  
     document.getElementById('Modal-saved-squad').style.display='block'
      
     })
 
-    //console.log(JSON.stringify(jsonSquad))
+     
 });
-const run_round_btn=document.getElementById("run_round_btn");
-run_round_btn.addEventListener("click", function() {
-    console.log("run round!")
- });
+// const run_round_btn=document.getElementById("run_round_btn");
+// run_round_btn.addEventListener("click", function() {
+//     console.log("run round!")
+//  });
 
     
 async function get_player_details(id){
@@ -437,11 +487,10 @@ async function get_player_details(id){
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
             Assists: ${player_data[i].assists}<br></span>`;
-            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
-            Assists: ${player_data[i].assists}<br></span>`;
-            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="https://banner2.cleanpng.com/20180325/vdw/kisspng-penalty-card-yellow-card-association-football-refe-sim-cards-5ab74207cf9f95.5798399315219594318504.jpg"
+             
+            stat_player_2.innerHTML=`<span style="font-size:14px"><img src="static/fmx/yellowcard.jpg"
             width=15px>: ${player_data[i].yellowcard}<br> 
-            <img src="https://png2.cleanpng.com/sh/fd5049e50e3d24a2343c26b68ce164bc/L0KzQYm3U8I5N6Zuj5H0aYP2gLBuTgBmdpJxjOs2Y3H1dH7okCNwa5pmjNt4bj3pf7F7gvFtdF53fdhucnXoPcHzgglmel5oeeRtLUXkcrO6UsFnQGc2SNM6Lka6QoWCVsIyOWY3SqQ6N0WzQ4a7WcEveJ9s/kisspng-penalty-card-association-football-referee-player-card-5abb321f8610a1.6724962115222175035491.png"
+            <img src="static/fmx/redcard.jpg"
             width=15px>:
              ${player_data[i].redcard}<br>
             Pen won:${player_data[i].penaltywon}<br></span>`; 
@@ -594,7 +643,7 @@ async function fetchPlayers(page, team, position) {
         
 
 function add_player_to_lineup(player_id,player_position, player_fullname, player_photo) { 
-    console.log(player_id+" "+player_position+" "+player_fullname+" "+player_photo)
+    //console.log(player_id+" "+player_position+" "+player_fullname+" "+player_photo)
     if (player_position==='Goalkeeper'){
     const position_slot=document.getElementById("Goalkeeper-1")
     position_slot.classList.remove("bg-danger-subtle")
@@ -620,7 +669,7 @@ function add_player_to_lineup(player_id,player_position, player_fullname, player
          line = Number(chosen_formation.innerHTML[2]);
         }
 
-    console.log(line+ "" + player_position)
+    //console.log(line+ "" + player_position)
         for(let i = 1; i<=line; i++){
             const box=document.getElementById(`${player_position}-${i}-${line}`);
             if (box.innerHTML.includes(player_position)){
@@ -649,7 +698,7 @@ function get_club_details( ){
                 let player_list = []
                 let players = JSON.parse(text);
                 for (var i in players) {
-                    console.log(players[i])
+                    //console.log(players[i])
                 }
 
                        for (let i = 1;i<6;i++) {
