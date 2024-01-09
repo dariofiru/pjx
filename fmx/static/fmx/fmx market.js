@@ -20,8 +20,6 @@ next.addEventListener('click', event => {
     previous.value = previous.value + 1
     next.value = next.value + 1
     console.log("p:"+ previous.value+ " n: "+next.value)
-     
-
     return false;
     });
 previous.addEventListener('click', event => {
@@ -38,7 +36,6 @@ previous.addEventListener('click', event => {
     }
     console.log("p:"+ previous.value+ " n: "+next.value)
     //fetchPlayers(1, "0", "0", "0", "name") 
-
     return false;
     });
 
@@ -47,13 +44,42 @@ side_nav_close.addEventListener('click', event => {
     //const side_nav=document.getElementById("mySidenav");
     document.getElementById("mySidenav").style.width = "0";
 }); 
+let list_lineup=[];
+function get_lineup(){
+    fetch( `get_lineup`)
+    .then(response => response.text())
+    .then(text => {
+        if(text==="empty"){
+            console.log("none")
+        }else{
+            var lineup = JSON.parse(text);
+            //var list_lineup=[]
+            console.log(text)
+            for (var i in lineup) {
+                for(var j=1; j<12; j++){
+                    var player = {}
+                    player['id'] = lineup[0][`player_${Number(j)}_id`]
+                    player['name']= lineup[0][`player_${Number(j)}`]
+                    playerid=lineup[0][`player_${Number(j)}_id`]
+                    let player_name=lineup[0][`player_${Number(j)}_id`]
+                    list_lineup.push(player)
+                    console.log(list_lineup[j-1]['name'])
+                }
+                 
+
+                 console.log(list_lineup)
+                
+            }            
+        }
+    });
+}
+
+get_lineup()    
+console.log(list_lineup)
+
 
 var budget_box=document.getElementById("budget");
 budget_box.innerHTML=`${initial_budget}`
-// var logo_box=document.getElementById("logo");
-// logo_box.src=`${logo}`
-// var club_name_box=document.getElementById("club_name");
-// club_name_box.innerHTML=`${club_name}`
 async function get_data(){
     let curr_budget=initial_budget
         fetch( `user_club/${user_id}`)
@@ -81,9 +107,9 @@ async function get_data(){
                 box.dataset.playerid=club_data[i]['id']
                 
                 if(club_data[i]['position'].includes('Goalkeeper')){
-                    console.log("=>"+club_data[i]['position']);
-                    console.log("=>"+box.id);
-                    console.log("=>"+boxclose.id);
+                    //console.log("=>"+club_data[i]['position']);
+                    //console.log("=>"+box.id);
+                    //console.log("=>"+boxclose.id);
                     boxclose.onclick = () => { 
                         sell_player(club_data[i]['id'],box, boxclose, club_data[i]['position'],  club_data[i]['position'].replace("-", " "), "danger");
                      };
@@ -91,24 +117,24 @@ async function get_data(){
                     box.classList.remove('bg-danger-subtle','text-black')
                     box.classList.add('bg-danger','text-white') 
                 }else if(club_data[i]['position'].includes('Defender')){
-                    console.log("=>"+club_data[i]['position']);
-                    console.log("=>"+boxclose.id);
+                    //console.log("=>"+club_data[i]['position']);
+                    //console.log("=>"+boxclose.id);
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "),  "secondary"); };
                
                     box.classList.remove('bg-secondary-subtle','text-black')
                     box.classList.add('bg-secondary','text-white') 
                 }
                 else if(club_data[i]['position'].includes('Midfielder')){
-                    console.log("=>"+club_data[i]['position']);
-                    console.log("=>"+boxclose.id);
+                    //console.log("=>"+club_data[i]['position']);
+                    //console.log("=>"+boxclose.id);
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "), "primary"); };
                
                     box.classList.remove('bg-primary-subtle','text-black')
                     box.classList.add('bg-primary','text-white') 
                 }
                 else if(club_data[i]['position'].includes('Attacker')){
-                    console.log("=>"+club_data[i]['position']);
-                    console.log("=>"+boxclose.id);
+                    //console.log("=>"+club_data[i]['position']);
+                    //console.log("=>"+boxclose.id);
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "),  "success"); };
                
                     box.classList.remove('bg-success-subtle','text-black')
@@ -123,6 +149,8 @@ async function get_data(){
 /* confirm_sell_btn.addEventListener('click', event => {
 
 }); */
+
+var sold_list=[]
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
 function sell_player(player_id, box, boxclose, position, empty_position, color){
     var sold_name= box.innerHTML
@@ -137,7 +165,10 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     const sell_player_name=document.getElementById("sell_player_name");
     sell_player_id.innerHTML=box.dataset.playerid
     sell_player_name.innerHTML=box.innerHTML
-    console.log("plater name: "+sell_player_name.innerHTML+ " player id: "+sell_player_id.innerHTML)
+
+    
+        
+    //console.log("plater name: "+sell_player_name.innerHTML+ " player id: "+sell_player_id.innerHTML)
     fetch( "random_headline/sell")
     .then(response => response.text())
     .then(text => {
@@ -152,6 +183,12 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
         }
     );
     confirm_sell_btn.addEventListener('click', event => {
+        var player = {}
+        player['id'] = box.dataset.playerid
+        player['name']= box.innerHTML
+        player['position']=position
+        sold_list.push(player)
+       
         console.log(box.innerHTML+" "+boxclose.id+ " - "+ empty_position+" - "+position, " - "+color)
         boxpic =document.getElementById(`${box.id}-pic`);
     boxclose =document.getElementById(box.id+"-close");
@@ -164,19 +201,11 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     //cd csplayer_box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.dataset.playerid="0"
     box.innerHTML=box.id.replace("-", " ")
-
     });
-    //console.log(box.innerHTML+" "+boxclose.id+ " - "+ empty_position+" - "+position, " - "+color)
-    
-
-
-
-
 }
 
 function check_signed(player_id, position){
         // check if a player in the main list is already bought
-         
         let pos_counter=0;
         if(position==="Goalkeeper"){
             pos_counter=2;
@@ -192,7 +221,6 @@ function check_signed(player_id, position){
             }
         }
         return false;
-
 }
 
 
@@ -200,9 +228,6 @@ function check_signed(player_id, position){
 function confirm_sign_player() {    
     var modal = document.getElementById("myModal");
     const content_box=document.getElementById("content-box");
-    //const gif=document.getElementById("shaking-gif");
-    //content_box.style.display='none'
-    //gif.style.display='none'
     modal.style.display = "block";
     const confirm_sign_btn=document.getElementById("confirm_sign_btn");
     const det_player_id  =document.getElementById("det_player_id");
@@ -214,25 +239,18 @@ function confirm_sign_player() {
     fetch( "random_headline/buy")
     .then(response => response.text())
     .then(text => {
-              
              const headline_txt=document.getElementById("headline-txt");
-              
              var headline = JSON.parse(text);
-              
              for (var i in headline) {
-                 
                 headline = headline[i]
                 headline=headline.replace("*name*",det_player_name.innerHTML)
                 headline=headline.replace("*team*",club_name)
                 headline=headline.replace("*Name*",det_player_name.innerHTML)
                 headline=headline.replace("*Team*",club_name)
-                 
                 headline_txt.innerHTML=headline 
              }
-   
         }
     );
- 
 
 
     confirm_sign_btn.addEventListener('click', event => { // main function for saving the player info
@@ -419,35 +437,27 @@ function confirm_sign_player() {
                     }
                         }
                     }
-                
-               
             });  
-
         }
 
 
 function remove_sign(player_box, box, boxclose, position, empty_position, color){
     console.log(boxclose.dataset.playerid+ " - "+ empty_position+" - "+player_box)
+    //lineupDelete_players
     boxpic =document.getElementById(`${position}-pic`);
     boxclose =document.getElementById(position+"-close");
-     
     boxpic.innerHTML=""
     boxclose.style.display="none"
     boxclose.dataset.playerid="0"
     box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.classList.remove(`bg-${color}`,`text-white`) 
-     
-        player_box.classList.remove(`bg-${color}`,`text-white`) 
+    player_box.classList.remove(`bg-${color}`,`text-white`) 
      
     player_box.classList.add(`bg-${color}-subtle`,`text-black`)
-    
- 
     box.innerHTML=empty_position
-
 }
 
 async function get_teams(){ // returns all team names for the search dropdown 
-
     const team_search=document.getElementById("team_search");
         fetch( "get_teams")
         .then(response => response.text())
@@ -483,39 +493,46 @@ order_search.addEventListener("change", function() {
 // listener for save team (temporary)
 const save_btn=document.getElementById("save_btn");
 save_btn.addEventListener("click", function() {
+    
+    console.log(sold_list[0]['position'])
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+     
+    var list_lineup_existing=list_lineup[1]['id']
+    console.log("=>"+list_lineup_existing )
     var jsonSquad = [];
+    var lineupDelete = [];
     for (var i = 1; i < 3; i++) {
         let box = document.getElementById(`Goalkeeper-${i}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `Goalkeeper-${i}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({ position: `Goalkeeper-${i}`,id: box.dataset.playerid});
+        console.log(box.dataset.playerid+ " - " +list_lineup.includes(`box.dataset.playerid`))
+        if(list_lineup.includes(Number(box.dataset.playerid)) ) 
+            lineupDelete.push(Number(box.dataset.playerid))
+
     }
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Defender-${i}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `Defender-${i}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({ position: `Defender-${i}`, id: box.dataset.playerid });
+        console.log(box.dataset.playerid+ " - " +list_lineup.includes(Number(box.dataset.playerid)))
+        if(list_lineup.includes(Number(box.dataset.playerid)) ) 
+            lineupDelete.push(Number(box.dataset.playerid))
     }
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Midfielder-${i}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `Midfielder-${i}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({position: `Midfielder-${i}`, id: box.dataset.playerid});
+        console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
+        if(list_lineup.includes(Number(box.dataset.playerid)) ) 
+            lineupDelete.push(Number(box.dataset.playerid))
     }
     for (var i = 1; i < 5; i++) {
         let box = document.getElementById(`Attacker-${i}`);
         console.log("json: "+box.innerHTML)
-        jsonSquad.push({
-            position: `Attacker-${i}`,
-            id: box.dataset.playerid
-        });
+        jsonSquad.push({ position: `Attacker-${i}`, id: box.dataset.playerid});
+        console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
+        if(list_lineup.includes(Number(box.dataset.playerid)) ) 
+            lineupDelete.push(Number(box.dataset.playerid))
     }
     var budget_box=document.getElementById("budget");
     let curr_budget=Number(budget_box.innerHTML)  
@@ -528,12 +545,13 @@ save_btn.addEventListener("click", function() {
             csrfmiddlewaretoken: csrftoken,
             squad: jsonSquad,
             squad_name: club_name,
-            curr_budget:curr_budget
+            curr_budget:curr_budget,
+            lineupDelete: sold_list
         })
     }).then(response=>response.text())
-    .then(data=>{ console.log("hello "+data); 
+     .then(data=>{ console.log("hello "+data); 
     document.getElementById('Modal-saved-squad').style.display='block'
-    //console.log("Modal?")
+    // console.log("Modal?")
  })
     
     //console.log(JSON.stringify(jsonSquad))

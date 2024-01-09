@@ -107,6 +107,7 @@ def get_lineup(request):
           return HttpResponse("empty")
      
      logger.info(f'already a lineup: {existing_lineup}')
+     logger.info(f'player: {existing_lineup.player_1.position}')
      return JsonResponse([existing_lineup.serialize()], safe=False)
 
 def save_lineup(request):
@@ -126,11 +127,6 @@ def save_lineup(request):
      player_10 = None
      player_11 = None
      squad_name= squad['squad_name']
-
-     # return render(request, "fmx/register.html"   
-     #      , {
-     #             "what": squad_name 
-     #      }) 
 
      for member in squad['squad']:
           position=member['position']
@@ -277,7 +273,7 @@ def check_for_round_data():
           Round.objects.filter(round_num=round+1).update(next=True)              
      
      fixture= Fixture.objects.filter(round_num=round).first()
-     logger.info(f'fixture: {fixture} ')
+     #logger.info(f'fixture: {fixture} ')
      downloaded_fixture=Fixture_round.objects.filter(fixture=fixture).count()
      logger.info(f'downloaded_fixture: {downloaded_fixture} ')
      if downloaded_fixture==0:
@@ -305,7 +301,7 @@ def calculate_results(round): # returns winner/looser for each round and updates
                  Table.objects.filter(pk=game.id).update(score_1=score_1)
             except Team.DoesNotExist:
                  pass
-            logger.info(f"{lineup_1} - {score_1}")
+            #logger.info(f"{lineup_1} - {score_1}")
 
             try:
                  lineup_2 = Lineup.objects.filter(id=game.lineup_2.id).values("score")
@@ -319,7 +315,7 @@ def calculate_results(round): # returns winner/looser for each round and updates
             elo_1 = Club_details.objects.filter(user__in=user_1).values('elo').first()
             
             elo_2 = Club_details.objects.filter(user__in=user_2).values('elo').first()
-            logger.info(f"{elo_1} - {elo_2}")     
+           # logger.info(f"{elo_1} - {elo_2}")     
             if score_1>=score_2:
                   new_elos = table_views.elo_value(elo_1['elo'], elo_2['elo'])
                   new_elo_1=new_elos[0]
@@ -417,9 +413,23 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     score = score-fixture_round.conceded
                     score = score-fixture_round.yellowcard
                     score = score-(fixture_round.redcard*3)                    
-                    Fixture_round.objects.filter(fixture=fixture, player=fixture_round.player).update(score=round(score,1))  
+                    Fixture_round.objects.filter(fixture=fixture, player=fixture_round.player).update(score=round(score,1)) 
+                    player_data=Player.objects.filter(pk=fixture_round.player.id).first()
+                    if score>=player_data.rating:
+                         if fixture_round.player.position=='Goalkeeper':
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.1'))
+                         else:
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value+Decimal('0.2'))
+                    elif score<player_data.rating:
+                         if fixture_round.player.position=='Goalkeeper':
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.1'))
+                         else:
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.2'))
+                    
+                    logger.info(f'score: {score} rating: {player_data.rating} - {score/2}>={player_data.rating-0.5}')
                except TypeError:
                  pass
+     
 
 def lineup_scores(id): # calculates total point for each lineup/round
      logging.basicConfig(level=logging.INFO)
@@ -499,6 +509,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_11.rating)
                     scores.append(team_score)
                     Lineup.objects.filter(id=lineup.id).update(score=team_score)
-                    logger.info(f'lineup: {lineup} score: {team_score}')
+                #    logger.info(f'lineup: {lineup} score: {team_score}')
                     
               

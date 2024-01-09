@@ -74,6 +74,7 @@ class Player(models.Model):
     assists = models.PositiveIntegerField(blank=True,null=True)
     rating = models.FloatField(default=6.0)
     value = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    current_value = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     yellowcard = models.PositiveIntegerField(blank=True,null=True)
     redcard = models.PositiveIntegerField(blank=True,null=True)
     penaltywon = models.PositiveIntegerField(blank=True,null=True)
@@ -231,7 +232,18 @@ class Lineup(models.Model):
             "player_8": self.player_8.name,
             "player_9": self.player_9.name,
             "player_10": self.player_10.name,
-            "player_11": self.player_11.name
+            "player_11": self.player_11.name,
+            "player_1_id": self.player_1.id,
+            "player_2_id": self.player_2.id,
+            "player_3_id": self.player_3.id,
+            "player_4_id": self.player_4.id,
+            "player_5_id": self.player_5.id,
+            "player_6_id": self.player_6.id,
+            "player_7_id": self.player_7.id,
+            "player_8_id": self.player_8.id,
+            "player_9_id": self.player_9.id,
+            "player_10_id": self.player_10.id,
+            "player_11_id": self.player_11.id
         }
 
 class Lineup_round(models.Model):

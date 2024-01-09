@@ -6,12 +6,13 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 import json
+from decimal import Decimal
 import requests
 import logging
 import http.client
 import datetime
 import re
-from .models import Team, Player, Fixture, User, User_club, Headline
+from .models import Team, Player, Fixture, User, User_club, Headline, Lineup
 # Create your views here.
 
 # def lineup(request):
@@ -130,8 +131,9 @@ def get_teams(request):
      return JsonResponse([team.serialize() for team in teams], safe=False)
 
 def save_squad(request):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
      squad = json.loads(request.body)
-      
      goalkeeper_1 = None
      goalkeeper_2 = None
      defender_1 = None
@@ -151,10 +153,7 @@ def save_squad(request):
      attacker_5 = None
      squad_name= squad['squad_name']
      remaining_budget=squad['curr_budget']
-     # return render(request, "fmx/register.html"   
-     #      , {
-     #             "what": squad_name 
-     #      }) 
+     squad_value=Decimal('0.0')
 
      for member in squad['squad']:
           position=member['position']
@@ -163,114 +162,135 @@ def save_squad(request):
           if position=="Goalkeeper-1":
                try:
                     goalkeeper_1 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+goalkeeper_1.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Goalkeeper-2":
                try:
                     goalkeeper_2 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+goalkeeper_2.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Defender-1":
                try:
                     defender_1 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+defender_1.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Defender-2":
                try:
                     defender_2 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+defender_2.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Defender-3":
                try:
                     defender_3 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+defender_3.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Defender-4":
                try:
                     defender_4 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+defender_4.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Defender-5":
                try:
                     defender_5 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+defender_5.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Midfielder-1":
                try:
                     midfielder_1 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+midfielder_1.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Midfielder-2":
                try:
                     midfielder_2 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+midfielder_2.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Midfielder-3":
                try:
                     midfielder_3 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+midfielder_3.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Midfielder-4":
                try:
                     midfielder_4 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+midfielder_4.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Midfielder-5":
                try:
                     midfielder_5 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+midfielder_5.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Attacker-1":
                try:
                     attacker_1 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+attacker_1.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Attacker-2":
                try:
                     attacker_2 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+attacker_2.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Attacker-3":
                try:
                     attacker_3 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+attacker_3.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Attacker-4":
                try:
                     attacker_4 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+attacker_4.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
           elif position=="Attacker-5":
                try:
                     attacker_5 = Player.objects.filter(id=id).first()
+                    squad_value=squad_value+attacker_5.current_value
                except Player.DoesNotExist:
                     HttpResponse("error")
 
-
-     squad= User_club(
-                user= request.user,
-                name=squad_name,
-                remaining_budget= remaining_budget,
-               goalkeeper_1 = goalkeeper_1,
-               goalkeeper_2 = goalkeeper_2,
-               defender_1 = defender_1,
-               defender_2 = defender_2,
-               defender_3 = defender_3,
-               defender_4 = defender_4,
-               defender_5 = defender_5,
-               midfielder_1 = midfielder_1,
-               midfielder_2 = midfielder_2,
-               midfielder_3 = midfielder_3,
-               midfielder_4 = midfielder_4,
-               midfielder_5 = midfielder_5,
-               attacker_1 = attacker_1,
-               attacker_2 = attacker_2,
-               attacker_3 = attacker_3,
-               attacker_4 = attacker_4,
-               attacker_5 = attacker_5
-                )
-     squad.save()
-     return HttpResponseRedirect("/")
+     User_club.objects.update_or_create(user= request.user,
+                 name=squad_name,
+                 defaults={'remaining_budget':remaining_budget,
+               'goalkeeper_1': goalkeeper_1,    
+               'goalkeeper_2': goalkeeper_2,
+               'defender_1': defender_1,
+               'defender_2': defender_2,
+               'defender_3': defender_3,
+               'defender_4': defender_4,
+               'defender_5': defender_5,
+               'midfielder_1': midfielder_1,
+               'midfielder_2': midfielder_2,
+               'midfielder_3': midfielder_3,
+               'midfielder_4': midfielder_4,
+               'midfielder_5': midfielder_5,
+               'attacker_1': attacker_1,
+               'attacker_2': attacker_2,
+               'attacker_3': attacker_3,
+               'attacker_4': attacker_4,
+               'attacker_5': attacker_5,
+               'initial_account': squad_value       
+                 }
+                 )
+     lineupDelete=squad['lineupDelete']
+     logger.info(f'already a lineup: {lineupDelete}')
+     for man in lineupDelete:
+          logger.info(f'lets see: {man}')
+     #existing_lineup=Lineup.objects.filter(user=request.user, active=True).get()
+     return JsonResponse({"x":"y"}, safe=False)
 
 def get_headlines(request):
      headline_list=""

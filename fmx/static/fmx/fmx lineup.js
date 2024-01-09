@@ -306,28 +306,24 @@ function get_lineup(){
                 const current_lineup=document.getElementById("current_lineup")
                 current_lineup.style.display='none';
                 console.log("none")
-
             }else{
                 const current_lineup=document.getElementById("current_lineup") 
                 current_lineup.style.display='block';
                 var lineup = JSON.parse(text);
                 console.log(text)
                 for (var i in lineup) {
-                     let player_name_1=lineup[0]["player_1"]
-                     let player_name_2=lineup[0]["player_2"]
-                     let player_name_3=lineup[0]["player_3"]
-                     let player_name_4=lineup[0]["player_4"]
-                     let player_name_5=lineup[0]["player_5"]
-                     let player_name_6=lineup[0]["player_6"]
-                     let player_name_7=lineup[0]["player_7"]
-                     let player_name_8=lineup[0]["player_8"]
-                     let player_name_9=lineup[0]["player_9"]
-                     let player_name_10=lineup[0]["player_10"]
-                     let player_name_11=lineup[0]["player_11"]
-                     console.log(player_name_1)
-                }
-                
-                
+                    for(var j=1; j<12; j++){
+                        var player = {}
+                        player['id'] = lineup[0][`player_${Number(j)}_id`]
+                        player['name']= lineup[0][`player_${Number(j)}`]
+                        
+                        let player_name=lineup[0][`player_${Number(j)}_id`]
+                        list_lineup.push(player)
+                        //console.log(list_lineup[j])
+                    }
+                    
+                    
+                }            
             }
         });
     }

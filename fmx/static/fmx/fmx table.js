@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         var div2 =document.createElement('div')
                         table_row.classList.add('row',    'bg-light')
                         table_row.style.margin="5px"
+                        if (squads[i].name===club_name){
+                            table_row.classList.add('fw-bold')
+                        }
                         team.classList.add('col-2', 'text-start', 'text-black')
                         elo.classList.add('col-2',   'text-black')
                         total.classList.add('col-1', 'text-black')
@@ -91,11 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // startcheckRound('get_start')
     
 
-tst_btn.addEventListener('click', function () {
-        var countDownDate = new Date().getTime() + 600000;
-        sessionStorage.setItem('countDownDate', countDownDate);
-        countdown()
-    });
+ 
     //console.log("=> "+table_box)    
        
     });

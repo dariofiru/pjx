@@ -44,25 +44,16 @@ def utilities(request, cmd):
              {
                "what1":  fixtures
                })
-    return render(request, "fmx/index.html",
-             {
-               "api":  "ok"
-               })
 
 
 def match(request):
      return render(request, "fmx/match.html")
-            #, {
-             #   "PostForm": form, "check":"yes"
-            #})
+
 
 
 def index(request):
      return render(request, "fmx/index.html")
-            #, {
-             #   "PostForm": form, "check":"yes"
-            #})
-
+ 
 def importTeam(request):
     conn = http.client.HTTPSConnection("api-football-v1.p.rapidapi.com/v3/leagues/39")
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
@@ -213,11 +204,13 @@ def get_player_value(request):
     for player in players:
         super_secret_algorithm=(player.appearences*0.5)+(player.lineups*0.8)+(player.goals*1.6)+(player.rating*1.1)+(player.assists*1.4)
         if player.position == 'Defender':
-            super_secret_algorithm = super_secret_algorithm*0.80
+            super_secret_algorithm = super_secret_algorithm*0.85
         elif player.position == 'Attacker':
             super_secret_algorithm = super_secret_algorithm*1.05
+        elif player.position =='Goalkeeper':
+             super_secret_algorithm = super_secret_algorithm*0.70
 
-        Player.objects.filter(pk=player.id).update(value=round(super_secret_algorithm,1))
+        Player.objects.filter(pk=player.id).update(value=round(super_secret_algorithm,1),original_value= round(super_secret_algorithm,1))
          
         d[player.name] = round(super_secret_algorithm,1)
 

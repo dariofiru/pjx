@@ -60,7 +60,10 @@ urlpatterns = [
     path("stats", stats_views.stats, name="stats"),
     path("stats_player_ranking", stats_views.stats_player_ranking, name="stats_player_ranking"),
     path("stats_goalscores", stats_views.stats_goalscores, name="stats_goalscores"),
-     
+    path("club_stats", stats_views.club_stats, name="club_stats"), 
+    path("get_last_results", stats_views.get_last_results, name="get_last_results"),
+
+
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
