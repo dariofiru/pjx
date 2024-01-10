@@ -21,19 +21,11 @@ function get_matches(){
                 row.classList.add('row','m-2')
                 for (var i in matches) {
                    
- /*                   <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>            
-</div> */
                     var col =  document.createElement('div')
                     var card = document.createElement('div')
                     col.classList.add('col', 'm-1')
-                    card.classList.add('card', 'text-bg-light', 'border-dark', 'mb-3')
-                    card.style.width="16rem"
+                    card.classList.add('card', 'text-bg-light', 'border-dark', 'mb-2')
+                    card.style.width="14rem"
                     //table_row.classList.add('row',    'bg-light')
                     var logo =document.createElement('img')
                     logo.classList.add('card-img-top')

@@ -279,7 +279,7 @@ function get_squad_best_men(){
  });
 }
 
-        get_goalscorers()
+    get_goalscorers()
 
     get_best_players()
     

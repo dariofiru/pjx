@@ -65,8 +65,6 @@ function get_lineup(){
                     list_lineup.push(player)
                     console.log(list_lineup[j-1]['name'])
                 }
-                 
-
                  console.log(list_lineup)
                 
             }            
@@ -299,7 +297,7 @@ function confirm_sign_player() {
             // modifing player box design and funcionality
             player_box.classList.remove('bg-danger-subtle');
             player_box.classList.add('bg-danger','text-white');
-           // modal.style.display = "none";
+            modal.style.display = "none";
 
             let remaning_budget = curr_budget-pl_value
             budget_box.innerHTML=`${remaning_budget.toFixed(1)}`
@@ -494,11 +492,11 @@ order_search.addEventListener("change", function() {
 const save_btn=document.getElementById("save_btn");
 save_btn.addEventListener("click", function() {
     
-    console.log(sold_list[0]['position'])
+   // console.log(sold_list[0]['position'])
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
      
-    var list_lineup_existing=list_lineup[1]['id']
-    console.log("=>"+list_lineup_existing )
+    //var list_lineup_existing=list_lineup[1]['id']
+    //console.log("=>"+list_lineup_existing )
     var jsonSquad = [];
     var lineupDelete = [];
     for (var i = 1; i < 3; i++) {
@@ -693,16 +691,10 @@ async function fetchPlayers(page, team, position, price, order) {
                     // drag drop start
                      let is_signed=check_signed(player_id, player_position) // check player already bought      
 
-                    // drag drop end 
-
-
-
+                    
                     const player_name = document.createElement("div");
                     player_name.id=`player-${player[i].id}`
-                    //player_name.setAttribute("id", player_fullname)
-                    // player_name.setAttribute("idreal", player_id)
-                    // player_name.setAttribute("draggable", "true")
-                    // player_name.setAttribute("ondragstart", "drag(event)")
+                    
                     player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                             
                     player_name.style.padding="0px"

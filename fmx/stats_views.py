@@ -210,14 +210,6 @@ def club_stats(request):
      json_tmp["value"]=curr_player.value
      json_tmp["current_value"]=curr_player.current_value
      json_final.append(json_tmp)
- 
-     #logger.info(f'json_final 1 : {json_final}')
      
      return JsonResponse(json_final, safe=False)
-
-     # return render(request, "fmx/register.html"   
-     #         , {
-     #                "what": players 
-     #         }) 
-     return JsonResponse([user_club.serialize() for user_club in players], safe=False)
-    
+ 

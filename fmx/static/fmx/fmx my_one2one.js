@@ -88,6 +88,8 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                             .then(response => response.text())
                             .then(text => {
                                 var result = JSON.parse(text);
+                                console.log(result)
+                                console.log("call one2one: "+"get_one2one/"+event.target.dataset.one2oneid)
                                     var btn_stats=document.getElementById("btn_stats");
                                      
                                     btn_stats.dataset.one2oneid=event.target.dataset.one2oneid
@@ -102,10 +104,12 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                     club_2.innerHTML=`${result[0].lineup_2_name}`
                                     var score_1=document.getElementById("score_1");
                                     var score_2=document.getElementById("score_2");
+                                    score_1_tot=Number(result[0].score_1)
+                                    score_2_tot=Number(result[0].score_2)
                                     var result_text=document.getElementById("result_text");
                                     var bet_data=document.getElementById("bet_data");
-
-                                    if(Number(score_1)<Number(score_2)){
+                                    console.log("score1: "+score_1_tot+" score2: "+score_2_tot+" "+(score_1_tot<score_2_tot))
+                                    if(score_1_tot<score_2_tot){
                                         score_1.style.color="red"
                                         score_2.style.color="green"
                                         if(club_name===`${result[0].lineup_1_name}`){
@@ -137,6 +141,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                       fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                                       .then(response => response.text())
                                       .then(text => {
+                                        console.log("call stats: "+"get_one2one_stats/"+event.target.dataset.one2oneid)
                                         document.getElementById('stats').style.display='none'
                                         var col_team_1=document.getElementById("col_team_1");
                                         var col_team_2=document.getElementById("col_team_2");
@@ -222,8 +227,9 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                       row.append(col1)
                                                       row.append(col1g)
                                                       row.append(col1a)
-                                                      row.append(col1r)
                                                       row.append(col1y)
+                                                      row.append(col1r)
+                                                      
                                                       row.append(col2)
                                                   if(Number(players[i].club)===Number(result[0].club_1_id)){
                                                       console.log("qui")
@@ -238,17 +244,10 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                   }
                                               }
                                              // box.style.display='none'
-                                               
-           
                                       });
 
                             // END create stats
-
-
                             });
-
-                           
-
                         });
                         col3.append(res_btn)
                         
@@ -316,12 +315,15 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                     club_1.innerHTML=`${result[0].lineup_1_name}`
                                     var club_2=document.getElementById("club_2");
                                     club_2.innerHTML=`${result[0].lineup_2_name}`
-                                    console.log("me: "+ " "+club_name)
+                                    //console.log("me: "+ " "+club_name)
                                     var score_1=document.getElementById("score_1");
                                     var score_2=document.getElementById("score_2");
+                                    score_1_tot=Number(result[0].score_1)
+                                    score_2_tot=Number(result[0].score_2)
                                     var result_text=document.getElementById("result_text");
                                     var bet_data =document.getElementById("bet_data");
-                                    if(Number(score_1)<Number(score_2)){
+                                    console.log("score1: "+score_1_tot+" score2: "+score_2_tot+" "+(score_1_tot<score_2_tot))
+                                    if(score_1_tot<score_2_tot){
                                         score_1.style.color="red"
                                         score_2.style.color="green"
                                         if(club_name===`${result[0].lineup_1_name}`){
@@ -437,11 +439,12 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                             row.append(col1)
                                             row.append(col1g)
                                             row.append(col1a)
-                                            row.append(col1r)
                                             row.append(col1y)
+                                            row.append(col1r)
+                                            
                                             row.append(col2)
                                         if(Number(players[i].club)===Number(result[0].club_1_id)){
-                                            console.log("qui")
+                                           // console.log("qui")
                                              
                                             col_team_1.append(row)
                                             //console.log(col_team_2.innerHTML)
@@ -452,11 +455,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                             //console.log(col_team_2.innerHTML)
                                         }
                                     }
-                                    //box.style.display='none'
-                                    //row_top.append(col_team_1)
-
-                                    //row_top.append(col_team_2)
-                                    //box.append(row_top)
+                                    
                             });
 
                             // END create stats
@@ -493,10 +492,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                  close_chall_btn.style.display='block'   
                                  var chall_text=document.getElementById("chall_text"); 
                                  chall_text.style.display='none' 
-                                 
-                                 
-                                 
-                            }
+                             }
                             );
 
                         });

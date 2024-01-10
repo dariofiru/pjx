@@ -318,7 +318,7 @@ function get_lineup(){
                         player['name']= lineup[0][`player_${Number(j)}`]
                         
                         let player_name=lineup[0][`player_${Number(j)}_id`]
-                        list_lineup.push(player)
+                        //list_lineup.push(player)
                         //console.log(list_lineup[j])
                     }
                     
@@ -348,7 +348,7 @@ function get_lineup(){
 
 const side_nav_close=document.getElementById("mySidenav"); 
 side_nav_close.addEventListener('click', event => {
-    //const side_nav=document.getElementById("mySidenav");
+   
     document.getElementById("mySidenav").style.width = "0";
 }); 
 
@@ -367,9 +367,7 @@ async function get_data(){
                     budget_box.innerHTML = club_data[i].initial_budget;
                     option.value = teams_data[i].id;
                     team_search.add(option);
-                }
-                
-                
+                }  
             }
         });
     }
@@ -395,7 +393,7 @@ save_btn.addEventListener("click", function() {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var jsonSquad = [];
         let box = document.getElementById(`Goalkeeper-1`);
-        console.log("json: "+box.innerHTML)
+       // console.log("json: "+box.innerHTML)
         let j = 1; 
         jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid }); 
         // const box=document.getElementById(`${player_position}-${i}-${line}`);
@@ -403,19 +401,19 @@ save_btn.addEventListener("click", function() {
         j++;
         const box=document.getElementById(`Defender-${i}-${D_line}`);
          
-        console.log("json: "+box.innerHTML)
+        //console.log("json: "+box.innerHTML)
         jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     for (var i = 1; i <= M_line; i++) {
         j++;
         let box = document.getElementById(`Midfielder-${i}-${M_line}`);
-        console.log("json: "+box.innerHTML)
+       // console.log("json: "+box.innerHTML)
         jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     for (var i = 1; i <= A_line; i++) {
         j++;
         let box = document.getElementById(`Attacker-${i}-${A_line}`);
-        console.log("json: "+box.innerHTML)
+       // console.log("json: "+box.innerHTML)
         jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
     console.log(jsonSquad)
@@ -477,9 +475,7 @@ async function get_player_details(id){
             det_player_1.innerHTML=`<b>Position:</b> ${player_data[i].position}<br><br>
             <b>Nationality:</b> ${player_data[i].nationality} `;
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
-            <b>Height:</b> ${player_data[i].height}<br><br> `;
-            
-             
+            <b>Height:</b> ${player_data[i].height}<br><br> `;     
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
             Assists: ${player_data[i].assists}<br></span>`;

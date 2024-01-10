@@ -8,35 +8,9 @@
 
 {% block body %}
 <script>
- function allowDrop(ev) {
-    ev.preventDefault();
-  }
  
-
-  function drag(ev) {
-     
-    ev.dataTransfer.setData("text", ev.target.id);
-    ev.dataTransfer.setData("text2", ev.target.getAttribute('idreal'))
-  }
-  
-  function drop(ev) {
-    ev.preventDefault();
-    console.log("drop: "+ev.dataTransfer)
-    var data = ev.dataTransfer.getData("text");
-    var idreal = ev.dataTransfer.getData("text2"); 
-    console.log("drop:"+ data)
-    ev.target.classList.remove( 'bg-success')
-    ev.target.classList.add( 'text-bg-primary') 
-    ev.target.innerHTML=data
-    const pry= document.getElementById(data)
-     pry.value=pry.id
-     console.log("=>"+idreal+ "name: "+ pry.id)
-   
-     var modal = document.getElementById("myModal");
-     modal.style.display = "block";
-     
-    //ev.target.appendChild(document.getElementById(data));
-  }
+ 
+ 
   </script> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Modal confirming save squad-->
@@ -73,7 +47,7 @@
         <div class="col">
         <div class="content-main">
         <div id="content-box" class="content-box" style="display:block">
-          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <h2 >THE DAILY NEWS</h2>  
           <p id="headline-txt">Enthusiastically leverage other's effective users via client-centric </p>
         </div> 
     </div>
@@ -116,7 +90,6 @@
 <!-- The Modal end-->
 
 
-
 <div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');"> 
   <div class="row w-50 bs-success-bg-subtle  "></div>
 <div class=" col opacity-75 center      " style="  margin:30px;padding:0px;">
@@ -152,7 +125,6 @@
         </div>
      
     </div>
-
 
     <div class="row text-bg-secondary p-0 rounded-2">
       <div class="col-md-6 p-1 " > Value range:  
@@ -234,13 +206,13 @@
           <div class="row     w-100 " >
              
           <div id="Goalkeeper-1-pic" class="col-2 p-1"></div>
-        <div id="Goalkeeper-1" value="ciao" ondrop="drop(event)" ondragover="allowDrop(event)" data-playerid='0' 
+        <div id="Goalkeeper-1" value="ciao"   data-playerid='0' 
          class="col  p-1 player-box-market rounded-2 bg-danger-subtle text-black"  style="font-weight: bold;" >Goalkeeper 1</div>
          <div id="Goalkeeper-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close' >&times;</span> </div>
         </div>
         <div class="row w-100 ">
           <div id="Goalkeeper-2-pic" class="col-2 p-1"></div>
-        <div id="Goalkeeper-2" data-playerid='0' ondrop="drop(event)" ondragover="allowDrop(event)" 
+        <div id="Goalkeeper-2" data-playerid='0'  
         class="col p-1 player-box-market rounded-2 bg-danger-subtle text-black " style="font-weight: bold;">Goalkeeper 2</div>
         <div id="Goalkeeper-2-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close'>&times;</span> </div>
       </div> 
@@ -438,11 +410,7 @@
 
  
 
- 
-
-<!---<div id="players-list">
-</div>
- --->
+  
 
 
 

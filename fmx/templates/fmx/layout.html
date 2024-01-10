@@ -12,8 +12,7 @@
         <link href="{% static 'fmx/styles-tmp.css' %}" rel="stylesheet">  
         <link href="{% static 'fmx/styles-match.css' %}" rel="stylesheet">  
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js'></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.css">
+        
          
  
     </head>
@@ -45,35 +44,37 @@
     <div class="navbar-collapse collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav me-auto  ">
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'index' %}">{{ user.username }}<br>
-           {{ user.club  }}</a>
+        <li class="nav-item  ">
+          <a class="nav-link  " aria-current="page" href="{% url 'index' %}" >{{ user.username }}  
+         </a>
           
         </li>
-        
+        {% if  user.club_details.has_squad %}
         <li class="nav-item ">
           <a class="nav-link text-white" href="{% url 'market' %}">My Squad</a>
         </li>
-        
-        <li class="nav-item dropdown ">
-          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            My Lineups
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item " href="{% url 'lineup' %}">New Lineup</a></li>
-            <li><a class="dropdown-item" href="{% url 'lineup' %}">Previous Lineups</a></li>
-            
-             
-          </ul>
+        {% if  user.club_details.has_lineup %}
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{% url 'lineup' %}">New Lineup </a>
         </li>
-         
+        {% else %} 
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{% url 'lineup' %}">Create First Lineup </a>
+        </li>
+        {% endif %}
+        {% else %}
+        <li class="nav-item ">
+          <a class="nav-link text-white" href="{% url 'market' %}">Create Squad</a>
+        </li>
+        {% endif %}
+        
         <li class="nav-item">
           <a class="nav-link text-white " href="{% url 'match' %}">Results</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="{% url 'table' %}">Table</a>
         </li>
-         
+        {% if  user.club_details.has_lineup %}
         <li class="nav-item dropdown">
           <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             One-to-one
@@ -88,21 +89,27 @@
         <li class="nav-item">
           <a class="nav-link text-white " href="{% url 'stats' %}">My Stats</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link text-white " href="{% url 'logout' %}">Log Out</a>
       </li>
       <li id="countdown" class="nav-item nav-link text-white">
       </a></li>
-      <li  >
-        <button id="run_round" type="button" class="btn btn-secondary">Run round</button>
+      
+        <li class="nav-item  ">
+        
+    </li>
+  
+    <li class="nav-item   bg-success-subtle rounded-2">
+      <a class="nav-link  " aria-current="page" href="{% url 'index' %}" >   
+       {{ user.club_details.club  }}</a>
+      
     </li>
 
-
-     
-      <div class="button_x">
-        <i class="fa-solid fa-futbol"></i>
-        <span class="button__badge">2</span>
-      </div>
+  <!-- <li class="nav-item  ">
+    <button id="run_round" type="button" class="btn btn-sm btn-secondary">Run round</button>
+</li> -->
+      
        
      
      
@@ -127,6 +134,11 @@
  <script>
 
 document.addEventListener('DOMContentLoaded', function () {
+
+  var  user_full='{{ user.club_details.has_lineup }}'
+        console.log(">user: "+user_full)
+
+
   
   var start_round;
 function startcheckRound(url){
@@ -152,21 +164,21 @@ var start = JSON.parse(text);
 start_round= start['round_num'] 
     console.log(" =>" +start_round)
     });
-startcheckRound('get_start')
+//startcheckRound('get_start')
 
 
-var run_round=document.getElementById("run_round"); 
-run_round.addEventListener('click', function () {
-  fetch( `check_for_round_data`)
-        .then(response => response.text())
-        .then(text => {
-            console.log(text)
+//var run_round=document.getElementById("run_round"); 
+//run_round.addEventListener('click', function () {
+//   fetch( `check_for_round_data`)
+//         .then(response => response.text())
+//         .then(text => {
+//             console.log(text)
             
-        });
-    });
+//         });
+//     });
 
 
-
+/*
 function countdown(){
  var table_box=document.getElementById("countdown"); 
     var current = new Date().getTime();
@@ -214,6 +226,7 @@ var x = setInterval(function() {
 }, 1000);
 }
        // setTimeout(function(){alert("Hello")},3000); 
+*/
       });
       </script> 
 </body>

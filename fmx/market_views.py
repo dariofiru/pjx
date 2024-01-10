@@ -14,16 +14,10 @@ import datetime
 import re
 from .models import Team, Player, Fixture, User, User_club, Headline, Lineup
 # Create your views here.
-
-# def lineup(request):
-#      return render(request, "fmx/lineup.html")
-
+ 
 def market(request):
      return render(request, "fmx/market.html")
-            #, {
-             #   "PostForm": form, "check":"yes"
-            #})
-
+             
 def user_club(request, id):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger(__name__)
@@ -120,10 +114,8 @@ def user_club(request, id):
      json_tmp["photo"]=player.photo
      json_final.append(json_tmp) 
 
-
      return JsonResponse(json_final, safe=False)
-
-     #return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
+ 
 
 def get_teams(request):
      teams = Team.objects.filter(active=True)
@@ -307,20 +299,12 @@ def get_headlines(request):
 }
 
      response = requests.post(url, json=payload, headers=headers)
-
-     #print(response.json())
-     #headlines=json.loads(response.text)
-     #headlines = re.findall(r'"(.+?)"',response.text)
- 
      headlines = re.findall('@(.+?)@', response.text)
      for i in headlines:
           headline=Headline(headline=i, type="sell")
           headline.save()
 
-
-     return render(request, "fmx/register.html", {
-                "what1": response.text, "what2":headlines
-            })   
+     return JsonResponse({"status":"ok"}, safe=False)   
 
 def random_headline(request, type):
      headline=Headline.objects.filter(type=type).order_by('?').first()

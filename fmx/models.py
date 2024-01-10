@@ -20,7 +20,8 @@ class Club_details(models.Model):
     logo = models.TextField(blank=True)
     initial_budget =models.FloatField(default=760)
     elo = models.DecimalField(max_digits=7,decimal_places=2,blank=True,null=True, default=1000)
-
+    has_squad=models.BooleanField(default=False)
+    has_lineup=models.BooleanField(default=False)
     def __str__(self) -> str:
         return f"{self.user}: {self.club}  "
 
@@ -265,7 +266,7 @@ class Table(models.Model):
     next_round = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
+        return f"{self.id} - {self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
 
     def serialize(self):
         return {

@@ -20,6 +20,7 @@
     
     <div class="row">
       {% if user.is_authenticated %}
+      {% if user.club_details.has_squad %}
       <div class="col-4 ">
         <div class="row ">
           <div class="col m-2"> 
@@ -45,6 +46,27 @@
             </div>
           </div>
         </div></div>
+        {% else %} <!-- user has no squad--> 
+        <div class="col-md-2"></div>
+        <div class="col-md-4 ">
+          <div class="row text-center"  >
+            <div class="col m-2 text-center">  
+              <div class="card border-success" style="width: 22rem;">
+                <h3  class="p-1">First Step</h3> 
+              <img src="https://i2-prod.mirror.co.uk/incoming/article4270293.ece/ALTERNATES/s1200b/0_Manchester-United-team-photo.jpg" style="width:21.9rem;border:1px solid black" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Create your own team</h5>
+                <p class="card-text m-0"  >Use you budget wisely in order to create a winning team!</p>
+                <div class="  text-end"><a href="{% url 'market' %}" class="btn btn-success btn-sm">Go &#x2192;</a></div>
+                 
+              </div>
+            </div>
+              </div>
+              </div>
+              </div>
+
+        {% endif %} <!-- user has no squad-->
+        {% if  user.club_details.has_lineup %}
         <div class="col-4 ">
         <div class="row">
           <div class="col  m-2 ms-0">
@@ -73,15 +95,24 @@
         <div class="row    ">
           <div class="col-md-11 offset-md-1" >
             <div class="row">
-              <div class="card text-center text-bg-success mb-2 mt-0 pt-0" style="border:3px solid black;max-width: 22rem;max-height:6rem;">
-                <div class="card-header pt-1 ">Next round</div>
-                <div class="card-body">
+              <div class="card text-center text-bg-success mb-2 mt-0 pt-0" style="border:3px solid black;max-width: 22rem;max-height:5rem;">
+                <div class="card-header p-0 ">Next round</div>
+                <div class="card-body p-0">
                   <h5 id="next_match" class="card-title"  style="font-size:16px;">A vs B</h5>
                    
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="card text-center text-bg-success mb-2 mt-0 pt-0" style="border:3px solid black;max-width: 22rem;max-height:10rem;">
+                <div class="card-header pt-1 ">My One2ones</div>
+                <div id="one2ones" class="card-body  "  style="font-size:14px;">
+              </div>
+              <a href="{% url 'my_one2one' %}" class="card-link text-start" style="color:white;font-size:14px">View all One2ones</a>
             </div>
+           
+
+            </div>{% endif %}
             <div class="col  offset-md-4" >
             <div class="row">
             <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
@@ -90,7 +121,7 @@
                 <h5 class="card-header    text-bg-success ">Table</h5>
                 <p id="table_box" class="card-text" style="font-size:12px;">
                    </p>
-                   <a href="{% url 'table' %}" class="card-link">View full table</a>
+                   <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
               </div>
             </div>
           </div>
@@ -98,9 +129,10 @@
 
         </div>
       </div>
+      
       </div>
-      {% else %}
-      <div class="col-8 text-black"> click here to login</div>
+      {% else %} <!--user not auth -->
+      <div class="col-8 text-black" > <h3>click here to login</h3></div>
       {% endif %}
     </div>
 
@@ -119,7 +151,10 @@
 
  
 
-<script>var user='{{ user.username }}'</script>  
+<script>var user='{{ user.username }}'
+var has_squad='{{ user.club_details.has_squad }}'
+console.log("squad: "+has_squad)
+</script>  
  <script src="{% static 'fmx/fmx index.js' %}"></script>
 {% endblock %}
 

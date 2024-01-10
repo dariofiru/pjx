@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         div2.classList.add('col-2', 'text-black')
                         div1.innerHTML=Number(i)+1
                         team.innerHTML=squads[i].name;
-                        //away_team.innerHTML=squads[i].lineup_2_name;
+                       
                         elo.innerHTML=squads[i].elo;
                         total.innerHTML=squads[i].total_played;
                         home.innerHTML=squads[i].home_played;
@@ -51,14 +51,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         table_row.append(team)
                         table_row.append(elo)
                         table_row.append(total)
-                        table_row.append(home)
+                       table_row.append(home)
                         table_row.append(away)
                         table_row.append(total_won)
-                        table_row.append(home_won)
+                       table_row.append(home_won)
                         table_row.append(away_won)
                        // table_row.append(div2)
-                        
+                        if(Number(squads[i].total_played)>0){
                         table_box.append(table_row)
+                    }
                     } 
                 }
             });

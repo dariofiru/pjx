@@ -45,6 +45,8 @@ urlpatterns = [
     path("create_table/<str:id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     path("get_next_match", table_views.get_next_match, name="get_next_match"),
+    path("get_match_stats/<str:id>", table_views.get_match_stats, name="get_match_stats"),
+    
    # path("schedule_match", table_views.schedule_match, name="schedule_match"), # test cron
     path("get_start", table_views.get_start, name="get_start"), # test cron
     
