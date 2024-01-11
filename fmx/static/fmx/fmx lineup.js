@@ -8,6 +8,13 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
     const clear_btn=document.getElementById("clear_btn");
     save_btn.style.display="none"
     clear_btn.style.display="none"
+    clear_btn.addEventListener('click', event => {
+    
+    formation_cleaner()
+    
+});
+
+
 
     const l_352=document.getElementById("352");
     const l_532=document.getElementById("532");

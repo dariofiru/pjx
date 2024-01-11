@@ -199,6 +199,8 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     //cd csplayer_box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.dataset.playerid="0"
     box.innerHTML=box.id.replace("-", " ")
+    myModal_sell=document.getElementById("myModal-sell").style.display='none';
+
     });
 }
 
@@ -233,7 +235,7 @@ function confirm_sign_player() {
     const det_player_photo=document.getElementById("det_player_photo");
     const det_player_name=document.getElementById("det_player_name");
     const det_player_position=document.getElementById("det_player_position");
-
+     
     fetch( "random_headline/buy")
     .then(response => response.text())
     .then(text => {
@@ -534,6 +536,26 @@ save_btn.addEventListener("click", function() {
     }
     var budget_box=document.getElementById("budget");
     let curr_budget=Number(budget_box.innerHTML)  
+    
+    modal_box=document.getElementById('Modal-saved-squad')
+    console.log("has_squad: "+has_squad)
+     
+     if(has_squad){
+        console.log("qui")
+        document.getElementById('upd_squad_msg').style.display='block'
+        document.getElementById('new_squad_msg').style.display='none'
+    }else{
+        console.log("ecco")
+        upd_squad_msg=document.getElementById('upd_squad_msg')
+        upd_squad_msg.style.display='none'
+        console.log("upd=>"+upd_squad_msg.innerHTML)
+        new_squad_msg=document.getElementById('new_squad_msg')
+        new_squad_msg.style.display='block'
+        console.log("new=>"+new_squad_msg.innerHTML)
+    }
+    document.getElementById('Modal-saved-squad').style.display='block'
+
+
 
     fetch(`/save_squad`, {
         method: 'PUT',
@@ -548,12 +570,33 @@ save_btn.addEventListener("click", function() {
         })
     }).then(response=>response.text())
      .then(data=>{ console.log("hello "+data); 
+
+    modal_box=document.getElementById('Modal-saved-squad')
+    console.log("has_squad: "+has_squad)
+    // if(has_squad){
+    //     document.getElementById('upd_squad_msg').style.display='block'
+    //     document.getElementById('new_squad_msg').style.display='none'
+    // }else{
+    //     document.getElementById('upd_squad_msg').style.display='none'
+    //     document.getElementById('new_squad_msg').style.display='block'
+    // }
     document.getElementById('Modal-saved-squad').style.display='block'
     // console.log("Modal?")
  })
-    
+    return false;
     //console.log(JSON.stringify(jsonSquad))
 });
+
+const create_lineup_btn=document.getElementById("create_lineup_btn");
+const later_lineup_btn=document.getElementById("later_lineup_btn");
+create_lineup_btn.addEventListener('click', event => {
+    document.getElementById('Modal-saved-squad').style.display='none'
+    window.location.href = lineup_link
+});     
+later_lineup_btn.addEventListener('click', event => {
+    document.getElementById('Modal-saved-squad').style.display='none'
+    window.location.href = index_link
+});  
 
 
 const sign_btn=document.getElementById("sign_btn");
@@ -727,12 +770,19 @@ async function fetchPlayers(page, team, position, price, order) {
                     const player_name_extra_info = document.createElement("div"); 
                     //player_name.classList.add('border-primary-subtle');
                     player_name_extra_info.classList.add('fs-6');
-                    player_name_extra_info.innerHTML=` <div class="row m-0 p-0"><div class="col-md-4 m-0 p-0 ">
-                    <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" ></div><div class="col-8 m-0 p-0 lh-sm text-start">
+                    player_name_extra_info.innerHTML=` <div class="row m-0 p-0">
+                    <div class="col-md-3 m-0 p-0 ">
+                    <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" >
+                    </div>
+                    <div class="col-6 m-0 p-0 lh-sm text-start">
                       ${player[i].position}<br>
                       $ ${player[i].value} <br>
                          hello
-                      </div></div>
+                      </div>
+                      <div id="add_box-${player[i].id}" class="col-md-3 text-center  ">
+                     
+                    </div> 
+                      </div>
                     `;
                     const player_img = document.createElement("img");
                     player_img.style.margin = "5px";
@@ -801,9 +851,33 @@ async function fetchPlayers(page, team, position, price, order) {
                     //player_box.append(player_btn_div)
 
                     player_list.append(player_box)     
+                    add_box=document.getElementById(`add_box-${player[i].id}`)
+                    const add_lineup_btn = document.createElement("button");
+
+                    add_lineup_btn.classList.add('btn', 'btn-sm',  'btn-outline-dark','p-1',  'm-0')
+                    add_lineup_btn.innerHTML =`<span style="font-size:12px;color:black" class=close > Sign 
+                    <span style="font-size:12px">&#36; </span>  </span>`;  
+                    add_lineup_btn.id=`${player[i].id}`
+                    //add_lineup_btn.dataset.plname=      
+                    add_box.innerHTML=""
+                    add_box.append(add_lineup_btn)       
+                    let photo=player[i].photo;
                      
-                    add_player_btn.addEventListener('click', event => {
-                        buyPlayer(player_id, player_value,player_position, player_fullname);
+                    add_lineup_btn.addEventListener('click', event => {
+                       // const confirm_sign_btn=document.getElementById("confirm_sign_btn");
+                        const det_player_id  =document.getElementById("det_player_id");
+                        det_player_id.innerHTML=player_id
+                        const det_player_value  =document.getElementById("det_player_value");
+                        det_player_value.innerHTML=player_value
+                        const det_player_photo=document.getElementById("det_player_photo");
+                        det_player_photo.src=photo
+                        const det_player_name=document.getElementById("det_player_name");
+                        det_player_name.innerHTML=player_fullname
+                        const det_player_position=document.getElementById("det_player_position");
+                        det_player_position.innerHTML=player_position
+                        console.log(`${player_fullname}:${player_value} - ${photo}`)
+                        confirm_sign_player()
+                        //buyPlayer(player_id, player_value,player_position, player_fullname);
                         return false;
                     });             
                     }                                       

@@ -18,31 +18,32 @@ function get_matches(){
                 var table_box=document.getElementById("table_box");
                 var clubs=matches.length
                 var row =  document.createElement('div')
-                row.classList.add('row','m-2')
+                row.classList.add('row' )
                 for (var i in matches) {
                    
                     var col =  document.createElement('div')
                     var card = document.createElement('div')
-                    col.classList.add('col', 'm-1')
+                    col.classList.add('col-md-3' )
                     card.classList.add('card', 'text-bg-light', 'border-dark', 'mb-2')
                     card.style.width="14rem"
                     //table_row.classList.add('row',    'bg-light')
                     var logo =document.createElement('img')
                     logo.classList.add('card-img-top')
                     logo.src=matches[i].club_logo
-                    logo.style.width="100px"
+                    logo.style.width="80px"
                     var club_name =document.createElement('h6')
                     club_name.classList.add('card-title')
                     club_name.innerHTML=matches[i].club_name
                
                     var data =document.createElement('div')
                     data.classList.add('card-footer', 'lh-1')
+                    data.style.fontSize="12px"
                     data.innerHTML=`score: ${matches[i].elo}   <br>
                     Played: ${matches[i].total_played} - Won: ${matches[i].total_won}<br><br>`
                     var chall_btn=document.createElement('a')
                     chall_btn.href="#"
                     chall_btn.classList.add('btn','btn-success')
-                    chall_btn.innerHTML="Challange"
+                    chall_btn.innerHTML="Challenge"
                     chall_btn.dataset.clubid=matches[i].club_id
                     chall_btn.dataset.clubname=matches[i].club_name
                     
@@ -51,7 +52,7 @@ function get_matches(){
                         braved.dataset.bravedid=event.target.dataset.clubid
                         var modal=document.getElementById("myModal-chll");
                         var chall_text=document.getElementById("chall_text");    
-                        chall_text.innerHTML=`Do you want to challenge team ${event.target.dataset.clubname}?`
+                        chall_text.innerHTML=`Confirm challenge to <b>${event.target.dataset.clubname}</b?`
                         modal.style.display='block'
                         console.log("?>"+event.target.dataset.clubname)
                     });

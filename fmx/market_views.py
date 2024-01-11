@@ -12,7 +12,7 @@ import logging
 import http.client
 import datetime
 import re
-from .models import Team, Player, Fixture, User, User_club, Headline, Lineup
+from .models import Team, Player, Fixture, User, User_club, Headline, Lineup,Club_details
 # Create your views here.
  
 def market(request):
@@ -277,12 +277,13 @@ def save_squad(request):
                'initial_account': squad_value       
                  }
                  )
+     Club_details.objects.filter(user=request.user).update(has_squad=True)
      lineupDelete=squad['lineupDelete']
      logger.info(f'already a lineup: {lineupDelete}')
      for man in lineupDelete:
           logger.info(f'lets see: {man}')
      #existing_lineup=Lineup.objects.filter(user=request.user, active=True).get()
-     return JsonResponse({"x":"y"}, safe=False)
+     return HttpResponseRedirect("/")
 
 def get_headlines(request):
      headline_list=""

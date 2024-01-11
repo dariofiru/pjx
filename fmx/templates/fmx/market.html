@@ -18,21 +18,31 @@
 
   <!-- Modal content -->
   <div class="modal-content overlay">
-    <span class="close">&times;</span>
+     
       <div class="row">
-        <div class="col">
+        
          
-      <div class="col text-center">
-        Congratulations! <br>
-        Your squad is not complete. You'll be entered into the FMX League as soon as you create your first lineup.<br><br>
-         Would you like to create you team lineup? <br> 
-        <button id="create_lineup_btn" type="button" class="btn btn-success p-2 m-3">Yes please</button>
-        <button id="cancel_lineup_btn" 
-        onclick="document.getElementById('Modal-saved-squad').style.display='none'"
-         type="button" class="btn btn-secondary p-2">Not yet, Thanks</button>
+      <div id="upd_squad_msg" class="col text-center">
+       <h5><b> Congratulations!</b> </h5> 
+        Your new squad has been saved.<br>
+        <br>Note: <i>Sold players that are part of your active lineup will be <b>randomly replaced</b>
+           by other member of your squad. </i><br><br>
+       <h6> you may want to create a brand new lineup </h6> 
+          
       </div>
-      </div>
+      <div id="new_squad_msg" class="col text-center">
+        <h5><b> Congratulations!</b> </h5> 
+          Your squad is now complete. <br><br>
+          Note: <i>You'll be entered into the FMX League as soon as you create your first lineup.</i><br><br>
+          Would you like to create you team lineup?  
+       </div>
+      
+      
     </div>
+    <div class="row"><div  class="col text-center">
+      <button id="create_lineup_btn"   type="button" class="btn btn-success p-2 m-3">Create lineup</button>
+      <button id="later_lineup_btn"    type="button" class="btn btn-secondary p-2">Not yet, Thanks</button>
+    </div></div>
   </div>
 </div> 
  <!-- END Modal confirming save squad-->
@@ -72,7 +82,7 @@
         <div class="col">
         <div class="content-main">
         <div id="content-box-sell" class="content-box" style="display:block">
-          <h2 >THE DAILY NEWS</h2> <div class="double-bar"><span> </span></div>
+          <h2 >THE DAILY NEWS</h2>  
           <p id="headline-txt-sell">Enthusiastically leverage other's effective users via client-centric </p>
         </div> 
     </div>
@@ -419,11 +429,14 @@
  
 var  user_name='{{ user.username  }}'
 var  user_id='{{ user.id  }}'
+var has_squad='{{ user.club_details.has_squad }}'
 //var     initial_budget_str='{{ user.initial_budget  }}'
 var initial_budget_str='{{ user.club_details.initial_budget  }}'
 var  logo = '{{ user.club_details.logo  }}'
 var  club_name='{{ user.club_details.club  }}'
 var  initial_budget=Number(initial_budget_str)
+var index_link=`{% url 'index' %}`
+var lineup_link=`{% url 'lineup' %}`
 </script> 
 
 <script src="{% static 'fmx/fmx market.js' %}"></script>

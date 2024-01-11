@@ -14,21 +14,33 @@
 <div id="myModal-chll" class="modal overlay">
 
   <!-- Modal content -->
-  <div class="modal-content overlay">
-    <span class="close">&times;</span>
+  <div class="modal-content overlay" style="height:270px;width:320px">
+    <span class="close" onclick="document.getElementById('myModal-chll').style.display='none'" >&times;</span>
       <div class="row">
         <div class="col">
-          
-          <div class="form-outline">
-            <input type="number" id="typeNumber" class="form-control" value="2"/>
-            <label class="form-label" for="typeNumber">Number input</label>
+          <span id="chall_text"></span> <br>
+          <div class="form-outline" style="text-align:center">
+            <label class="form-label" for="typeNumber" style="font-size:14px">Insert bet amount:</label>
+           <input type="number" id="typeNumber" width="50px" class="form-control" value="2"/>
+            
         </div>
       <div class="col text-center">
-         <span id="chall_text"></span> <br> 
+          
         <div id="braved" data-bravedid="0" style="display: none;"></div>
-        <button id="confirm_chall_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
-        <button id="cancel_btn" onclick="document.getElementById('myModal-chll').style.display='none'" 
-        type="button" class="btn btn-secondary p-2">Cancel</button>
+        <div class="modal-footer">
+          <div class="row text-center">
+            <div class="col">
+              <button id="confirm_chall_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
+            </div>
+            <div class="col">
+              <button id="cancel_btn" onclick="document.getElementById('myModal-chll').style.display='none'" 
+              type="button" class="btn btn-secondary p-2 m-3">Cancel</button>
+
+            </div>
+          </div>
+        
+        
+        </div>
       </div>
       </div>
     </div>

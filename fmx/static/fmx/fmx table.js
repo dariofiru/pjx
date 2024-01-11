@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         team.classList.add('col-2', 'text-start', 'text-black')
                         elo.classList.add('col-2',   'text-black')
-                        total.classList.add('col-1', 'text-black')
+                        total.classList.add('col-1', 'text-black' )
                         home.classList.add('col-1', 'text-black')
                         away.classList.add('col-1', 'text-black')
                         total_won.classList.add('col-1', 'text-black')

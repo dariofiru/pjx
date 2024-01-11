@@ -29,10 +29,11 @@
 <!--- test navbar -->
 <nav class="navbar  navbar-expand-lg text-bg-success " >
   <div class="container-fluid">
+    {% if user.is_authenticated %}
     <a class="navbar-brand" href="#"><img   src="{{ user.club_details.logo  }}" alt="Bootstrap" width="60" style="border-radius: 50%;padding:2px;padding-top:4px;border:1px solid black">
        
     </a>
-   
+    {% endif %}
    
     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -45,7 +46,7 @@
       <ul class="navbar-nav me-auto  ">
         {% if user.is_authenticated %}
         <li class="nav-item  ">
-          <a class="nav-link  " aria-current="page" href="{% url 'index' %}" >{{ user.username }}  
+          <a class="nav-link  " aria-current="page" href="{% url 'index' %}" ><b>{{ user.username }} </b> 
          </a>
           
         </li>
@@ -80,7 +81,7 @@
             One-to-one
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'one2one' %}">New Challange</a></li>
+            <li><a class="dropdown-item" href="{% url 'one2one' %}">New Challenge</a></li>
             <li><a class="dropdown-item" href="{% url 'my_one2one' %}">My One-to-one</a></li>
             <li><hr class="dropdown-divider"></li>
              
@@ -102,7 +103,7 @@
   
     <li class="nav-item   bg-success-subtle rounded-2">
       <a class="nav-link  " aria-current="page" href="{% url 'index' %}" >   
-       {{ user.club_details.club  }}</a>
+       <b>{{ user.club_details.club  }}</b></a>
       
     </li>
 
