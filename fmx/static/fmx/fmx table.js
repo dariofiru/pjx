@@ -22,20 +22,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         var home_won=document.createElement('div')
                         var away_won=document.createElement('div')
                         var div2 =document.createElement('div')
-                        table_row.classList.add('row',    'bg-light')
+                        table_row.classList.add('row')
                         table_row.style.margin="5px"
+                        //table_row.style.color="gray"
                         if (squads[i].name===club_name){
                             table_row.classList.add('fw-bold')
                         }
                         team.classList.add('col-2', 'text-start', 'text-black')
-                        elo.classList.add('col-2',   'text-black')
-                        total.classList.add('col-1', 'text-black' )
-                        home.classList.add('col-1', 'text-black')
-                        away.classList.add('col-1', 'text-black')
-                        total_won.classList.add('col-1', 'text-black')
-                        home_won.classList.add('col-1', 'text-black')
-                        away_won.classList.add('col-1', 'text-black')
-                        div1.classList.add('col-1', 'text-black')
+                        elo.classList.add('col',   'text-black')
+                        total.classList.add('col', 'text-black', 'd-none', 'd-sm-block' )
+                        home.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
+                        away.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
+                        total_won.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
+                        home_won.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
+                        away_won.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
+                        div1.classList.add('col-1', 'text-black' )
                         div2.classList.add('col-2', 'text-black')
                         div1.innerHTML=Number(i)+1
                         team.innerHTML=squads[i].name;

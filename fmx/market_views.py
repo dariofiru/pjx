@@ -291,8 +291,8 @@ def get_headlines(request):
 
     # payload = { "query": "create 40 newspaper headlines on a soccer player called *name* transfer to a team called *team* each one should start and end with @  use different styles  " }
      #payload = { "query": "create 30 newspaper headlines on a soccer player called *name* rumored of transfering to a team called *team* each phrase should start and end with @  use different styles" } 
-     payload = { "query": "create 20 newspaper headlines on a soccer player called *name* dropped by a team called *team* each separate full phrase should start and end with @  use different styles" } 
-     
+     #payload = { "query": "create 20 newspaper headlines on a soccer player called *name* dropped by a team called *team* each separate full phrase should start and end with @  use different styles" } 
+     payload= {    "query": "write 25 newspaper titles for 2 soccer teams (team AX and BX) that agreed to play against each other, no more that 11 words  each separate full phrase should start and end with @"}
      headers = {
 	"content-type": "application/json",
 	"X-RapidAPI-Key": "4310cb923emsh4f65160b63c1034p1fbf64jsn1c68913a9032",
@@ -302,7 +302,7 @@ def get_headlines(request):
      response = requests.post(url, json=payload, headers=headers)
      headlines = re.findall('@(.+?)@', response.text)
      for i in headlines:
-          headline=Headline(headline=i, type="sell")
+          headline=Headline(headline=i.rstrip(), type="one2one")
           headline.save()
 
      return JsonResponse({"status":"ok"}, safe=False)   

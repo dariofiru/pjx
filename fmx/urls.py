@@ -17,11 +17,11 @@ urlpatterns = [
 
     path("market", market_views.market, name="market"),
     path("save_squad", market_views.save_squad, name="save_squad"),
-    #path("get_headlines", market_views.get_headlines, name="get_headlines"),
+    path("get_headlines", market_views.get_headlines, name="get_headlines"),
     path("random_headline/<str:type>", market_views.random_headline, name="random_headline"),
     
     
-    path("club_players", lineup_views.club_players, name="club_players"),
+    path("club_players/<str:position>", lineup_views.club_players, name="club_players"),
     path("lineup", lineup_views.lineup, name="lineup"),
     path("get_lineup", lineup_views.get_lineup, name="get_lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),

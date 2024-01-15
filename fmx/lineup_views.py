@@ -18,7 +18,7 @@ from .models import Team, Player, Club_details, Fixture, User, User_club, Lineup
 def lineup(request):
      return render(request, "fmx/lineup.html")
 
-def club_players(request):
+def club_players(request,position):
      curr_player=None
      try:
           players = User_club.objects.filter(user=request.user).first()  
@@ -27,64 +27,80 @@ def club_players(request):
 
 
      json_final =[]
-     curr_player = Player.objects.filter(id=players.goalkeeper_1.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.goalkeeper_2.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.defender_1.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.defender_2.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.defender_3.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.defender_4.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.defender_5.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.midfielder_1.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.midfielder_2.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.midfielder_3.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.midfielder_4.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.midfielder_5.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.attacker_1.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.attacker_2.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.attacker_3.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
-     curr_player = Player.objects.filter(id=players.attacker_4.id).first()
-     json_tmp=curr_player.serialize()   
-     json_final.append(json_tmp)
+     if position=="Goalkeeper":
+          curr_player = Player.objects.filter(id=players.goalkeeper_1.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.goalkeeper_2.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+     elif position=="Defender":
+          curr_player = Player.objects.filter(id=players.defender_1.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.defender_2.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.defender_3.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.defender_4.id).first()
+          json_tmp=curr_player.serialize() 
+          json_tmp["team_name"]=curr_player.team_id.name  
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.defender_5.id).first()
+          json_tmp=curr_player.serialize()  
+          json_tmp["team_name"]=curr_player.team_id.name 
+          json_final.append(json_tmp)
+     elif position=="Midfielder":
+          curr_player = Player.objects.filter(id=players.midfielder_1.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.midfielder_2.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.midfielder_3.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.midfielder_4.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.midfielder_5.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+     elif position=="Attacker":
+          curr_player = Player.objects.filter(id=players.attacker_1.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.attacker_2.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.attacker_3.id).first()
+          json_tmp=curr_player.serialize()  
+          json_tmp["team_name"]=curr_player.team_id.name 
+          json_final.append(json_tmp)
+          curr_player = Player.objects.filter(id=players.attacker_4.id).first()
+          json_tmp=curr_player.serialize()   
+          json_tmp["team_name"]=curr_player.team_id.name
+          json_final.append(json_tmp)
 
      #for user_club in players:
      #json_final.append(players.serialize())
      
      return JsonResponse(json_final, safe=False)
 
-     # return render(request, "fmx/register.html"   
-     #         , {
-     #                "what": players 
-     #         }) 
      return JsonResponse([user_club.serialize() for user_club in players], safe=False)
      
 # don't touch
@@ -225,6 +241,7 @@ def save_lineup(request):
      # adding lineup to next round
      round=Round.objects.filter(next=True).values("round_num") # probably TODELETE
      lineup_round=Lineup_round(user=request.user,lineup=lineup, round_num=round)
+     Club_details.objects.filter(user=request.user).update(has_lineup=True)
      lineup_round.save()  
      return HttpResponseRedirect("/")
 
@@ -261,6 +278,7 @@ def check_for_round_data():
      logger = logging.getLogger('fmx')
      round = Round.objects.filter(next=True).values("round_num").first() # retrieve round number   
      round=round['round_num']   
+     logger.info(f'checking for next round: {round} ')
      if round==38:
          # logger.info(f'here: {round} ')
           Round.objects.filter(round_num=round-1).update(current=False) 
@@ -278,10 +296,10 @@ def check_for_round_data():
      logger.info(f'downloaded_fixture: {downloaded_fixture} ')
      if downloaded_fixture==0:
           calculate_round(round)
-          get_fixture_ratings(round) # calculate players score 
-          lineup_scores(round)
-          calculate_results(round)
-
+     get_fixture_ratings(round) # calculate players score 
+     lineup_scores(round)
+     calculate_results(round)
+     logger.info(f'new data available for round: {round} ')
     # return HttpResponse(json.dumps({"round":round, "status":"ok"}), content_type="application/json")     
 
 def calculate_results(round): # returns winner/looser for each round and updates ELO TOFIX
@@ -289,7 +307,8 @@ def calculate_results(round): # returns winner/looser for each round and updates
         logger = logging.getLogger('fmx')
         #round = Round.objects.filter(current=True).values("round_num").first() # retrieve round number 
         games = Table.objects.filter(round_num=round).all() # retrieve all the matches in round
-        logger.info(f"round: {round}")
+        logger.info(f"calculate_results round: {round}")
+        logger.info(f"calculate_results games: {games}")
         json_final =[]
         for game in games: # retrive lineup scores, user and team data
             logger.info(game)
@@ -325,7 +344,8 @@ def calculate_results(round): # returns winner/looser for each round and updates
                   new_elo_2=new_elos[0]
                   new_elo_1=new_elos[1]
             probability=new_elos[2]
-            
+            Table.objects.all().update(next_round=False)
+            #Table.objects.filter(pk__gt=game.id, round=round+1).update(next_round=True)
             Club_details.objects.filter(user__in=user_1).update(elo=new_elo_1)
             Club_details.objects.filter(user__in=user_2).update(elo=new_elo_2)
             
@@ -339,6 +359,7 @@ def calculate_round(id): # downloads from API all players stats for fixures in r
      #for player in players:
      teams= Team.objects.filter(active=True) 
      #teams=Team.objects.all()
+     logger.info(f'download calculate_round: {id} ')
      call = 0
      for team in teams:
           try:
@@ -397,7 +418,7 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
           fixture_round.save()
   
      fixtures= Fixture.objects.filter(round_num=id).all()
-     logger.info(f'calculating ratings')
+     logger.info(f'calculating ratings round: {round}')
      for fixture in fixtures:
           fixture_rounds = Fixture_round.objects.filter(fixture=fixture).all()
 

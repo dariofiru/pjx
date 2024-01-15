@@ -123,6 +123,12 @@ def accept_challenge(request, id):
      logger.info(f'score_1: {score_1} - score_2: {score_2}')
      One2one.objects.filter(id=one2one.id).update(score_1=score_1)
      One2one.objects.filter(id=one2one.id).update(score_2=score_2)
+     if score_1>=score_2:
+          User_club.objects.filter(id=one2one.squad_1.id).update(remaining_budget=F("remaining_budget") + one2one.bet)
+          User_club.objects.filter(id=one2one.squad_2.id).update(remaining_budget=F("remaining_budget") - one2one.bet) 
+     else:
+          User_club.objects.filter(id=one2one.squad_1.id).update(remaining_budget=F("remaining_budget") - one2one.bet)
+          User_club.objects.filter(id=one2one.squad_2.id).update(remaining_budget=F("remaining_budget") + one2one.bet) 
      return render(request, "fmx/my_one2one.html")
 
 
@@ -228,9 +234,9 @@ def get_one2one_teams(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      club_dets=Club_details.objects.exclude(user=request.user)
+     my_club= User_club.objects.filter(user=request.user).first()
      club_dets=club_dets.order_by('-elo')
-     #recipient = User.objects.get(id=1) 
-     notify.send(request.user, recipient=request.user, verb='New contact us request')
+      
      json_final =[]
      for club_det in club_dets:
           logger.info(club_det)
@@ -241,18 +247,27 @@ def get_one2one_teams(request):
                home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
                home_won=0
                if home_played>0:
-                    home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2')).count()
-               
+                    home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2'), squad_1=club).count()
+                    logger.info(f"home_won: {home_won}")
                away_played = Table.objects.filter(round_num__lte=round["round_num"], squad_2=club).count()
                away_won=0
                if away_played>0:
-                    away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1')).count()
-               
+                    away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1'), squad_2=club).count()
+                    logger.info(f"away_won: {away_won}")
                total_played = home_played+away_played
                logger.info(f"{club.name} - {home_played} - {home_won}")
+               ### check for pending challenge 
+               
+               pending_1=One2one.objects.filter(round_num__lte=round["round_num"], squad_1=club, squad_2=my_club, status='pending').count()
+               pending_2=One2one.objects.filter(round_num__lte=round["round_num"], squad_1=my_club, squad_2=club, status='pending').count()
+               
+               logger.info(f"--{my_club.name} - {pending_1} - {pending_2}")
                #json_tmp=club.serialize() 
                json_tmp={}
-
+               if pending_1+pending_2>0:
+                    json_tmp["pending"]=True
+               else:
+                    json_tmp["pending"]=False 
                json_tmp["club_id"]=club.id 
                json_tmp["club_name"]=club.name 
                

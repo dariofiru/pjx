@@ -201,6 +201,7 @@ class Tmp_lineup_score(models.Model):
 class Lineup(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users_lineup")
     club = models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="club")
+    formation =models.TextField(default="442")
     player_1 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p1", null=True)
     player_2 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p2", null=True)
     player_3 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p3", null=True)
@@ -223,6 +224,7 @@ class Lineup(models.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "formation": self.formation,
             "player_1": self.player_1.name,
             "player_2": self.player_2.name,
             "player_3": self.player_3.name,
@@ -263,6 +265,7 @@ class Table(models.Model):
     score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     round_num = models.PositiveIntegerField(blank=False,null=False)
+    round_id = models.PositiveIntegerField(blank=False,null=False)
     next_round = models.BooleanField(default=False)
 
     def __str__(self) -> str:

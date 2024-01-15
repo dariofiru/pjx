@@ -54,15 +54,15 @@
   <div class="modal-content overlay">
     <span class="close">&times;</span>
       <div class="row">
-        <div class="col">
+        <div class="col p-0">
         <div class="content-main">
         <div id="content-box" class="content-box" style="display:block">
-          <h2 >THE DAILY NEWS</h2>  
+          <h4 >THE DAILY NEWS</h4>  
           <p id="headline-txt">Enthusiastically leverage other's effective users via client-centric </p>
         </div> 
     </div>
       <div class="col text-center">
-         Do you really want to signup this player? <br> 
+         Do you really want to signup <span id="player_buy_name" style="font-weight: bold;"></span>? <br> 
         <button id="confirm_sign_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
         <button id="cancel_sign_btn" onclick="document.getElementById('myModal').style.display='none'" type="button" class="btn btn-secondary p-2">Cancel</button>
       </div>
@@ -107,13 +107,13 @@
 
     <div class="container     " style="  margin:0px;padding:10px;">
     <div class="row  rounded-2   bg-light" style=" border:1px solid black; margin:0px;padding:10px;">
-      <div class="col-4 rounded-2  bg-light">
+      <div class="col-lg-4 col-sm-6   rounded-2  bg-light">
        
 
         <div class="container     text-center">
             <!-- start search box-->
             <div class="container text-bg-secondary rounded-2 ">
-        <div class="row  p-0">
+        <div class="row   p-0">
           <div class="col-md-6 p-1  " > Team:  
           
             <select id="team_search" class=" form-select form-select-sm" aria-label="Default select example">
@@ -168,11 +168,13 @@
         <div class="row pt-2">
            
           <div class="  col-12 text-left p-0 "> 
+
+ 
              <div class="container " >
             <nav  class="text-center" aria-label="...">
               <ul   class="pagination pagination-sm justify-content-center ">
                 <li class="page-item disabled" id="page-item-Previous" value="0">
-                  <a id="page-item-Previous-link" class="page-link" href="#">Previous</a>
+                  <a id="page-item-Previous-link" class="page-link  " href="#">Previous</a>
                 </li>
             
                 <li class="page-item" id="page-item-Next" value="2">
@@ -181,13 +183,14 @@
               </ul>
             </nav>
           </div>
+ 
             <div id="player-list"></div>
           </div>
         </div>
         </div>
         </div>
       
-       <div   id ="canvas_test" class="col-8"> 
+       <div   id ="canvas_test" class="col-lg-8 col-sm-6  " > 
         
     <!-- player positions start-->
     <div class="container   bg-light    text-center "><!--internal-field-->
@@ -217,7 +220,7 @@
              
           <div id="Goalkeeper-1-pic" class="col-2 p-1"></div>
         <div id="Goalkeeper-1" value="ciao"   data-playerid='0' 
-         class="col  p-1 player-box-market rounded-2 bg-danger-subtle text-black"  style="font-weight: bold;" >Goalkeeper 1</div>
+         class="col text-wrap p-1 player-box-market rounded-2 bg-danger-subtle text-black"  style="font-weight: bold;" >Goalkeeper 1</div>
          <div id="Goalkeeper-1-close" data-playerid='0' class="col-1 p-1" style="display:none;"><span class='close' >&times;</span> </div>
         </div>
         <div class="row w-100 ">
@@ -370,7 +373,9 @@
               
               
               
-                            <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">s</div>
+                            <div id="det_player_name" class="fs-5 text-white " style="font-weight:bold;margin:1px">Loading...</div>
+                            <div id="det_player_squad_name" class="fs-6 text-white " style="margin:1px"></div>
+                            
             </div>
             <div class="col-2"> </div>
           </div>
@@ -411,7 +416,7 @@
 </div>
 </div>
  
-<br><hr> 
+ 
 
 
  

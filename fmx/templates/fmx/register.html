@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
      
     logo.addEventListener('click', chosen_logo, false);
     logo.addEventListener('hoover', hoover_pic, false);
-    let chance = Math.floor(Math.random() * 7) + 1;
+    let chance = Math.floor(Math.random() * 8) + 1;
     console.log(chance)
     if(chance<3){
         box.append(logo)
@@ -32,25 +32,24 @@ function chosen_logo()  {
     img.src=event.target.src
     img.style.display='block'
     var tst = document.getElementById("reg_form");
+    return false;
 }
 function hoover_pic(){
     event.target.style.border="2px solid black"
 }
 });
 </script>
-<div class="container-fluid text-info     " style="background-image: url('static/fmx/bg_3.jpg');"> 
-
-    <div class=" col   center    " style="  margin: 0px;padding:0px;">
-
-    <h2 class="text-black">Register</h2>
+<!--background-image: url('static/fmx/bg_3.jpg');-->
+<div class="container-fluid text-info center  big_ball_img" style="height:800px">
+    
+    <div class=" col    center    " style="  margin: 0px;padding:0px;">
+<div class="row"><div class="col-md-8">
+    <h2 class="text-black"> Register</h2>
 
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
- -- <div class="text-back" style="color:black"> {{what1}}  <hr>  {{what2}}<br>
- 
- <br>
-</div>
+   
 
 
  
@@ -59,55 +58,65 @@ function hoover_pic(){
      
         
      
-    <br><br>
-    <div class="row  ">
-        <div class="col-2"></div>
-        <div class="col-4">
-            
+   
+    <div class="row    bg-light text-center rounded-2 p-4 m-4 opacity-75 text-black" style="border:4px solid green">
+         
+        <div class="col-8 ">
+            <h4 class="text-black">Create your User and Club</h4><br>
 
                  
     <form id="reg_form" action="{% url 'register' %}" method="post">
         <input type="hidden" id="logo_hidden" name="logo" value="">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="club" placeholder="Club Name">
+            <input class="form-control fw-bold" autofocus type="text" name="club" placeholder="Club Name">
         </div><br>
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+            <input class="form-control fw-bold" autofocus type="text" name="username" placeholder="Username">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+            <input class="form-control fw-bold" type="email" name="email" placeholder="Email Address">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <input class="form-control fw-bold" type="password" name="password" placeholder="Password">
         </div>
         <br>
         <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+            <input class="form-control fw-bold" type="password" name="confirmation" placeholder="Confirm Password">
         </div>
         <br>
         <input class="btn btn-success" type="submit" value="Register">
     </form>
      
-    <span style="color:white">Already have an account? <a href="{% url 'login' %}">Log In here.</a></span>
+    
 </div>
 <div class="col-4">
-    <div class="row  text-center">
-        <div class="col-6">
-        <div class="dropdown"> 
-        <button class="dropbtn"> 
-            Select team logo 
-        </button> 
-        <div id="logo_drop" class="dropdown-content btn-primary">     </div> 
-        </div>
-        </div>
-        <div class="col-4"><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img">
-        </div></div>
+   <div class="row" style="height:150px">
+    <div class="col"></div>
+        <div class="col  "><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img">
+        </div></div><div class="row"></div>
+        <div class="row  text-center">
+            <div class="col-12">
+            <div class="dropdown"> 
+            <button class="dropbtn p-2"> 
+                Select club logo 
+            </button> 
+            <div id="logo_drop" class="dropdown-content btn-primary">     </div> 
+            </div>
+            </div></div>
+
+</div>
+</div>
 
 
 </div>
-</div></div>
+<div class="col-md-4 p-4  " style="text-align: center;">
+    <img   src="static/fmx/fmxlogo.jpg" alt="Bootstrap" width="180" style="border-radius: 50%;padding:0px;padding-top:0px; ">
+</div>
+</div>
+
+</div>  
 </div>
 {% endblock %}

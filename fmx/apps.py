@@ -13,8 +13,10 @@ class FmxConfig(AppConfig):
         starter = Starter.objects.first()
         now = timezone.now()
         start = timezone.now().date()
-        Starter.objects.filter(id=starter.id).update(start=datetime.datetime.now(),round_num = round["round_num"]) 
-        #updater.start()
+        #start2 = timezone.make_aware(now, timezone.get_current_timezone())
+        #Starter.objects.filter(id=starter.id).update(start=datetime.datetime.now(),round_num = round["round_num"]) 
+        Starter.objects.filter(id=starter.id).update(start=now,round_num = round["round_num"]) 
+       # updater.start()
 
     # def ready(self):
     #     from .models import Starter, Round

@@ -31,8 +31,30 @@
       </div>
     </div>
   </div>
-</div> Number input
+</div> 
  <!-- END Modal confirming save squad-->
+<!-- The Modal --> <!--confirm/congratulation page for sign-->
+<div id="myModal-lineup" class="modal ">
+  <div class="modal-dialog" role="document" style="height: 800px;">
+  <!-- Modal content -->
+  <div class="modal-content overlay">
+    <div class="modal-body pt-0">
+    <div id="lineup_list" class="rounded-2"> </div>
+    
+         
+    <button id="cancel_sign_btn" onclick="document.getElementById('myModal-lineup').style.display='none'" type="button" class="btn btn-sm btn-secondary m-1 p-2">Cancel</button>
+      </div>
+       
+     
+      
+    </div>
+  </div>
+ </div>
+<!-- The Modal -->
+
+
+
+
 
 <!-- The Modal --> <!--confirm/congratulation page for sign-->
 <div id="myModal" class="modal">
@@ -70,19 +92,18 @@
 
       <div class="container "
         style="   margin:0px;padding:10px;">
-        <div class="row rounded-2       bg-light" style=" border:1px solid black; ">
+        <div class="row rounded-2       bg-light" style=" border:1px solid black;height:900px ">
           <div class="col-4   bg-light">
 
             <div class="container text-center">
               <!-- start search box-->
               <div class="row  text-bg-secondary m-2  pb-2 rounded-2 "  >
                
-                 <div class="col-1"></div>
+                 <div class="col-md-1"></div>
                   <div class="col-10    "> Position:
                     <select id="position_search"
                       class="form-select form-select-sm  "
                       aria-label="Default select example">
-                      <option value="0" selected>All</option>
                       <option value="Goalkeeper" selected>Goalkeepers</option>
                       <option value="Defender">Defenders</option>
                       <option value="Midfielder">Midfielders</option>
@@ -93,12 +114,17 @@
 
               </div>
               <!-- end search box-->
+              <div class="row   "><div class="col text-center ">
+                <button id="current_lineup" type="button"
+                class="btn  btn-sm  btn-success m-1"  >View current lineup</button>
 
-              <div class="row">
 
-                <div class="col-12 text-left  p-0">
+              </div></div>
+              <div class="row    ">
 
-                  <br>
+                <div class="col-12 text-left  ">
+
+                 
                   <div id="player-list"></div>
                 </div>
               </div>
@@ -114,17 +140,29 @@
               <div id="chosen_formation" style="display:none">0</div>
               <button id="352" type="button"
                 class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1"
-                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="3 defenders,
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="3 defenders,
                  5 midfielders,
                   2 attackers">352</button>   
                 <button id="532" type="button"
-                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">532</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="5 defenders,
+                3 midfielders,
+                 2 attackers"
+                >532</button>
                 <button id="442" type="button"
-                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">442</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="4 defenders,
+                4 midfielders,
+                 2 attackers"
+                >442</button>
                 <button id="433" type="button"
-                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1">433</button>
+                class="btn btn-success btn-lg p-2 ps-4 pe-4 m-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="4 defenders,
+                3 midfielders,
+                 3 attackers"
+                >433</button>
 
-                <button id="current_lineup" type="button" class="btn btn-sm btn-outline-dark  ">View   lineup</button>
+                
               </div>
 
               
@@ -133,7 +171,7 @@
               <div class="row  align-items-center   " >
 
                 <div id="Goalkeeper-1" data-playerid='0'
-                      class="col   lineup_box Goalkeeper-1 rounded-3   "
+                      class="col lineup_box Goalkeeper-1 rounded-3   "
                       style="font-weight: bold;"> </div>
 
               </div>
@@ -212,7 +250,7 @@
           <div class="row">
 
             <div class="col-8 text-left border">
-              <div>dsds</div>
+              <div> </div>
             </div>
             <div class="col-4 text-left border">
               <!------------>
@@ -237,22 +275,23 @@
                         style="border:1px solid gray; margin:5px"
                         data-playerid='0' src="#" style="width: 90px;">
                       <div id="det_player_name" class="fs-5 text-white "
-                        style="font-weight:bold;margin:1px">s</div>
+                        style="font-weight:bold;margin:1px"></div>
+                        <div id="det_player_squad_name" class="fs-6 text-white " style="margin:1px"></div>
                     </div>
                     <div class="col-2"></div>
                   </div>
                   <div class="row m-2">
                     <div class="row m-2">
-                      <div id="det_player_1" class="col-6  text-white">x</div>
-                      <div id="det_player_2" class="col-6  text-white">d</div>
+                      <div id="det_player_1" class="col-6  text-white">Loading...</div>
+                      <div id="det_player_2" class="col-6  text-white"></div>
 
                     </div>
                     <div class="container  ">
                       <div
                         class="row m-3 border border-success-subtle  border-white">
 
-                        <div id="stat_player_1" class="col-6 text-white">x</div>
-                        <div id="stat_player_2" class="col-6  text-white">d</div>
+                        <div id="stat_player_1" class="col-6 text-white"></div>
+                        <div id="stat_player_2" class="col-6  text-white"></div>
 
                       </div>
                       <div
@@ -274,11 +313,7 @@
   </div>
 </div>
 
-<br><hr>
-
-<!---<div id="players-list">
-</div>
- --->
+ 
 
 <script>
  

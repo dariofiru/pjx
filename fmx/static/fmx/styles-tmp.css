@@ -22,7 +22,16 @@
   height: 40px;   
   width:40px;
 }
+/* @media (max-width:480px) { 
+  .player-box-market{
+    border:1px solid black;
+     margin: 5px;
+    height: 40px;   
+    width:40px;
+    font-size: 10px;
+  }
 
+ } */
 
 .sidebar {
   height: 100%;
@@ -196,7 +205,7 @@
           width: 0; /* 0 width - change this with JavaScript */
           position: fixed; /* Stay in place */
           z-index: 1; /* Stay on top */
-          top: 0;
+          top: 0px;
           right: 0;
           background-color: black;
           overflow-x: hidden; /* Disable horizontal scroll */

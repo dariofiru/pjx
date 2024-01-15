@@ -1,8 +1,8 @@
 {% extends "fmx/layout.html" %}
 
 {% block body %}
-
-<div class="container-fluid text-info   big_ball_img  " style="background-image: url('static/fmx/bg_3.jpg');height:600px"> 
+<!-- background-image: url('static/fmx/bg_3.jpg');-->
+<div class="container-fluid text-info   big_ball_img  " style="height:600px"> 
 
     <div class=" col   center    " style="  margin: 0px;padding:0px;">
 
@@ -16,11 +16,13 @@
  <br>
 </div> 
         
+     <div class="row"><div class="col-4"></div><div class="col-4 p-4 " style="text-align: center;"> 
+        <img   src="static/fmx/fmxlogo.jpg" alt="FMX Logo" width="120" style="border-radius: 50%;padding:0px;padding-top:0px; ">
+    </div></div>
      
-    <br><br>
     <div class="row  ">
         <div class="col-4"></div>
-        <div class="col-4 bg-light text-center rounded-2 p-4 m-4 opacity-75 text-black" style="border:4px solid green" >
+        <div class="col-4 bg-light text-center rounded-2 p-4  opacity-75 text-black" style="border:4px solid green" >
             
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
@@ -39,9 +41,8 @@
 </div>
  
 </div></div>
-</div>
  
-
+<nav class="navbar   text-bg-success " ></nav>
 
 
  

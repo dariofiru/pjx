@@ -21,7 +21,7 @@
     <div class="row">
       {% if user.is_authenticated %}
       {% if user.club_details.has_squad %}
-      <div class="col-4 ">
+      <div class="col-md-4 ">
         <div class="row ">
           <div class="col m-2"> 
             <div class="card border-success" style="width: 15rem;">
@@ -46,9 +46,10 @@
             </div>
           </div>
         </div></div>
+        
         {% else %} <!-- user has no squad--> 
-        <div class="col-md-2"></div>
-        <div class="col-md-4 ">
+        <div class="col-2"></div>
+        <div class="col  ">
           <div class="row text-center"  >
             <div class="col m-2 text-center">  
               <div class="card border-success" style="width: 22rem;">
@@ -62,9 +63,24 @@
               </div>
             </div>
               </div>
+
+              <div class="col" >
+                <div class="row">
+                <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
+                   
+                  <div class="card-body   ">
+                    <h5 class="card-header    text-bg-success ">Table</h5>
+                    <p id="table_box" class="card-text" style="font-size:12px;">
+                       </p>
+                       <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
+                  </div>
+                </div>
               </div>
               </div>
 
+              </div>
+              </div>
+              
         {% endif %} <!-- user has no squad-->
         {% if  user.club_details.has_lineup %}
         <div class="col-4 ">
@@ -91,7 +107,7 @@
           </div>
         </div></div>
         
-      <div class="col-4   ">
+      <div class="col-md-4   ">
         <div class="row    ">
           <div class="col-md-11 offset-md-1" >
             <div class="row">
@@ -112,7 +128,7 @@
             </div>
            
 
-            </div>{% endif %}
+            </div>
             <div class="col  offset-md-4" >
             <div class="row">
             <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
@@ -131,6 +147,21 @@
       </div>
       
       </div>
+      {% else %} <!-- no lineup yet , showing table-->
+      <div class="col  offset-md-4" >
+        <div class="row">
+        <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
+           
+          <div class="card-body   ">
+            <h5 class="card-header    text-bg-success ">Table</h5>
+            <p id="table_box" class="card-text" style="font-size:12px;">
+               </p>
+               <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
+          </div>
+        </div>
+      </div>
+      </div>
+      {% endif %}
       {% else %} <!--user not auth -->
       <div class="col-8 text-black" > <h3>click here to login</h3></div>
       {% endif %}

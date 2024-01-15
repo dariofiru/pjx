@@ -68,7 +68,8 @@ function get_one2ones(){
                         }
 
                     }
-                    if(i>3){break}
+                    if(i>1){console.log("BREAK!"+i)
+                    break}
                 //next_match.innerHTML=`${squads["lineup_1_name"]} vs ${squads["lineup_2_name"]}`        
             }
         }

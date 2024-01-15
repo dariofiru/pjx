@@ -2,12 +2,15 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-
+    console.log("has_squadmain: "+has_squad)
 previous = document.getElementById("page-item-Previous")
 next = document.getElementById("page-item-Next")
 
 //console.log("p:"+previous_link+ " n: "+next_link)
 next.addEventListener('click', event => {
+    if (next.classList.contains('disabled'))
+        return false;
+    console.log("next first=> p:"+ previous.value+ " n: "+next.value)
     const team_search=document.getElementById("team_search"); 
     const position_search=document.getElementById("position_search");
     const price_search=document.getElementById("price_search"); 
@@ -19,22 +22,25 @@ next.addEventListener('click', event => {
      
     previous.value = previous.value + 1
     next.value = next.value + 1
-    console.log("p:"+ previous.value+ " n: "+next.value)
+    console.log("next after=> p:"+ previous.value+ " n: "+next.value)
     return false;
     });
 previous.addEventListener('click', event => {
+    if (previous.classList.contains('disabled'))
+        return false;
+    console.log("prev=> p:"+ previous.value+ " n: "+next.value)
     const team_search=document.getElementById("team_search"); 
     const position_search=document.getElementById("position_search");
     const price_search=document.getElementById("price_search"); 
     const order_search=document.getElementById("order_search"); 
-    fetchPlayers(next.value, team_search.value, position_search.value, price_search.value, order_search.value)
+    fetchPlayers(previous.value, team_search.value, position_search.value, price_search.value, order_search.value)
     
     previous.value = previous.value - 1
     next.value = next.value - 1
     if(next.value===2){
         previous.classList.add('disabled')
     }
-    console.log("p:"+ previous.value+ " n: "+next.value)
+     
     //fetchPlayers(1, "0", "0", "0", "name") 
     return false;
     });
@@ -97,6 +103,8 @@ async function get_data(){
                 boxclose =document.getElementById(`${club_data[i].position}-close`);
                 let player_box=document.getElementById(`player-${club_data[i]['id']}`);
                 //console.log("=>"+boxclose.innerHTML)
+                box.dataset.price=club_data[i].value
+
                 boxclose.style.display="block"
                 boxclose.dataset.playerid=club_data[i]['id']
                  //boxclose.addEventListener("click", remove_sign(boxclose));
@@ -152,6 +160,8 @@ var sold_list=[]
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
 function sell_player(player_id, box, boxclose, position, empty_position, color){
     var sold_name= box.innerHTML
+    console.log("sold_name"+sold_name)
+    console.log("boxclose: "+boxclose.id)
     var modal = document.getElementById("myModal-sell");
     const content_box=document.getElementById("content-box-sell");
     //const gif=document.getElementById("shaking-gif");
@@ -186,11 +196,11 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
         player['name']= box.innerHTML
         player['position']=position
         sold_list.push(player)
-       
-        console.log(box.innerHTML+" "+boxclose.id+ " - "+ empty_position+" - "+position, " - "+color)
+        add_to_budget=Number(box.dataset.price)
+        console.log("1:"+box.innerHTML+" 2!:"+box.dataset.price+ " - 3:"+ empty_position+" - 4:"+position, " - 5:"+color)
         boxpic =document.getElementById(`${box.id}-pic`);
     boxclose =document.getElementById(box.id+"-close");
-        
+    //initial_budget=initial_budget+        
     boxpic.innerHTML=""
     boxclose.style.display="none"
     boxclose.dataset.playerid="0"
@@ -199,8 +209,16 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     //cd csplayer_box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.dataset.playerid="0"
     box.innerHTML=box.id.replace("-", " ")
+    let pl_value= Number(box.dataset.price)
+    var budget_box=document.getElementById("budget");
+    let curr_budget=Number(budget_box.innerHTML)
+    let remaning_budget = curr_budget+pl_value
+     
+    var budget_box=document.getElementById("budget");
+    budget_box.innerHTML=`${remaning_budget.toFixed(1)}`
+    curr_budget=remaning_budget
     myModal_sell=document.getElementById("myModal-sell").style.display='none';
-
+    
     });
 }
 
@@ -249,11 +267,29 @@ function confirm_sign_player() {
                 headline=headline.replace("*Team*",club_name)
                 headline_txt.innerHTML=headline 
              }
+             const player_buy_name=document.getElementById("player_buy_name");
+             player_buy_name.innerHTML=det_player_name.innerHTML
         }
     );
 
-
+    confirm_sign_btn.dataset.playername=det_player_name.innerHTML     
     confirm_sign_btn.addEventListener('click', event => { // main function for saving the player info
+
+        //// TODO AVOID CALL LOOP
+        // var available = document.getElementsByClassName('player-box-market');
+        // var is_available=false
+        // console.log(event.target.dataset.playername)
+        // console.log(det_player_name.innerHTML)
+        // for(var index=0;index < available.length;index++){
+        //     //console.log(available[index].innerHTML);
+        //     let available_txt=available[index].innerHTML
+        //    // console.log(available_txt.includes(`${det_player_position.innerHTML}`))
+        //     if(available_txt.includes(`${det_player_position.innerHTML}`)==true)
+        //         is_available=true
+        // }
+        //if(is_available==false)
+           // alert("no space")
+
         const content_box=document.getElementById("content-box");
        // const gif=document.getElementById("shaking-gif");
         content_box.style.display='block'
@@ -275,12 +311,13 @@ function confirm_sign_player() {
         let why = det_player_name.innerHTML
         
         let box =document.getElementById("Goalkeeper-1");
-        console.log("=>"+box.innerHTML) 
+       
         // let player_box=document.getElementById(`player-${det_player_id.innerHTML}`);
         // // modifing player box design and funcionality
         // player_box.classList.remove('bg-danger-subtle');
         // player_box.classList.add('bg-danger','text-white');
-
+        let player_box_price=document.getElementById(`player-${det_player_id.innerHTML}`);
+        box.dataset.price=player_box_price.dataset.price
         if(box.innerHTML==="Goalkeeper 1"){
             let position=box.innerHTML
             boxpic =document.getElementById("Goalkeeper-1-pic");
@@ -442,7 +479,7 @@ function confirm_sign_player() {
 
 
 function remove_sign(player_box, box, boxclose, position, empty_position, color){
-    console.log(boxclose.dataset.playerid+ " - "+ empty_position+" - "+player_box)
+    console.log("1:"+boxclose.dataset.playerid+ " - 2:"+ empty_position+" - 3;"+player_box)
     //lineupDelete_players
     boxpic =document.getElementById(`${position}-pic`);
     boxclose =document.getElementById(position+"-close");
@@ -479,15 +516,27 @@ const position_search=document.getElementById("position_search");
 const price_search=document.getElementById("price_search"); 
 const order_search=document.getElementById("order_search"); 
 team_search.addEventListener("change", function() {
+   next.value=2
+   previous.value=0
+   previous.classList.add('disabled')
    fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
 position_search.addEventListener("change", function() {
+    next.value=2
+    previous.value=0
+    previous.classList.add('disabled')
     fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
 price_search.addEventListener("change", function() {
+    next.value=2
+    previous.value=0
+    previous.classList.add('disabled')
     fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
 order_search.addEventListener("change", function() {
+    next.value=2
+    previous.value=0
+    previous.classList.add('disabled')
     fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
 // listener for save team (temporary)
@@ -503,7 +552,11 @@ save_btn.addEventListener("click", function() {
     var lineupDelete = [];
     for (var i = 1; i < 3; i++) {
         let box = document.getElementById(`Goalkeeper-${i}`);
-        console.log("json: "+box.innerHTML)
+        console.log("json: "+box.innerHTML+ " *" + box.innerHTML.includes("Goalkeeper"))
+        if(box.innerHTML.includes("Goalkeeper")){
+            alert("Please fill up all positions")
+            return;
+        }
         jsonSquad.push({ position: `Goalkeeper-${i}`,id: box.dataset.playerid});
         console.log(box.dataset.playerid+ " - " +list_lineup.includes(`box.dataset.playerid`))
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
@@ -513,6 +566,10 @@ save_btn.addEventListener("click", function() {
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Defender-${i}`);
         console.log("json: "+box.innerHTML)
+        if(box.innerHTML.includes("Defender")){
+            alert("Please fill up all positions")
+            return;
+        }
         jsonSquad.push({ position: `Defender-${i}`, id: box.dataset.playerid });
         console.log(box.dataset.playerid+ " - " +list_lineup.includes(Number(box.dataset.playerid)))
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
@@ -521,6 +578,10 @@ save_btn.addEventListener("click", function() {
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Midfielder-${i}`);
         console.log("json: "+box.innerHTML)
+        if(box.innerHTML.includes("Midfielder")){
+            alert("Please fill up all positions")
+            return;
+        }
         jsonSquad.push({position: `Midfielder-${i}`, id: box.dataset.playerid});
         console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
@@ -530,6 +591,10 @@ save_btn.addEventListener("click", function() {
         let box = document.getElementById(`Attacker-${i}`);
         console.log("json: "+box.innerHTML)
         jsonSquad.push({ position: `Attacker-${i}`, id: box.dataset.playerid});
+        if(box.innerHTML.includes("Attacker")){
+            alert("Please fill up all positions")
+            return;
+        }
         console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
@@ -538,23 +603,10 @@ save_btn.addEventListener("click", function() {
     let curr_budget=Number(budget_box.innerHTML)  
     
     modal_box=document.getElementById('Modal-saved-squad')
-    console.log("has_squad: "+has_squad)
      
-     if(has_squad){
-        console.log("qui")
-        document.getElementById('upd_squad_msg').style.display='block'
-        document.getElementById('new_squad_msg').style.display='none'
-    }else{
-        console.log("ecco")
-        upd_squad_msg=document.getElementById('upd_squad_msg')
-        upd_squad_msg.style.display='none'
-        console.log("upd=>"+upd_squad_msg.innerHTML)
-        new_squad_msg=document.getElementById('new_squad_msg')
-        new_squad_msg.style.display='block'
-        console.log("new=>"+new_squad_msg.innerHTML)
-    }
+     
     document.getElementById('Modal-saved-squad').style.display='block'
-
+    console.log("has_squad1: "+has_squad)
 
 
     fetch(`/save_squad`, {
@@ -568,22 +620,25 @@ save_btn.addEventListener("click", function() {
             curr_budget:curr_budget,
             lineupDelete: sold_list
         })
-    }).then(response=>response.text())
-     .then(data=>{ console.log("hello "+data); 
+    })//.then(response=>response.text())
+    // .then(data=>{ console.log("hello "+data); 
 
     modal_box=document.getElementById('Modal-saved-squad')
     console.log("has_squad: "+has_squad)
-    // if(has_squad){
-    //     document.getElementById('upd_squad_msg').style.display='block'
-    //     document.getElementById('new_squad_msg').style.display='none'
-    // }else{
-    //     document.getElementById('upd_squad_msg').style.display='none'
-    //     document.getElementById('new_squad_msg').style.display='block'
-    // }
+    if(has_squad==true){
+        console.log("1: "+has_squad)
+        document.getElementById('upd_squad_msg').style.display='block'
+        document.getElementById('new_squad_msg').style.display='none'
+    }else{
+        console.log("2: "+has_squad)
+        document.getElementById('upd_squad_msg').style.display='none'
+        document.getElementById('new_squad_msg').style.display='block'
+    }
     document.getElementById('Modal-saved-squad').style.display='block'
     // console.log("Modal?")
- })
     return false;
+// })
+     
     //console.log(JSON.stringify(jsonSquad))
 });
 
@@ -615,6 +670,7 @@ async function get_player_details(id){
 
     const det_player_photo=document.getElementById("det_player_photo");
     const det_player_name=document.getElementById("det_player_name");
+    const det_player_squad_name=document.getElementById("det_player_squad_name");
     const det_player_position=document.getElementById("det_player_position");
     const det_player_1=document.getElementById("det_player_1");
     const det_player_2=document.getElementById("det_player_2");
@@ -639,6 +695,7 @@ async function get_player_details(id){
             det_player_position.innerHTML=`${player_data[i].position}`
             
             det_player_name.innerHTML=`${player_data[i].name}`
+            det_player_squad_name.innerHTML=`${player_data[i].team_name} <img src="${player_data[i].teamlogo}" width="40px">`
             det_player_1.innerHTML=`<b>Position:</b> ${player_data[i].position}<br><br>
             <b>Nationality:</b> ${player_data[i].nationality} `;
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
@@ -713,7 +770,16 @@ async function fetchPlayers(page, team, position, price, order) {
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
-                //console.log(player)
+                console.log(player)
+                tot_pages=player[0].pages
+                if(page===tot_pages){
+                     next.classList.add('disabled')
+
+                }else{
+                    if (next.classList.contains('disabled'))
+                    next.classList.remove('disabled')
+                }
+                console.log(page+" "+tot_pages)
                 const player_list= document.getElementById('player-list')
                 player_list.innerHTML=""
                 for (var i in player) {
@@ -737,7 +803,7 @@ async function fetchPlayers(page, team, position, price, order) {
                     
                     const player_name = document.createElement("div");
                     player_name.id=`player-${player[i].id}`
-                    
+                    player_name.dataset.price=player[i].value
                     player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                             
                     player_name.style.padding="0px"
@@ -775,9 +841,9 @@ async function fetchPlayers(page, team, position, price, order) {
                     <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" >
                     </div>
                     <div class="col-6 m-0 p-0 lh-sm text-start">
-                      ${player[i].position}<br>
+                      ${player[i].position}   <br>
                       $ ${player[i].value} <br>
-                         hello
+                      <span style="font-size:11px"><b>${player[i].team_name}</b></span>
                       </div>
                       <div id="add_box-${player[i].id}" class="col-md-3 text-center  ">
                      
@@ -807,7 +873,7 @@ async function fetchPlayers(page, team, position, price, order) {
                         show_details_btn.style.margin="5px"
                         show_details_btn.addEventListener('click', event => {
                             const side_nav=document.getElementById("mySidenav");
-                       
+                            console.log("called:" + side_nav.style.width + " - "+side_nav.innerHTML)
                             if(side_nav.style.width==="0px"){
                                 get_player_details(event.target.id)
                                 document.getElementById("mySidenav").style.width = "340px";
@@ -913,72 +979,6 @@ get_data()
     span.style.display = "none";
   }
 
-function fillup_squad(position, player_name, player_id, photo, value){
-    if(position==="Goalkeeper"){
-        let why = player_name
- 
-        let box =document.getElementById("Goalkeeper-1");
-         
-     
-        if(box.innerHTML==="Goalkeeper 1"){
-            let position=box.innerHTML
-            boxpic =document.getElementById("Goalkeeper-1-pic");
-            boxclose =document.getElementById("Goalkeeper-1-close");
-            let player_box=document.getElementById(`player-${player_id}`);
-            boxclose.style.display="block"
-            boxclose.dataset.playerid=player_id
-            boxclose.onclick = () => { remove_sign(player_box,box, boxclose,  "Goalkeeper-1", "Goalkeeper 1", "danger"); };
-            //boxclose.addEventListener("click", remove_sign(boxclose));
-            boxpic.innerHTML=`<img src="${photo}" style="width:35px;border-radius: 50%;border:1px solid black">`
-            box.innerHTML=player_name
-            box.dataset.playerid=player_id
-            box.classList.remove('bg-danger-subtle','text-black')
-            box.classList.add('bg-danger','text-white') 
-
-            // modifing player box design and funcionality
-           // player_box.classList.remove('bg-danger-subtle');
-           // player_box.classList.add('bg-danger','text-white');
-           // modal.style.display = "none";
-
-             
-
-            return false
-        }
-        else if (box.innerHTML === why) {
-             
-            return false
-        }
-        box =document.getElementById("Goalkeeper-2");
-        if(box.innerHTML==="Goalkeeper 2"){
-            boxpic =document.getElementById("Goalkeeper-2-pic");
-            boxclose =document.getElementById("Goalkeeper-2-close");
-            let player_box=document.getElementById(`player-${player_id}`);
-            boxclose.style.display="block"
-            boxclose.dataset.playerid=player_id
-            boxclose.onclick = () => { remove_sign(player_box,box, boxclose,  "Goalkeeper-2", "Goalkeeper 2", "danger"); };
-
-            boxpic.innerHTML=`<img src="${photo}" style="width:35px;border-radius: 50%;border:1px solid black">`
-            boxclose =document.getElementById("Goalkeeper-2-close");
-            box.innerHTML=player_name
-            box.dataset.playerid=player_id
-            box.classList.remove('bg-danger-subtle','text-black')
-            box.classList.add('bg-danger','text-white') 
-            //player_box.classList.remove('bg-danger-subtle');
-           // player_box.classList.add('bg-danger','text-white');
-
-              
-                return false
-        }
-        else if (box.innerHTML === why) {
-            
-            return false
-        }
-                    console.log("full")
-     } // end goalkeeper
-
-
-
-}
 
 
 });

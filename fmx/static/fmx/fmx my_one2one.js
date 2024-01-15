@@ -484,6 +484,19 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                 return response.text()
                             }).then(data => {
                                  console.log("here") 
+                                 fetch( "random_headline/sell")
+                                 .then(response => response.text())
+                                 .then(text => {
+                                          const headline_txt=document.getElementById("headline-txt");
+                                          var headline = JSON.parse(text);
+                                          for (var i in headline) {
+                                             headline = headline[i]
+                                             //headline=headline.replace("*AX*",sold_name)
+                                            // headline=headline.replace("*BX*",club_name) 
+                                             headline_txt.innerHTML=headline 
+                                          }
+                                     }
+                                 );
                                  var spinner=document.getElementById("spinner"); 
                                  spinner.style.display='none' 
                                  var view_chall_btn=document.getElementById("view_chall_btn");  

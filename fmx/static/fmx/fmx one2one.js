@@ -15,6 +15,7 @@ function get_matches(){
             }else{
                 //console.log(text)
                 var matches = JSON.parse(text);
+                console.log(matches)
                 var table_box=document.getElementById("table_box");
                 var clubs=matches.length
                 var row =  document.createElement('div')
@@ -56,7 +57,15 @@ function get_matches(){
                         modal.style.display='block'
                         console.log("?>"+event.target.dataset.clubname)
                     });
+                    console.log(matches[i].pending)
+                    if(matches[i].pending==='false'){
+                        var pending_box =document.createElement('div')
+                        pending_box.innerHTML="<b>Challenge pending</b>"
+                        data.append(pending_box)
+                    }else{
+                        console.log(matches[i].pending)
                     data.append(chall_btn)
+                }
                     var away_score=document.createElement('td')
                     var div2 =document.createElement('td')
                     card.append(logo)

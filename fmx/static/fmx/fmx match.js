@@ -21,16 +21,28 @@ function get_matches(){
                     var away_team =document.createElement('div')
                     var home_score=document.createElement('div')
                     var away_score=document.createElement('div')
+                    var home_logo=document.createElement('img')
+                    var away_logo=document.createElement('img')
+                    var home_logo_div=document.createElement('div')
+                    var away_logo_div=document.createElement('div')
+                    home_logo.style.width="30px"
+                    away_logo.style.width="30px"
+                    home_logo.src=matches[i].img_1
+                    away_logo.src=matches[i].img_2
+                    home_logo_div.classList.add("col-1")
+                    away_logo_div.classList.add("col-1")
+                    home_logo_div.append(home_logo)
+                    away_logo_div.append(away_logo)
                     var div2 =document.createElement('div')
                     home_team.classList.add('text-end')
                     table_row.classList.add('row',    'bg-light')
                     table_row.style.margin="10px"
-                    home_team.classList.add('col-2', 'text-end' )
-                    away_team.classList.add('col-2', 'text-start' )
+                    home_team.classList.add('col-md-2', 'text-center' )
+                    away_team.classList.add('col-md-2', 'text-center' )
                     home_score.classList.add('col-md-1')
                     away_score.classList.add('col-md-1')
-                    div1.classList.add('col-3')
-                    div2.classList.add('col-3', 'text-start' ) 
+                    div1.classList.add('col-2')
+                    div2.classList.add('col-2', 'text-start' ) 
                     home_team.innerHTML=matches[i].lineup_1_name;
                     away_team.innerHTML=matches[i].lineup_2_name;
                     home_score.innerHTML=matches[i].score_1;
@@ -54,7 +66,7 @@ function get_matches(){
                         home_score.classList.add('border','bg-success-subtle')
                         away_score.classList.add('border','bg-success-subtle')
                         var stats_btn =document.createElement('button')
-                        stats_btn.classList.add('btn', 'btn-sm',  'btn-outline-success')
+                        stats_btn.classList.add('btn', 'btn-sm',  'btn-outline-success', 'd-block')
                         stats_btn.innerHTML="View Stats"
                         stats_btn.dataset.matchid=matches[i].id
                         stats_btn.dataset.club1=matches[i].lineup_1_name
@@ -389,10 +401,12 @@ function get_matches(){
                         
                     }
                     table_row.append(div1)
+                    table_row.append(home_logo_div)
                     table_row.append(home_team)
                     table_row.append(home_score)
                     table_row.append(away_score)
                     table_row.append(away_team)
+                    table_row.append(away_logo_div)
                     table_row.append(div2)
                     
                     table_box.append(table_row)
