@@ -33,8 +33,9 @@ class Club_details(models.Model):
 class Starter(models.Model):
     start =  models.DateTimeField(auto_now_add=True)
     round_num = models.PositiveIntegerField(blank=True,null=True)
+    #table_round = models.PositiveIntegerField(blank=True,null=True)
     def __str__(self) -> str:
-        return f"start: {self.start} -  {self.round_num} "
+        return f"start: {self.start} -  {self.round_num}  "
 
     def serialize(self):
         return {

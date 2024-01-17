@@ -35,11 +35,13 @@ def get_next_match(request):
      round = Round.objects.filter(next=True).values("round_num").first()
      user_club = User_club.objects.filter(user=request.user).first() 
      try:
-          home_played = Table.objects.filter(round_num=round["round_num"], squad_1=user_club).get()
+         # home_played = Table.objects.filter(round_num=round["round_num"], squad_1=user_club).get()
+           next_match = Table.objects.filter(next_round=True, squad_1=user_club).get()
      except Table.DoesNotExist:
-          home_played = Table.objects.filter(round_num=round["round_num"], squad_2=user_club).get()
-     logger.info(f"{round} - {user_club} - {home_played}")
-     json_final=home_played.serialize()
+         # home_played = Table.objects.filter(round_num=round["round_num"], squad_2=user_club).get()
+           next_match = Table.objects.filter(next_round=True, squad_2=user_club).get()
+     logger.info(f"qui {round} - {user_club} - {next_match}")
+     json_final=next_match.serialize()
      return JsonResponse(json_final, safe=False)
 
 def get_table(request):
@@ -54,18 +56,22 @@ def get_table(request):
                club= User_club.objects.filter(user=club_det.user).get()
                json_tmp=club.serialize()
                round = Round.objects.filter(current=True).values("round_num").first()
-               home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
+               table_round = Table.objects.filter(next_round=True).first()
+               #home_played = Table.objects.filter(round_num__lte=round["round_num"], squad_1=club).count()
+               home_played = Table.objects.filter(id__lt=table_round.id, squad_1=club).count()
                home_won=0
                if home_played>0:
-                    home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2'), squad_1=club).count()
-               
-               away_played = Table.objects.filter(round_num__lte=round["round_num"], squad_2=club).count()
+                    #home_won=Table.objects.filter(round_num__lte=round["round_num"], score_1__gte=F('score_2'), squad_1=club).count()
+                    home_won=Table.objects.filter(round_id__lt=table_round.round_id, score_1__gte=F('score_2'), squad_1=club).count()
+                    logger.info(f"Home:{table_round.round_id} {club.name} - {home_played} - {home_won}")
+               away_played = Table.objects.filter(id__lt=table_round.id, squad_2=club).count()
                away_won=0
                if away_played>0:
-                    away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1'), squad_2=club).count()
-               
+                    away_won=Table.objects.filter(round_id__lt=table_round.round_id, score_2__gt=F('score_1'), squad_2=club).count()
+                    logger.info(f"away:{table_round.round_id}  {club.name} - {away_played} - {away_won}")
                total_played = home_played+away_played
-               #logger.info(f"{club.name} - {home_played} - {home_won}")
+               
+               
                json_tmp=club.serialize() 
                json_tmp["elo"]=club_det.elo
                json_tmp["home_played"]=home_played
@@ -84,16 +90,18 @@ def previous_results(request):
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
         lineup = Lineup.objects.filter(active=True,user=request.user ).first()
+        table_round = Table.objects.filter(next_round=True).first()
         round = Round.objects.filter(current=True).values("round_num").first() # retrieve round number 
         round_num__gt=round["round_num"]
-        games = Table.objects.filter(round_num__lt=round["round_num"],lineup_1= lineup).all() # retrieve all the matches in round
+        games = Table.objects.filter(id__lt=table_round.id-1,lineup_1= lineup).all() # retrieve all the matches in round
         
           
-def round_results(request): # returns winner/looser for each round and updates ELO TOFIX
+def round_results(request): # returns winner/looser for each round  
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
         round = Round.objects.filter(current=True).values("round_num").first() # retrieve round number 
-        games = Table.objects.filter(round_num=round["round_num"]).all() # retrieve all the matches in round
+        table_round = Table.objects.filter(next_round=True).first()
+        games = Table.objects.filter(round_id=table_round.round_id-1).all() # retrieve all the matches in round
         #logger.info(f"round: {round}")
         json_final =[]
         for game in games: # retrive lineup scores, user and team data
@@ -178,11 +186,7 @@ def create_table(request, id):
 
     round_id=round_id+1
     ################
-    
-
-
-
-    logger.info(f'Round {1}:')
+  
         #logger.info(f'  {team_list_A[i]} vs {team_list_B[i]}')
     for w in range(1,team_count-1):
         last_team=team_list_main[team_count-1]

@@ -190,14 +190,29 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
              }
         }
     );
+    confirm_sell_btn.dataset.playername=sell_player_name.innerHTML
+    confirm_sell_btn.dataset.playerid=sell_player_id.innerHTML
     confirm_sell_btn.addEventListener('click', event => {
+        console.log()
+        let player_box_sold=document.getElementById(`player-${event.target.dataset.playerid}`);
+        if(player_box_sold!=null){
+            console.log("1:"+player_box_sold.innerHTML )
+            player_box_sold.classList.add(`bg-${color}-subtle`,`text-black`)
+            player_box_sold.classList.remove(`bg-${color}`,`text-white`) 
+        }
+        
+        var available = document.getElementsByClassName('player-box-market');
+        console.log(event.target.dataset.playername)
+        if(event.target.dataset.playername!==box.innerHTML){
+            return false;
+        }
         var player = {}
         player['id'] = box.dataset.playerid
         player['name']= box.innerHTML
         player['position']=position
         sold_list.push(player)
         add_to_budget=Number(box.dataset.price)
-        console.log("1:"+box.innerHTML+" 2!:"+box.dataset.price+ " - 3:"+ empty_position+" - 4:"+position, " - 5:"+color)
+        
         boxpic =document.getElementById(`${box.id}-pic`);
     boxclose =document.getElementById(box.id+"-close");
     //initial_budget=initial_budget+        
@@ -276,19 +291,21 @@ function confirm_sign_player() {
     confirm_sign_btn.addEventListener('click', event => { // main function for saving the player info
 
         //// TODO AVOID CALL LOOP
-        // var available = document.getElementsByClassName('player-box-market');
-        // var is_available=false
-        // console.log(event.target.dataset.playername)
+         var available = document.getElementsByClassName('player-box-market');
+         var is_available=false
+         console.log(event.target.dataset.playername)
         // console.log(det_player_name.innerHTML)
-        // for(var index=0;index < available.length;index++){
-        //     //console.log(available[index].innerHTML);
-        //     let available_txt=available[index].innerHTML
-        //    // console.log(available_txt.includes(`${det_player_position.innerHTML}`))
-        //     if(available_txt.includes(`${det_player_position.innerHTML}`)==true)
-        //         is_available=true
-        // }
-        //if(is_available==false)
-           // alert("no space")
+         for(var index=0;index < available.length;index++){
+            //console.log(available[index].innerHTML);
+            let available_txt=available[index].innerHTML
+           // console.log(available_txt.includes(`${det_player_position.innerHTML}`))
+            if(available_txt.includes(`${det_player_position.innerHTML}`)==true)
+                is_available=true
+            if(available_txt.includes(`${event.target.dataset.playername}`)==true)
+                return false;
+        }
+        if(is_available==false)
+           alert("no space")
 
         const content_box=document.getElementById("content-box");
        // const gif=document.getElementById("shaking-gif");
@@ -942,6 +959,25 @@ async function fetchPlayers(page, team, position, price, order) {
                         const det_player_position=document.getElementById("det_player_position");
                         det_player_position.innerHTML=player_position
                         console.log(`${player_fullname}:${player_value} - ${photo}`)
+
+                        var available = document.getElementsByClassName('player-box-market');
+                        var is_available=false
+                        console.log(player_fullname)
+                       // console.log(det_player_name.innerHTML)
+                        for(var index=0;index < available.length;index++){
+                           //console.log(available[index].innerHTML);
+                           let available_txt=available[index].innerHTML
+                          // console.log(available_txt.includes(`${det_player_position.innerHTML}`))
+                           if(available_txt.includes(`${player_position}`)==true)
+                               is_available=true
+                           if(available_txt.includes(`${player_fullname}`)==true)
+                               return false;
+                       }
+                       if(is_available==false){
+                          alert(`${player_position}s already filled`)
+                          return false;
+                       }
+
                         confirm_sign_player()
                         //buyPlayer(player_id, player_value,player_position, player_fullname);
                         return false;

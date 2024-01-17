@@ -255,13 +255,13 @@ def get_one2one_teams(request):
                     away_won=Table.objects.filter(round_num__lte=round["round_num"], score_2__gt=F('score_1'), squad_2=club).count()
                     logger.info(f"away_won: {away_won}")
                total_played = home_played+away_played
-               logger.info(f"{club.name} - {home_played} - {home_won}")
+               #logger.info(f"{club.name} - {home_played} - {home_won}")
                ### check for pending challenge 
                
-               pending_1=One2one.objects.filter(round_num__lte=round["round_num"], squad_1=club, squad_2=my_club, status='pending').count()
-               pending_2=One2one.objects.filter(round_num__lte=round["round_num"], squad_1=my_club, squad_2=club, status='pending').count()
+               pending_1=One2one.objects.filter(squad_1=club, squad_2=my_club, status='pending').count()
+               pending_2=One2one.objects.filter(squad_1=my_club, squad_2=club, status='pending').count()
                
-               logger.info(f"--{my_club.name} - {pending_1} - {pending_2}")
+               logger.info(f"--{club.name} - {pending_1} - {pending_2}")
                #json_tmp=club.serialize() 
                json_tmp={}
                if pending_1+pending_2>0:

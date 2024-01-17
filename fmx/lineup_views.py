@@ -12,6 +12,7 @@ import requests
 import http.client
 import datetime
 from . import table_views 
+from django.db.models import Q
 from .models import Team, Player, Club_details, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
 # Create your views here.
 
@@ -295,19 +296,25 @@ def check_for_round_data():
      downloaded_fixture=Fixture_round.objects.filter(fixture=fixture).count()
      logger.info(f'downloaded_fixture: {downloaded_fixture} ')
      if downloaded_fixture==0:
-          calculate_round(round)
+          calculate_round(round) # dowloads fixture data from server if is not already downloaded
      get_fixture_ratings(round) # calculate players score 
-     lineup_scores(round)
-     calculate_results(round)
+     lineup_scores(round) # adds players score for each active lineup
+     if downloaded_fixture==0:
+          calculate_results(round) # calculates winner/looser for each match in round and updates elo
+     next_round_id=Table.objects.filter(next_round=True).first()
+    
+     Table.objects.filter(round_id=next_round_id.round_id).update(next_round=False)
+     
+     Table.objects.filter(round_id=next_round_id.round_id+1).update(next_round=True)
+      
      logger.info(f'new data available for round: {round} ')
     # return HttpResponse(json.dumps({"round":round, "status":"ok"}), content_type="application/json")     
 
-def calculate_results(round): # returns winner/looser for each round and updates ELO TOFIX
+def calculate_results(round): # returns winner/looser for each round and updates ELO  
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger('fmx')
-        #round = Round.objects.filter(current=True).values("round_num").first() # retrieve round number 
-        games = Table.objects.filter(round_num=round).all() # retrieve all the matches in round
-        logger.info(f"calculate_results round: {round}")
+        #games = Table.objects.filter(round_num=round).all() # retrieve all the matches in round
+        games = Table.objects.filter(next_round=True).all() # retrieve all the matches in round
         logger.info(f"calculate_results games: {games}")
         json_final =[]
         for game in games: # retrive lineup scores, user and team data
@@ -316,11 +323,10 @@ def calculate_results(round): # returns winner/looser for each round and updates
                  lineup_1 = Lineup.objects.filter(id=game.lineup_1.id).values("score")
                  user_1 = Lineup.objects.filter(id=game.lineup_1.id).values("user")
                  score_1=lineup_1[0]['score']
-                 
                  Table.objects.filter(pk=game.id).update(score_1=score_1)
             except Team.DoesNotExist:
                  pass
-            #logger.info(f"{lineup_1} - {score_1}")
+            logger.info(f"lineup 1: {lineup_1} - {score_1}")
 
             try:
                  lineup_2 = Lineup.objects.filter(id=game.lineup_2.id).values("score")
@@ -330,9 +336,9 @@ def calculate_results(round): # returns winner/looser for each round and updates
                  Table.objects.filter(pk=game.id).update(score_2=lineup_2)
             except Team.DoesNotExist:
                  pass
+            logger.info(f"lineup 2: {lineup_2} - {score_2}")
                
             elo_1 = Club_details.objects.filter(user__in=user_1).values('elo').first()
-            
             elo_2 = Club_details.objects.filter(user__in=user_2).values('elo').first()
            # logger.info(f"{elo_1} - {elo_2}")     
             if score_1>=score_2:
@@ -344,7 +350,7 @@ def calculate_results(round): # returns winner/looser for each round and updates
                   new_elo_2=new_elos[0]
                   new_elo_1=new_elos[1]
             probability=new_elos[2]
-            Table.objects.all().update(next_round=False)
+           # Table.objects.all().update(next_round=False)
             #Table.objects.filter(pk__gt=game.id, round=round+1).update(next_round=True)
             Club_details.objects.filter(user__in=user_1).update(elo=new_elo_1)
             Club_details.objects.filter(user__in=user_2).update(elo=new_elo_2)
@@ -355,10 +361,7 @@ def calculate_round(id): # downloads from API all players stats for fixures in r
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      team_list="empty"
-     #players= Player.objects.all()
-     #for player in players:
      teams= Team.objects.filter(active=True) 
-     #teams=Team.objects.all()
      logger.info(f'download calculate_round: {id} ')
      call = 0
      for team in teams:
@@ -381,11 +384,8 @@ def calculate_round(id): # downloads from API all players stats for fixures in r
           players_data= response.text 
           players_data = players_data.replace('null', '0' )
           players_data=json.loads(players_data)
- 
-
           for players in players_data['response']:
                 for i in range(len(players['players'])):
-                         
                          team_list=team_list+ " " + players['players'][i]['player']['name'] + " "  +str(players['players'][i]['player']['id'])
                          try: 
                               player = Player.objects.filter(id=players['players'][i]['player']['id']).first()
@@ -393,15 +393,13 @@ def calculate_round(id): # downloads from API all players stats for fixures in r
                               pass
                          try: 
                                new_fixture_round=Fixture_round(
-                                    fixture=fixture,
-                                    player = player,
+                                    fixture=fixture, player = player,
                                      rating = players['players'][i]['statistics'][0]['games']['rating'],
                                      goals = players['players'][i]['statistics'][0]['goals']['total'], 
                                      conceded = players['players'][i]['statistics'][0]['goals']['conceded'],
                                      assists = players['players'][i]['statistics'][0]['goals']['assists'],
                                      yellowcard = players['players'][i]['statistics'][0]['cards']['yellow'],
-                                     redcard =  players['players'][i]['statistics'][0]['cards']['red']
-                                    )
+                                     redcard =  players['players'][i]['statistics'][0]['cards']['red'] )
                                new_fixture_round.save()
                          except IntegrityError:
                                 pass
@@ -413,7 +411,7 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
      logger = logging.getLogger('fmx')
      tst=""
      fixture_rounds = Fixture_round.objects.filter(rating=Decimal('0.0')).all()
-     for fixture_round in fixture_rounds:
+     for fixture_round in fixture_rounds: # make sure all fields are populated
           fixture_round.rating=Decimal('6.0')
           fixture_round.save()
   
@@ -421,7 +419,6 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
      logger.info(f'calculating ratings round: {round}')
      for fixture in fixtures:
           fixture_rounds = Fixture_round.objects.filter(fixture=fixture).all()
-
           for fixture_round in fixture_rounds:
                
                try: 
@@ -433,15 +430,14 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     player_data=Player.objects.filter(pk=fixture_round.player.id).first()
                     if score>=player_data.rating:
                          if fixture_round.player.position=='Goalkeeper':
-                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.1'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value+Decimal('0.4'))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value+Decimal('0.2'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value+Decimal('0.5'))
                     elif score<player_data.rating:
                          if fixture_round.player.position=='Goalkeeper':
                               Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.1'))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.2'))
-                    
+                              Player.objects.filter(pk=fixture_round.player.id).update(current_value=player_data.current_value-Decimal('0.3'))
                     #logger.info(f'score: {score} rating: {player_data.rating} - {score/2}>={player_data.rating-0.5}')
                except TypeError:
                  pass
@@ -450,14 +446,12 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
 def lineup_scores(id): # calculates total point for each lineup/round
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx') 
-     lineups= Lineup.objects.filter(active=True).all() #to fix and test only active lineups
+     lineups= Lineup.objects.filter(Q(active=True)|Q(ai=True)).all() # retrieve all active lineups and assign score
      fixtures= Fixture.objects.filter(round_num=id).all()
-      
      scores = []
      for fixture in fixtures:
           for lineup in lineups:
                     team_score= Decimal('0.0')
-                    #Player.objects.filter(f"player_{x}"=f"player_{x}")
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_1).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_1.rating)
@@ -474,7 +468,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                     except Fixture_round.DoesNotExist: 
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_3.rating)
                     try:
-                         logger.info(f"error:{fixture} - {lineup.player_4}")
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_4).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_4.rating)
                     except Fixture_round.DoesNotExist: 
@@ -516,6 +509,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                          team_score=team_score+Decimal('6.0')+Decimal(lineup.player_11.rating)
                     scores.append(team_score)
                     Lineup.objects.filter(id=lineup.id).update(score=team_score)
-                #    logger.info(f'lineup: {lineup} score: {team_score}')
+              
                     
               

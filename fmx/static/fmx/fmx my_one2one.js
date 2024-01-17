@@ -115,11 +115,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost ${result[0].bet}, current account: xx`
+                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
+                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
                                         }
                                     }else{
                                         score_1.style.color="green"
@@ -127,11 +127,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
+                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account: xx`
+                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
                                         }
                                     }
                                     score_1.innerHTML=`${result[0].score_1}`
@@ -329,11 +329,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b> `
                                         }
                                     }else{
                                         score_1.style.color="green"
@@ -341,11 +341,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         if(club_name===`${result[0].lineup_1_name}`){
                                             result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
                                             result_text.style.color="green"
-                                            bet_data.innerHTML=`You won ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b> `
                                         }else if(club_name===`${result[0].lineup_2_name}`){
                                             result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
                                             result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost ${result[0].bet}, current account:`
+                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b>`
                                         }
                                     }
                                     score_1.innerHTML=`${result[0].score_1}`

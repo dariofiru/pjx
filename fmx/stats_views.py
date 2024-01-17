@@ -24,33 +24,48 @@ def get_last_results(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      round = Round.objects.filter(current=True).values("round_num").first()
+     table_round = Table.objects.filter(next_round=True).first()
      user_club = User_club.objects.filter(user=request.user).first() 
      json_final =[]
-     for x in range(0,4):
+     for x in range(1,5):
+        json_tmp={}
+         
         try:
-            home_played = Table.objects.filter(round_num=round["round_num"]-x, squad_1=user_club).get()
+            previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_1=user_club).get()
+            json_tmp=previous_played.serialize()
+            json_final.append(json_tmp)
+            #logger.info(f"{table_round.round_id-x} - {user_club} - {previous_played}")
         except Table.DoesNotExist:
-            home_played = Table.objects.filter(round_num=round["round_num"]-x, squad_2=user_club).get()
-        json_tmp=home_played.serialize()
-      #  logger.info(f"{round} - {user_club} - {home_played}")
-        json_final.append(json_tmp)
+            pass
+        try:
+            previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_2=user_club).get()
+            json_tmp=previous_played.serialize()
+            json_final.append(json_tmp)
+           # logger.info(f"{table_round.round_id-x} - {user_club} - {previous_played}")
+        except Table.DoesNotExist:
+            pass    
+         
+        
      return JsonResponse(json_final, safe=False)
 
 
 def stats_player_ranking(request):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')  
+    round = Round.objects.filter(current=True).values("round_num").first()
+    #filter(=round["round_num"])
     result = Fixture_round.objects.values('player').annotate(total=Avg('score'))
-    logger.info(f'already : {result}')
+     
     json_final =[]
     result=result.order_by('-total')[:6] 
+    logger.info(f'player list: {result}')
     #result=result[:6]
     for res in result:
         player= Player.objects.filter(id=res['player']).first()
         json_tmp=player.serialize() 
-        #logger.info(f'already a lineup: {player}')
-        json_tmp["avg"]=round(res['total'],2)
-         
+        logger.info(f'player: {player}')
+        #json_tmp["avg"]=round(res['total'],2)
+        json_tmp["avg"]=res['total']
         json_final.append(json_tmp) 
     return JsonResponse(json_final, safe=False)
 
@@ -58,7 +73,7 @@ def stats_goalscores(request):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')  
     result = Fixture_round.objects.values('player').annotate(total=Sum('goals'))
-    logger.info(f'already : {result}')
+    #logger.info(f'already : {result}')
     json_final =[]
     result=result.order_by('-total')[:6] 
     #result=result[:6]

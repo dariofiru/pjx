@@ -11,8 +11,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
 
-
-<div class="container-fluid text-info center  big_ball_img" style="background-image: url('static/fmx/bg_3.jpg');height:700px">
+<!--background-image: url('static/fmx/bg_3.jpg'); style="height:700px"-->
+<div class="container-fluid text-info center  big_ball_img" >
       
   <div class="row w-50 bs-success-bg-subtle  "> </div>
 
@@ -69,7 +69,7 @@
                 <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
                    
                   <div class="card-body   ">
-                    <h5 class="card-header    text-bg-success ">Table</h5>
+                    <h6 class="card-header    text-bg-success ">FMX League Table</h6>
                     <p id="table_box" class="card-text" style="font-size:12px;">
                        </p>
                        <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
@@ -134,7 +134,7 @@
             <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
                
               <div class="card-body   ">
-                <h5 class="card-header    text-bg-success ">Table</h5>
+                <h6 class="card-header    text-bg-success ">FMX League Table</h6>
                 <p id="table_box" class="card-text" style="font-size:12px;">
                    </p>
                    <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
@@ -148,19 +148,20 @@
       
       </div>
       {% else %} <!-- no lineup yet , showing table-->
-      <div class="col  offset-md-4" >
+      {% if user.club_details.has_squad %}
+       <div class="col  offset-md-4" >
         <div class="row">
         <div class="card bg-success-subtle border-success mt-2" style="width: 14rem;">
            
           <div class="card-body   ">
-            <h5 class="card-header    text-bg-success ">Table</h5>
+            <h6 class="card-header    text-bg-success ">FMX League Table</h6>
             <p id="table_box" class="card-text" style="font-size:12px;">
                </p>
                <a href="{% url 'table' %}" class="card-link" style="color:green;font-size:14px">View full table</a>
           </div>
         </div>
       </div>
-      </div>
+      </div> {% endif %}
       {% endif %}
       {% else %} <!--user not auth -->
       <div class="col-8 text-black" > <h3>click here to login</h3></div>
@@ -184,6 +185,7 @@
 
 <script>var user='{{ user.username }}'
 var has_squad='{{ user.club_details.has_squad }}'
+var has_lineup='{{ user.club_details.has_lineup }}'
 console.log("squad: "+has_squad)
 </script>  
  <script src="{% static 'fmx/fmx index.js' %}"></script>

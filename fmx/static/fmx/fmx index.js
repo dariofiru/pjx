@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function get_next_match(){
-        console.log("try")
+         
             fetch( `get_next_match`)
             .then(response => response.text())
             .then(text => {
                 if(text==="empty"){
                 }else{
-                    //console.log(text)
+                    console.log(text)
                     var squads = JSON.parse(text);
                     var next_match=document.getElementById("next_match");
                     next_match.innerHTML=`${squads["lineup_1_name"]} vs ${squads["lineup_2_name"]}`        
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
 function get_one2ones(){
-    console.log("try")
+     
         fetch(`my_one2one_data/0/timestamp/0/timestamp`)
         .then(response => response.text())
         .then(text => {
@@ -68,7 +68,7 @@ function get_one2ones(){
                         }
 
                     }
-                    if(i>1){console.log("BREAK!"+i)
+                    if(i>1){ 
                     break}
                 //next_match.innerHTML=`${squads["lineup_1_name"]} vs ${squads["lineup_2_name"]}`        
             }
@@ -77,7 +77,7 @@ function get_one2ones(){
     }
 
     function get_table(){
-        console.log("try")
+        
             fetch( `get_table`)
             .then(response => response.text())
             .then(text => {
@@ -113,10 +113,12 @@ function get_one2ones(){
     
     get_table()
 
+ 
+ 
     get_next_match()
 
     get_one2ones()
-
+ 
    
        
     });

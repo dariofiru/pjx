@@ -210,7 +210,7 @@ def get_player_value(request):
         elif player.position =='Goalkeeper':
              super_secret_algorithm = super_secret_algorithm*0.70
 
-        Player.objects.filter(pk=player.id).update(value=round(super_secret_algorithm,1),original_value= round(super_secret_algorithm,1))
+        Player.objects.filter(pk=player.id).update(value=round(super_secret_algorithm,1),current_value= round(super_secret_algorithm,1))
          
         d[player.name] = round(super_secret_algorithm,1)
 
@@ -283,11 +283,6 @@ def players(request,page,team,position,value, order, id):
      
     json_final =[]
     for player in players:
-            # try:
-            #     team_data = Team.objects.filter(id=player.team_id)
-            # except Team.DoesNotExist:
-            #     HttpResponse("error")
-          #player=player.serialize()
             json_tmp=player.serialize()
             if player.id in player_id_list:
                  json_tmp["in_squad"]=True
@@ -298,7 +293,7 @@ def players(request,page,team,position,value, order, id):
 
             json_final.append(json_tmp)  
     return JsonResponse(json_final, safe=False)
-    return JsonResponse([player.serialize() for player in players], safe=False)
+
 
 
 def get_player_details(request,id):
@@ -353,11 +348,7 @@ def importFixtures(request):
                                      date = fixture['fixture']['date'],
                                      round =  fixture['league']['round']
                                    )
-                # new_fixture=Fixture(id=fixture['fixture']['id'],timestamp=fixture['fixture']['timestamp'],
-                #                    home=fixture['teams']['home']['id'],
-                #                     away = fixture['teams']['away']['id'],
-                #                     date = fixture['fixture']['date'] 
-                #                    )
+                
                 new_fixture.save()
             except IntegrityError:
                 pass 

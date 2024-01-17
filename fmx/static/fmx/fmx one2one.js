@@ -58,12 +58,13 @@ function get_matches(){
                         console.log("?>"+event.target.dataset.clubname)
                     });
                     console.log(matches[i].pending)
-                    if(matches[i].pending==='false'){
+                    if(matches[i].pending){
+                        
                         var pending_box =document.createElement('div')
                         pending_box.innerHTML="<b>Challenge pending</b>"
                         data.append(pending_box)
                     }else{
-                        console.log(matches[i].pending)
+                        
                     data.append(chall_btn)
                 }
                     var away_score=document.createElement('td')
