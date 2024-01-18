@@ -377,11 +377,12 @@ function get_lineup(){
         .then(response => response.text())
         .then(text => {
             if(text==="empty"){
-                
+                current_lineup.classList.add('visually-hidden')
                 
                 console.log("none")
             }else{
-                
+                if(current_lineup.classList.contains('visually-hidden'))
+                current_lineup.classList.remove('visually-hidden')
                 var lineup = JSON.parse(text);
                 console.log(text)
                 for (var i in lineup) {

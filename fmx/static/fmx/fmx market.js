@@ -107,11 +107,12 @@ async function get_data(){
 
                 boxclose.style.display="block"
                 boxclose.dataset.playerid=club_data[i]['id']
+                boxclose.dataset.position=club_data[i]['position']
                  //boxclose.addEventListener("click", remove_sign(boxclose));
                 boxpic.innerHTML=`<img src="${club_data[i]['photo']}" style="width:35px;border-radius: 50%;border:1px solid black">`
                 box.innerHTML=club_data[i]['name']
                 box.dataset.playerid=club_data[i]['id']
-                
+                box.dataset.position=club_data[i]['position']
                 if(club_data[i]['position'].includes('Goalkeeper')){
                     //console.log("=>"+club_data[i]['position']);
                     //console.log("=>"+box.id);
@@ -158,7 +159,7 @@ async function get_data(){
 
 var sold_list=[]
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
-function sell_player(player_id, box, boxclose, position, empty_position, color){
+function sell_player(player_id, box, boxclose, position_del, empty_position, color){
     var sold_name= box.innerHTML
     console.log("sold_name"+sold_name)
     console.log("boxclose: "+boxclose.id)
@@ -173,7 +174,7 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     const sell_player_name=document.getElementById("sell_player_name");
     sell_player_id.innerHTML=box.dataset.playerid
     sell_player_name.innerHTML=box.innerHTML
-
+    let position=box.dataset.position
     
         
     //console.log("plater name: "+sell_player_name.innerHTML+ " player id: "+sell_player_id.innerHTML)
@@ -193,7 +194,7 @@ function sell_player(player_id, box, boxclose, position, empty_position, color){
     confirm_sell_btn.dataset.playername=sell_player_name.innerHTML
     confirm_sell_btn.dataset.playerid=sell_player_id.innerHTML
     confirm_sell_btn.addEventListener('click', event => {
-        console.log()
+       
         let player_box_sold=document.getElementById(`player-${event.target.dataset.playerid}`);
         if(player_box_sold!=null){
             console.log("1:"+player_box_sold.innerHTML )
@@ -559,8 +560,14 @@ order_search.addEventListener("change", function() {
 // listener for save team (temporary)
 const save_btn=document.getElementById("save_btn");
 save_btn.addEventListener("click", function() {
-    
-   // console.log(sold_list[0]['position'])
+    var check_complete = document.getElementsByClassName("player-box-market")
+    for (var i = 0; i < check_complete.length; i++) {
+         if((check_complete[i].innerHTML.includes('Defender'))||(check_complete[i].innerHTML.includes('Midfielder'))||(check_complete[i].innerHTML.includes('Attacker')) )
+         {
+            // probably not needed
+         }
+    }
+   
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
      
     //var list_lineup_existing=list_lineup[1]['id']
@@ -616,6 +623,7 @@ save_btn.addEventListener("click", function() {
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
     }
+    console.log("list: "+lineupDelete)
     var budget_box=document.getElementById("budget");
     let curr_budget=Number(budget_box.innerHTML)  
     
@@ -663,7 +671,7 @@ const create_lineup_btn=document.getElementById("create_lineup_btn");
 const later_lineup_btn=document.getElementById("later_lineup_btn");
 create_lineup_btn.addEventListener('click', event => {
     document.getElementById('Modal-saved-squad').style.display='none'
-    window.location.href = lineup_link
+    //window.location.href = lineup_link
 });     
 later_lineup_btn.addEventListener('click', event => {
     document.getElementById('Modal-saved-squad').style.display='none'

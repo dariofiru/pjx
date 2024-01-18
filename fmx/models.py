@@ -219,6 +219,21 @@ class Lineup(models.Model):
     active=models.BooleanField(default=True)
     ai =models.BooleanField(default=False)
 
+    @property
+    def list_lineup(self):
+        lineup_list=[]
+        lineup_list.append(self.player_1.id)
+        lineup_list.append(self.player_2.id)
+        lineup_list.append(self.player_3.id)
+        lineup_list.append(self.player_4.id)
+        lineup_list.append(self.player_5.id)
+        lineup_list.append(self.player_6.id)
+        lineup_list.append(self.player_7.id)
+        lineup_list.append(self.player_8.id)
+        lineup_list.append(self.player_9.id)
+        lineup_list.append(self.player_11.id) 
+        return lineup_list
+
     def __str__(self) -> str:
         return f" {self.id}: {self.active}- {self.user.username}"
     
@@ -323,7 +338,22 @@ class User_club(models.Model):
     attacker_3 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="a3", null=True)
     attacker_4 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="a4", null=True)
     attacker_5 =  models.ForeignKey("Player", on_delete=models.CASCADE, related_name="a5", null=True)
-
+    goalkeeper_1_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    goalkeeper_2_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    defender_1_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    defender_2_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    defender_3_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    defender_4_price = models.DecimalField(max_digits=5,decimal_places=1,  default=0.0)
+    defender_5_price = models.DecimalField(max_digits=5,decimal_places=1,  default=0.0)
+    midfielder_1_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    midfielder_2_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    midfielder_3_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    midfielder_4_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    midfielder_5_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    attacker_1_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    attacker_2_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    attacker_3_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
+    attacker_4_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
     initial_budget = models.FloatField(default=760)
     remaining_budget = models.FloatField(default=0)
 

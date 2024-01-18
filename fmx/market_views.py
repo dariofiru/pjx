@@ -12,7 +12,7 @@ import logging
 import http.client
 import datetime
 import re
-from .models import Team, Player, Fixture, User, User_club, Headline, Lineup,Club_details
+from .models import Team, Player, Fixture, User, User_club, Headline, Lineup,Club_details, Table
 # Create your views here.
  
 def market(request):
@@ -274,17 +274,58 @@ def save_squad(request):
                'attacker_3': attacker_3,
                'attacker_4': attacker_4,
                'attacker_5': attacker_5,
-               'initial_account': squad_value       
+               'initial_account': squad_value,
+               'goalkeeper_1_price': goalkeeper_1.value, 'goalkeeper_2_price': goalkeeper_2.value,  
+               'defender_1_price': defender_1.value,'defender_2_price': defender_2.value,
+               'defender_3_price': defender_3.value,'defender_4_price': defender_4.value,
+               'defender_5_price': defender_5.value,
+               'midfielder_1_price': midfielder_1.value,'midfielder_2_price': midfielder_2.value,
+               'midfielder_3_price': midfielder_3.value,'midfielder_4_price': midfielder_4.value,
+               'midfielder_5_price': midfielder_5.value,
+               'attacker_1_price': attacker_1.value,'attacker_2_price': attacker_2.value,
+               'attacker_3_price': attacker_3.value,'attacker_4_price': attacker_4.value
                  }
                  )
      Club_details.objects.filter(user=request.user).update(has_squad=True)
      lineupDelete=squad['lineupDelete']
-     logger.info(f'already a lineup: {lineupDelete}')
-     for man in lineupDelete:
-          logger.info(f'lets see: {man}')
-     #existing_lineup=Lineup.objects.filter(user=request.user, active=True).get()
+     #logger.info(f'already a lineup: {lineupDelete}')
+     try:
+          lineup = Lineup.objects.filter(active=True,user=request.user).get()
+          list_lineup=lineup.list_lineup
+          logger.info(f'list_lineup: {list_lineup}')
+          random_lineup_flag=False
+          for sold in lineupDelete:
+               sold_id = sold['id']
+               sold_name=sold['name']
+               logger.info(f'sold guy: {sold_id} - {sold_name}')
+               if int(sold_id) in list_lineup:
+                    random_lineup_flag=True
+          if random_lineup_flag:
+               random_lineup(request.user)
+     except Lineup.DoesNotExist:
+          pass
+               
      return HttpResponseRedirect("/")
 
+def random_lineup(user):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     old_lineup = Lineup.objects.filter(active=True,user=user).first()
+     lineup = Lineup.objects.filter(active=True,user=user).update(active=False)
+     user_club = User_club.objects.filter(user=user).first()
+     logger.info(f'lineup to delete: {lineup}')
+     logger.info(f'user club to pick: {user_club}')
+     new_lineup=Lineup( player_1=user_club.goalkeeper_1 , player_2= user_club.defender_1, player_3= user_club.defender_2,
+            player_4= user_club.defender_3 , player_5=user_club.defender_4 ,
+              player_6= user_club.midfielder_1, player_7=user_club.midfielder_2 , player_8=user_club.midfielder_3 ,
+            player_9= user_club.midfielder_4 , player_10= user_club.attacker_1 , player_11=user_club.attacker_2 ,
+            active=True, user=user, club=user_club, formation='442')
+     new_lineup.save()
+     table_round = Table.objects.filter(next_round=True).first()
+     Table.objects.filter(round_id__gte=table_round.round_id,lineup_1=old_lineup).update(lineup_1=new_lineup)
+     Table.objects.filter(round_id__gte=table_round.round_id,lineup_2=old_lineup).update(lineup_2=new_lineup)
+     
+     
 def get_headlines(request):
      headline_list=""
      url = "https://open-ai25.p.rapidapi.com/ask"
