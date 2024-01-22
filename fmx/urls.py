@@ -26,7 +26,6 @@ urlpatterns = [
     path("get_lineup", lineup_views.get_lineup, name="get_lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     #path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
-    path("test_import_round", lineup_views.test_import_round, name="test_import_round"),
     #path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
     
 
@@ -64,14 +63,12 @@ urlpatterns = [
     path("stats_goalscores", stats_views.stats_goalscores, name="stats_goalscores"),
     path("club_stats", stats_views.club_stats, name="club_stats"), 
     path("get_last_results", stats_views.get_last_results, name="get_last_results"),
-
+    path("get_team_stats", stats_views.get_team_stats, name="get_team_stats"),
+    
 
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
-    path("register", views.register, name="register"),
-    
-
-    path('notifications/', include('notifications.urls', namespace='notifications')),
+    path("register", views.register, name="register")
     
 ]

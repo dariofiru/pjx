@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from .something_update import update_something
+from .run_update import update_something
 
 
 def start():

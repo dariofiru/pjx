@@ -350,5 +350,8 @@ def get_headlines(request):
 
 def random_headline(request, type):
      headline=Headline.objects.filter(type=type).order_by('?').first()
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     logger.info(f'headline:{headline.type} {headline.headline}')
      return JsonResponse(headline.serialize() , safe=False)
 

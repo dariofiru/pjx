@@ -1,6 +1,6 @@
 {% extends "fmx/layout.html" %}
 {% load static %}
-{% load notifications_tags %}
+ 
 {% block script %}
 
 
@@ -15,15 +15,16 @@
 
   <!-- Modal content -->
   <div class="modal-content overlay" style="height:270px;width:320px">
-    <span class="close" onclick="document.getElementById('myModal-chll').style.display='none'" >&times;</span>
+    
       <div class="row">
-        <div class="col">
-          <span id="chall_text"></span> <br>
+        <div class="col text-center"><br>
+          <h6 id="chall_text"></h6>  <br>
+          <form style="text-align: center;">
           <div class="form-outline" style="text-align:center">
-            <label class="form-label" for="typeNumber" style="font-size:14px">Insert bet amount:</label>
-           <input type="number" id="typeNumber" width="50px" class="form-control" value="2"/>
-            
-        </div>
+            <label class="form-label" for="typeNumber" style="font-size:14px;text-align:center">Insert bet amount:<br>
+            (max $20)</label>
+           <input  min="2" max="20" type="number" id="typeNumber"   class="form-control"  />
+        </div></form>
       <div class="col text-center">
           
         <div id="braved" data-bravedid="0" style="display: none;"></div>
@@ -33,7 +34,7 @@
               <button id="confirm_chall_btn" type="button" class="btn btn-success p-2 m-3">Confirm</button>
             </div>
             <div class="col">
-              <button id="cancel_btn" onclick="document.getElementById('myModal-chll').style.display='none'" 
+              <button id="cancel_btn" onclick="document.getElementById('myModal-chll').style.display='none';" 
               type="button" class="btn btn-secondary p-2 m-3">Cancel</button>
 
             </div>

@@ -18,7 +18,7 @@ class Club_details(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     club = models.TextField(blank=True)
     logo = models.TextField(blank=True)
-    initial_budget =models.FloatField(default=760)
+    initial_budget =models.FloatField(default=800)
     elo = models.DecimalField(max_digits=7,decimal_places=2,blank=True,null=True, default=1000)
     has_squad=models.BooleanField(default=False)
     has_lineup=models.BooleanField(default=False)
@@ -120,13 +120,13 @@ class Player(models.Model):
 class Fixture_round(models.Model):
     fixture = models.ForeignKey("Fixture", on_delete=models.CASCADE, related_name="fixture_ids")
     player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="players")
-    rating = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    rating = models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
     goals = models.PositiveIntegerField(blank=True,null=True, default=0)
     conceded = models.PositiveIntegerField(blank=True,null=True, default=0)
     assists = models.PositiveIntegerField(blank=True,null=True, default=0)
     yellowcard = models.PositiveIntegerField(blank=True,null=True, default=0)
     redcard = models.PositiveIntegerField(blank=True,null=True, default=0)
-    score = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score = models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
    
     def __str__(self) -> str:
        return f"{self.fixture} - {self.player}: G: {self.goals} C: {self.conceded} - R: {self.redcard} - Y: {self.yellowcard}"
@@ -166,7 +166,7 @@ class Fixture(models.Model):
             "round_num": self.round_num
         }
     
-class Tmp_lineup_score(models.Model):
+class Tmp_lineup_score(models.Model):   
     match = models.PositiveIntegerField(blank=True,null=True, default=0)
     lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_score")
     club = models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="club_sc")
@@ -184,7 +184,7 @@ class Tmp_lineup_score(models.Model):
         )
     )
     def __str__(self) -> str:
-        return f"{self.id}: {self.lineup}: {self.player} - {self.score}"
+        return f"{self.match}:  {self.player} - {self.score}"
      
     def serialize(self):
         return {
@@ -215,7 +215,7 @@ class Lineup(models.Model):
     player_10 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p10", null=True)
     player_11 = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p11", null=True)
     round = models.TextField(blank=True,null=True)
-    score=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score=models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
     active=models.BooleanField(default=True)
     ai =models.BooleanField(default=False)
 
@@ -278,14 +278,14 @@ class Table(models.Model):
     squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club2",blank=True,null=True)
     lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table1")
     lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table2")
-    score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
-    score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score_1=models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
+    score_2=models.DecimalField(max_digits=5,decimal_places=2   ,blank=True,null=True)
     round_num = models.PositiveIntegerField(blank=False,null=False)
     round_id = models.PositiveIntegerField(blank=False,null=False)
     next_round = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.id} - {self.round_num}:  {self.lineup_1} vs {self.lineup_2}"
+        return f"{self.id} - {self.next_round},{self.round_num}:  {self.squad_1} vs {self.squad_2}"
 
     def serialize(self):
         return {
@@ -354,7 +354,7 @@ class User_club(models.Model):
     attacker_2_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
     attacker_3_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
     attacker_4_price = models.DecimalField(max_digits=5,decimal_places=1, default=0.0)
-    initial_budget = models.FloatField(default=760)
+    initial_budget = models.FloatField(default=800)
     remaining_budget = models.FloatField(default=0)
 
     initial_account = models.FloatField(default=0)
@@ -388,7 +388,7 @@ class User_club(models.Model):
         return player_list
 
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.user}: {self.name}"
     
     def serialize(self):
         return {
@@ -446,8 +446,8 @@ class One2one(models.Model):
     squad_2=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club21")
     lineup_1=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table11",blank=True,null=True)
     lineup_2=models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_table21",blank=True,null=True)
-    score_1=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
-    score_2=models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
+    score_1=models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
+    score_2=models.DecimalField(max_digits=5,decimal_places=2,blank=True,null=True)
     round_num = models.PositiveIntegerField(blank=True,null=True)
     bet = models.DecimalField(max_digits=5,decimal_places=1,blank=True,null=True)
     status = models.CharField(

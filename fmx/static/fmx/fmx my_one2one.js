@@ -104,39 +104,12 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                     club_2.innerHTML=`${result[0].lineup_2_name}`
                                     var score_1=document.getElementById("score_1");
                                     var score_2=document.getElementById("score_2");
-                                    score_1_tot=Number(result[0].score_1)
-                                    score_2_tot=Number(result[0].score_2)
+                                     
                                     var result_text=document.getElementById("result_text");
                                     var bet_data=document.getElementById("bet_data");
-                                    console.log("score1: "+score_1_tot+" score2: "+score_2_tot+" "+(score_1_tot<score_2_tot))
-                                    if(score_1_tot<score_2_tot){
-                                        score_1.style.color="red"
-                                        score_2.style.color="green"
-                                        if(club_name===`${result[0].lineup_1_name}`){
-                                            result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
-                                            result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
-                                        }else if(club_name===`${result[0].lineup_2_name}`){
-                                            result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
-                                            result_text.style.color="green"
-                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
-                                        }
-                                    }else{
-                                        score_1.style.color="green"
-                                        score_2.style.color="red"
-                                        if(club_name===`${result[0].lineup_1_name}`){
-                                            result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
-                                            result_text.style.color="green"
-                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
-                                        }else if(club_name===`${result[0].lineup_2_name}`){
-                                            result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
-                                            result_text.style.color="red"
-                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
-                                        }
-                                    }
-                                    score_1.innerHTML=`${result[0].score_1}`
-                                    score_2.innerHTML=`${result[0].score_2}`
-
+                                     
+                                    var score_1_correct=0.0
+                                    var score_2_correct=0.0
                                       // fetch and create stats 
                                       fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                                       .then(response => response.text())
@@ -224,6 +197,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                       col1y.innerHTML=`${players[i].yellow}`
                                                       col1r.innerHTML=`${players[i].red}`
                                                       col2.innerHTML=`${players[i].score}`
+                                    
                                                       row.append(col1)
                                                       row.append(col1g)
                                                       row.append(col1a)
@@ -233,17 +207,44 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                       row.append(col2)
                                                   if(Number(players[i].club)===Number(result[0].club_1_id)){
                                                       console.log("qui")
-                                                       
+                                                      score_1_correct=score_1_correct+Number(players[i].score) 
                                                       col_team_1.append(row)
                                                       //console.log(col_team_2.innerHTML)
                                                   }else if(Number(players[i].club)===Number(result[0].club_2_id)){
                                                       console.log("team: "+players[i].club + " - "+result[0].lineup_2)
-                                                     
+                                                      score_2_correct=score_2_correct+Number(players[i].score)
                                                       col_team_2.append(row)
                                                       //console.log(col_team_2.innerHTML)
                                                   }
                                               }
-                                             // box.style.display='none'
+                                              console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
+                                              if(score_1_correct<score_2_correct){
+                                                score_1.style.color="red"
+                                                score_2.style.color="green"
+                                                if(club_name===`${result[0].lineup_1_name}`){
+                                                    result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
+                                                    result_text.style.color="red"
+                                                    bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
+                                                }else if(club_name===`${result[0].lineup_2_name}`){
+                                                    result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
+                                                    result_text.style.color="green"
+                                                    bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
+                                                }
+                                            }else{
+                                                score_1.style.color="green"
+                                                score_2.style.color="red"
+                                                if(club_name===`${result[0].lineup_1_name}`){
+                                                    result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
+                                                    result_text.style.color="green"
+                                                    bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
+                                                }else if(club_name===`${result[0].lineup_2_name}`){
+                                                    result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
+                                                    result_text.style.color="red"
+                                                    bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
+                                                }
+                                            }
+                                            score_1.innerHTML=`${score_1_correct.toFixed(1)}`
+                                            score_2.innerHTML=`${score_2_correct.toFixed(1)}`
                                       });
 
                             // END create stats
@@ -292,6 +293,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         res_btn.classList.add('btn','btn-primary', 'btn-sm','m-1')
                         res_btn.id="res_btn"
                         res_btn.dataset.one2oneid=matches[i].id
+                        
                         res_btn.innerHTML="View results"
                         res_btn.addEventListener('click', event => { //results
                             console.log("->"+event.target.dataset.one2oneid)
@@ -318,38 +320,13 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                     //console.log("me: "+ " "+club_name)
                                     var score_1=document.getElementById("score_1");
                                     var score_2=document.getElementById("score_2");
-                                    score_1_tot=Number(result[0].score_1)
-                                    score_2_tot=Number(result[0].score_2)
+                                    
                                     var result_text=document.getElementById("result_text");
                                     var bet_data =document.getElementById("bet_data");
-                                    console.log("score1: "+score_1_tot+" score2: "+score_2_tot+" "+(score_1_tot<score_2_tot))
-                                    if(score_1_tot<score_2_tot){
-                                        score_1.style.color="red"
-                                        score_2.style.color="green"
-                                        if(club_name===`${result[0].lineup_1_name}`){
-                                            result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
-                                            result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
-                                        }else if(club_name===`${result[0].lineup_2_name}`){
-                                            result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
-                                            result_text.style.color="green"
-                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b> `
-                                        }
-                                    }else{
-                                        score_1.style.color="green"
-                                        score_2.style.color="red"
-                                        if(club_name===`${result[0].lineup_1_name}`){
-                                            result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
-                                            result_text.style.color="green"
-                                            bet_data.innerHTML=`You won <b>$${result[0].bet}</b> `
-                                        }else if(club_name===`${result[0].lineup_2_name}`){
-                                            result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
-                                            result_text.style.color="red"
-                                            bet_data.innerHTML=`You lost <b>$${result[0].bet}</b>`
-                                        }
-                                    }
-                                    score_1.innerHTML=`${result[0].score_1}`
-                                    score_2.innerHTML=`${result[0].score_2}`
+                                    
+                                    
+                                    var score_1_correct=0.0
+                                    var score_2_correct=0.0
                                     // fetch and create stats 
                             fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                             .then(response => response.text())
@@ -445,16 +422,44 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                             row.append(col2)
                                         if(Number(players[i].club)===Number(result[0].club_1_id)){
                                            // console.log("qui")
-                                             
+                                           score_1_correct=score_1_correct+Number(players[i].score) 
                                             col_team_1.append(row)
                                             //console.log(col_team_2.innerHTML)
                                         }else if(Number(players[i].club)===Number(result[0].club_2_id)){
                                             console.log("team: "+players[i].club + " - "+result[0].lineup_2)
-                                           
+                                            score_2_correct=score_2_correct+Number(players[i].score)
                                             col_team_2.append(row)
                                             //console.log(col_team_2.innerHTML)
                                         }
                                     }
+                                    console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
+                                              if(score_1_correct<score_2_correct){
+                                                score_1.style.color="red"
+                                                score_2.style.color="green"
+                                                if(club_name===`${result[0].lineup_1_name}`){
+                                                    result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
+                                                    result_text.style.color="red"
+                                                    bet_data.innerHTML=`You lost <b>$${result[0].bet}</b> `
+                                                }else if(club_name===`${result[0].lineup_2_name}`){
+                                                    result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
+                                                    result_text.style.color="green"
+                                                    bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
+                                                }
+                                            }else{
+                                                score_1.style.color="green"
+                                                score_2.style.color="red"
+                                                if(club_name===`${result[0].lineup_1_name}`){
+                                                    result_text.innerHTML=`you won <img src="static/fmx/greensmile.png" style="width:25px">`
+                                                    result_text.style.color="green"
+                                                    bet_data.innerHTML=`You won <b>$${result[0].bet}</b>`
+                                                }else if(club_name===`${result[0].lineup_2_name}`){
+                                                    result_text.innerHTML=`you lost <img src="static/fmx/redsmile.png" style="width:25px">`
+                                                    result_text.style.color="red"
+                                                    bet_data.innerHTML=`You lost <b>$${result[0].bet}</b>`
+                                                }
+                                            }
+                                            score_1.innerHTML=`${score_1_correct.toFixed(1)}`
+                                            score_2.innerHTML=`${score_2_correct.toFixed(1)}`
                                     
                             });
 
@@ -469,44 +474,108 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         var accept_btn=document.createElement('button')
                         accept_btn.classList.add('btn','btn-success', 'm-1', 'btn-sm')
                         accept_btn.dataset.one2oneid=matches[i].id
+                        accept_btn.dataset.lineup1=club_1.innerHTML
+                        accept_btn.dataset.lineup2=matches[i].club_name
+                        
                         accept_btn.addEventListener('click', event => {
                             console.log("->"+event.target.dataset.one2oneid)
+                            console.log("1:"+matches[i].club_name)
+                            console.log("2:"+club_name)
                             var myModal_chall=document.getElementById("myModal-chall");  
                             myModal_chall.style.display='block'
-                            fetch(`/accept_challenge/${event.target.dataset.one2oneid}`, {
-                                method: 'PUT',
-                                headers: { 'X-CSRFToken': csrftoken },
-                                mode: 'same-origin',
-                                body: JSON.stringify({
-                                    csrfmiddlewaretoken: csrftoken 
-                                })
-                            }).then(response => {
-                                return response.text()
-                            }).then(data => {
-                                 console.log("here") 
-                                 fetch( "random_headline/sell")
+///////////////////////////////////////////////////////
+                            var headline_var="hello"
+                                 fetch( "random_headline/one2one")
                                  .then(response => response.text())
                                  .then(text => {
                                           const headline_txt=document.getElementById("headline-txt");
                                           var headline = JSON.parse(text);
                                           for (var i in headline) {
                                              headline = headline[i]
-                                             //headline=headline.replace("*AX*",sold_name)
-                                            // headline=headline.replace("*BX*",club_name) 
+                                             headline_var=headline[i]
+                                             headline=headline.replace("AX",club_name)
+                                             headline=headline.replace("BX",accept_btn.dataset.lineup2) 
                                              headline_txt.innerHTML=headline 
                                           }
+                                          fetch(`/accept_challenge/${event.target.dataset.one2oneid}`, {
+                                            method: 'PUT',
+                                            headers: { 'X-CSRFToken': csrftoken },
+                                            mode: 'same-origin',
+                                            body: JSON.stringify({
+                                                csrfmiddlewaretoken: csrftoken 
+                                            })
+                                        }).then(response => {
+                                            return response.text()
+                                        }).then(data => {
+                                             
+                                            
+                                             var spinner=document.getElementById("spinner"); 
+                                             spinner.style.display='none' 
+                                             var view_chall_btn=document.getElementById("view_chall_btn");  
+                                              
+                                             var close_chall_btn=document.getElementById("close_chall_btn");  
+                                            // view_chall_btn.classList.add('visually-hidden')
+                                             //close_chall_btn.classList.add('visually-hidden')
+                                             var button_box=document.getElementById("button_box"); 
+                                             button_box.classList.remove('visually-hidden')
+                                             var chall_text=document.getElementById("chall_text"); 
+                                             chall_text.style.display='none' 
+                                         }
+                                        );
                                      }
                                  );
-                                 var spinner=document.getElementById("spinner"); 
-                                 spinner.style.display='none' 
-                                 var view_chall_btn=document.getElementById("view_chall_btn");  
-                                 view_chall_btn.style.display='block'
-                                 var close_chall_btn=document.getElementById("close_chall_btn");  
-                                 close_chall_btn.style.display='block'   
-                                 var chall_text=document.getElementById("chall_text"); 
-                                 chall_text.style.display='none' 
-                             }
-                            );
+                                 console.log(headline_var)
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+                            // fetch(`/accept_challenge/${event.target.dataset.one2oneid}`, {
+                            //     method: 'PUT',
+                            //     headers: { 'X-CSRFToken': csrftoken },
+                            //     mode: 'same-origin',
+                            //     body: JSON.stringify({
+                            //         csrfmiddlewaretoken: csrftoken 
+                            //     })
+                            // }).then(response => {
+                            //     return response.text()
+                            // }).then(data => {
+                            //      console.log("here") 
+                            //      console.log("3:"+matches[i].club_name)
+                            // console.log("4:"+club_name)
+                            //     // var headline_var="hello"
+                            //     //  fetch( "random_headline/one2one")
+                            //     //  .then(response => response.text())
+                            //     //  .then(text => {
+                            //     //           const headline_txt=document.getElementById("headline-txt");
+                            //     //           var headline = JSON.parse(text);
+                            //     //           for (var i in headline) {
+                            //     //              headline = headline[i]
+                            //     //              headline_var=headline[i]
+                            //     //              headline=headline.replace("AX",club_name)
+                            //     //              headline=headline.replace("BX",accept_btn.dataset.lineup2) 
+                            //     //              headline_txt.innerHTML=headline 
+                                             
+                            //     //           }
+                            //     //      }
+                            //     //  );
+                            //     //  console.log(headline_var)
+                            //     //  var now = Date.now(), end = now + 2000;
+                            //     //  while (now < end) { now = Date.now(); }
+                            //      var spinner=document.getElementById("spinner"); 
+                            //      spinner.style.display='none' 
+                            //      var view_chall_btn=document.getElementById("view_chall_btn");  
+                                  
+                            //      var close_chall_btn=document.getElementById("close_chall_btn");  
+                            //     // view_chall_btn.classList.add('visually-hidden')
+                            //      //close_chall_btn.classList.add('visually-hidden')
+                            //      var button_box=document.getElementById("button_box"); 
+                            //      button_box.classList.remove('visually-hidden')
+                            //      var chall_text=document.getElementById("chall_text"); 
+                            //      chall_text.style.display='none' 
+                            //  }
+                            // );
 
                         });
                         accept_btn.innerHTML="Accept"

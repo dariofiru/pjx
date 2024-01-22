@@ -1,6 +1,6 @@
 {% extends "fmx/layout.html" %}
 {% load static %}
-{% load notifications_tags %}
+ 
 {% block script %}
 <script>
  const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
@@ -41,12 +41,11 @@
             <span class="visually-hidden">Loading...</span>
           </div></div>
          </div>
-         <div class="row text-center">
-          <div class="col-md-6 text-center">
-            <button id="view_chall_btn" type="button" class="btn btn-success">View results</button>
-          </div>
-          <div class="col-md-6 text-center">
-            <button id="close_chall_btn" onclick="document.getElementById('myModal-chall').style.display='none';window.location.reload ()" type="button" class="btn btn-secondary">Close</button>
+         <div id="button_box" class="row text-center visually-hidden">
+           
+          <div class="col-12 text-center"><i>Your challenge results are ready, close this window and click on
+            <b>"View results"</b></i><br><br>
+            <button id="close_chall_btn" onclick=" document.getElementById('myModal-chall').style.display='none';window.location.reload ()" type="button" class="btn btn-secondary ">Close</button>
           </div>
          </div>
         
@@ -94,9 +93,9 @@
 <!-- Modal content results-->
 <div id="myModal-result" class=" modal  overlay modal-dialog-scrollable">
   <div id="modal_box" class="modal-content overlay" style="height:500px;width:600px;">
-    <span class="close"  >&times;</span>
+     
 
-    <div class="modal-body pt-0 mt-1">
+    <div class="modal-body  ">
       
    
     <div class="row  "><div class="col   text-center">
@@ -119,9 +118,9 @@
      </div>
      <div class="row  m-2" style="text-align:center"><div class="col-12">
       <button id="btn_stats" data-one2oneid="0"   type="button" class="btn btn-sm btn-outline-success">View stats</button> </div></div>
-      <div class="row   " style="text-align:center"><div class="col p-0 m-0"> 
+      <div class="row  pe-0 me-0 " style="text-align:center"><div class="col p-0 m-0"> 
       <div id="stats"   style="text-align:left;font-size:12px"> 
-      <div id="box_stats" class="row">
+      <div id="box_stats" class="row ">
         <div id="col_team_1" class="col-md-6">
       </div>
       <div  id="col_team_2" class="col-md-6">
@@ -217,6 +216,8 @@
         // var initial_budget_str='{{ user.club_details.initial_budget  }}'
         // var  logo = '{{ user.club_details.logo  }}'
          var  club_name='{{ user.club_details.club  }}'
+         var  club_name_bis='{{ user.club_details.club  }}'
+         console.log("==>"+club_name)
         // var  club_id='{{ user.club_details.club.id }}'
         // var  initial_budget=Number(initial_budget_str)
         </script> 

@@ -53,9 +53,9 @@ function get_matches(){
                         braved.dataset.bravedid=event.target.dataset.clubid
                         var modal=document.getElementById("myModal-chll");
                         var chall_text=document.getElementById("chall_text");    
-                        chall_text.innerHTML=`Confirm challenge to <b>${event.target.dataset.clubname}</b?`
+                        chall_text.innerHTML=`Ready to challenge <b>${event.target.dataset.clubname}</b?`
                         modal.style.display='block'
-                        console.log("?>"+event.target.dataset.clubname)
+                        //console.log("?>"+event.target.dataset.clubname)
                     });
                     console.log(matches[i].pending)
                     if(matches[i].pending){
@@ -88,6 +88,12 @@ get_matches()
 
 var confirm_chall_btn=document.getElementById("confirm_chall_btn");
 confirm_chall_btn.addEventListener('click', event => {
+    var typeNumber=document.getElementById("typeNumber");
+    if (Number(typeNumber.value)>20){
+
+        alert("bet too high")
+        return false;
+    }
     var braved=document.getElementById("braved");
     var bet=document.getElementById("typeNumber");
      
@@ -108,6 +114,7 @@ confirm_chall_btn.addEventListener('click', event => {
          var modal=document.getElementById("myModal-chll");
          modal.style.display="none"
          alert("your challange has been delivered")
+         window.location.reload ()
     }
     );
 
