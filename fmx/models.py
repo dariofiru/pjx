@@ -168,6 +168,7 @@ class Fixture(models.Model):
     
 class Tmp_lineup_score(models.Model):   
     match = models.PositiveIntegerField(blank=True,null=True, default=0)
+    round_id=  models.PositiveIntegerField(blank=True,null=True, default=0)
     lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup_score")
     club = models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="club_sc")
     player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="p", null=True)
@@ -184,7 +185,7 @@ class Tmp_lineup_score(models.Model):
         )
     )
     def __str__(self) -> str:
-        return f"{self.match}:  {self.player} - {self.score}"
+        return f"{self.match}:{self.type}  {self.player} - {self.score}"
      
     def serialize(self):
         return {
@@ -263,6 +264,19 @@ class Lineup(models.Model):
             "player_9_id": self.player_9.id,
             "player_10_id": self.player_10.id,
             "player_11_id": self.player_11.id
+        }
+
+class Goalscores(models.Model):
+    player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="goalscorer", null=True)
+    goals =  models.PositiveIntegerField(blank=False,null=False)
+
+    def __str__(self) -> str:
+        return f"{self.player} - {self.goals}"
+
+    def serialize(self):
+        return {
+            "player": self.player,
+            "goals": self.goals 
         }
 
 class Lineup_round(models.Model):

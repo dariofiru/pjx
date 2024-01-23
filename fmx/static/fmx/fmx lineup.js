@@ -371,7 +371,7 @@ current_lineup.addEventListener('click', event => {
 
 function get_lineup(){
     const lineup_list=document.getElementById("lineup_list")
-    console.log(lineup_list.innerHTML)
+   // console.log(lineup_list.innerHTML)
     const modal=document.getElementById("myModal-lineup")
         fetch( `get_lineup`)
         .then(response => response.text())
@@ -379,12 +379,12 @@ function get_lineup(){
             if(text==="empty"){
                 current_lineup.classList.add('visually-hidden')
                 
-                console.log("none")
+                //console.log("none")
             }else{
                 if(current_lineup.classList.contains('visually-hidden'))
                 current_lineup.classList.remove('visually-hidden')
                 var lineup = JSON.parse(text);
-                console.log(text)
+               // console.log(text)
                 for (var i in lineup) {
                     const row_formation = document.createElement("div");
                     row_formation.classList.add('row')
@@ -413,7 +413,7 @@ function get_lineup(){
                             col.classList.add('bg-danger')
                         }
                         if(j>1 && j<=Number(D_tot)+1){
-                            console.log(j+" "+lineup[0][`player_${Number(j)}`])
+                           // console.log(j+" "+lineup[0][`player_${Number(j)}`])
                             col.classList.add('bg-secondary')
                         }
                         if(j>Number(D_tot)+1 && j<=Number(D_tot)+Number(M_tot)+1 ){
@@ -554,7 +554,18 @@ save_btn.addEventListener("click", function() {
         })
     }).then(response=>response.text())
     .then(data=>{  
-    document.getElementById('Modal-saved-squad').style.display='block'
+    saved_squad=document.getElementById('Modal-saved-squad')
+    if(has_lineup==false ){
+        saved_squad.style.height="160px;"
+        document.getElementById('first_lineup_msg').style.display='block'
+        document.getElementById('new_lineup_msg').style.display='none'
+    }
+    else{
+        saved_squad.style.height="200px;"
+        document.getElementById('first_lineup_msg').style.display='none'
+        document.getElementById('new_lineup_msg').style.display='block'
+    }
+    saved_squad.style.display='block'
      
     })
 
@@ -639,7 +650,7 @@ async function fetchPlayers(page,  position) {
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
-                console.log(player)
+                //console.log(player)
                 const player_list= document.getElementById('player-list')
                         player_list.innerHTML=""
                         for (var i in player) {
@@ -722,7 +733,7 @@ async function fetchPlayers(page,  position) {
                         show_details_btn.addEventListener('click', event => {
                         
                             const side_nav=document.getElementById("mySidenav");
-                            console.log("called:" + side_nav.style.width + " - "+side_nav.innerHTML)
+                            console.log("called:" + side_nav.style.width  )
                             if(side_nav.style.width==="0px"){
                                 get_player_details(event.target.id)
                                 document.getElementById("mySidenav").style.width = "340px";

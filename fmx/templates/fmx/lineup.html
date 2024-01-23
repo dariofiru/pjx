@@ -10,28 +10,32 @@
   </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Modal confirming save squad-->
-<div id="Modal-saved-squad" class="modal overlay">
+<div id="Modal-saved-squad" class="modal "  tabindex="-1">
 
-  <!-- Modal content -->
-  <div class="modal-content overlay" style="height:200px;">
-    <span class="close">&times;</span>
-      <div class="row">
-        <div class="col">
-         
-      <div class="col text-center">
-        Your lineup has been saved! <br>
-         <br>
+  <!-- Modal content --><div class="modal-dialog">
+  <div class="modal-content  " >
+    
+    <div class="row">
         
          
-         
-        <button id="close_box_btn" 
-        onclick="document.getElementById('Modal-saved-squad').style.display='none'"
-         type="button" class="btn btn-secondary p-2">Close</button>
+      <div id="new_lineup_msg" class="col text-center">
+       <h5><b> All set!</b> </h5> 
+        Your fresh lineup is ready to take the pitch in the next round<br>
+        
+          
       </div>
-      </div>
-    </div>
-  </div>
-</div> 
+      <div id="first_lineup_msg" class="col text-center">
+        <h5><b> Congratulations!</b> </h5> 
+          Your team has been added to the <b style="color:green"> FMX League table</b> get ready for some tough matches!  <br><br>
+            <span style="font-size: 14px">Create new lineups whenever you wish, make sure to use the full potential of your team!</span>
+       </div>
+      
+      
+    </div><div class="modal-footer">
+    <div class="row"><div  class="col text-center">
+      <button id="close_table_btn" onclick="document.getElementById('Modal-saved-squad').style.display='none'" type="button" class="btn btn-sm btn-secondary m-1 p-2">Close</button>
+    </div></div></div>
+</div></div> </div>
  <!-- END Modal confirming save squad-->
 <!-- The Modal --> <!--confirm/congratulation page for sign-->
 <div id="myModal-lineup" class="modal ">
@@ -263,7 +267,7 @@
 
 
               <!---side panel with player details and sign button-->
-              <div><div id="mySidenav" class="sidenav">
+              <div><div id="mySidenav" class="sidenav" style="width:0px">
 
                   <div class="row">
                     <div class="col-2"></div>
@@ -320,10 +324,12 @@
 
 var  club_name='{{ user.club  }}'
 var has_squad='{{ user.club_details.has_squad }}'
+var has_lineup='{{ user.club_details.has_lineup }}'
 var  user_name='{{ user.username  }}'
 var  user_id='{{ user.id  }}'
 var  initial_budget_str='{{ user.initial_budget  }}'
 var  initial_budget=Number(initial_budget_str)
+console.log("has lineup:" + has_lineup )
 </script>
 
 <script src="{% static 'fmx/fmx lineup.js' %}"></script>

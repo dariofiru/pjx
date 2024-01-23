@@ -12,7 +12,7 @@ import requests
 import http.client
 import datetime
 from operator import attrgetter
-from .models import Team, Player, Club_details,Tmp_lineup_score, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
+from .models import Team, Player, Club_details,Tmp_lineup_score,Goalscores, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
 
 #from notifications.signals import notify
 # Create your views here.
@@ -38,7 +38,7 @@ def get_team_stats(request):
             for res in players_data:
                 player= Player.objects.filter(id=res['player']).first()
                 json_tmp=player.serialize() 
-                logger.info(f"player: {player.name} - goals: {res['total']} ")
+                #logger.info(f"player: {player.name} - goals: {res['total']} ")
                  
                 json_tmp["tot_goals"]=res['total']
                 json_final.append(json_tmp)
@@ -52,7 +52,7 @@ def get_team_stats(request):
             for res in players_data:
                 player= Player.objects.filter(id=res['player']).first()
                 json_tmp=player.serialize() 
-                logger.info(f"player: {player.name} - goals: {res['total']} ")
+                #logger.info(f"player: {player.name} - goals: {res['total']} ")
                  
                 json_tmp["tot_goals"]=res['total']
                 json_final.append(json_tmp)
@@ -99,16 +99,16 @@ def stats_player_ranking(request):
     #for match in matches:
     players_data=Tmp_lineup_score.objects.filter(match__lte=border_round.id).values('player').annotate(total=Avg('score'))
     #result = Fixture_round.objects.values('player').annotate(total=Avg('score'))
-    logger.info(f"border_round: {border_round}") 
-    logger.info(f"players_data: {players_data}") 
+    #logger.info(f"border_round: {border_round}") 
+    #logger.info(f"players_data: {players_data}") 
     json_final =[]
     result=players_data.order_by('-total')[:6] 
-    logger.info(f'player list: {result}')
+    #logger.info(f'player list: {result}')
     #result=result[:6]
     for res in result:
         player= Player.objects.filter(id=res['player']).first()
         json_tmp=player.serialize() 
-        logger.info(f'player: {player}')
+        #logger.info(f'player: {player}')
         #json_tmp["avg"]=round(res['total'],2)
         json_tmp["avg"]=res['total']
         json_final.append(json_tmp) 
@@ -117,19 +117,41 @@ def stats_player_ranking(request):
 def stats_goalscores(request):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')  
+    filler=Tmp_lineup_score.objects.filter(round_id=0, type="table").all()
+    for fill in filler:
+         table_round=Table.objects.filter(id=fill.match).first()
+         Tmp_lineup_score.objects.filter(id=fill.id).update(round_id=table_round.round_id)
+
     border_round = Table.objects.filter(next_round=True)
     border_round= border_round.order_by('-id').first()
-    #matches= Table.objects.filter(round_id__lt=border_round.round_id).get() #retrieve all matches played so far
-    
-    #for match in matches:
-    players_data=Tmp_lineup_score.objects.filter(match__lte=border_round.id).values('player').annotate(total=Sum('goals'))
-    #result = Fixture_round.objects.values('player').annotate(total=Avg('score'))
-    logger.info(f"border_round: {border_round}") 
-    logger.info(f"players_data: {players_data}") 
+  
+    players_data_d=Tmp_lineup_score.objects.filter(match__lte=border_round.id).order_by('round_id','player','goals').values('round_id','player','goals').distinct()
+    for player_tt in players_data_d:
+         if player_tt['goals']>0:
+            curr_player = Player.objects.filter(id=player_tt['player']).first()
+            try:
+               goalscorer = Goalscores.objects.filter(player=curr_player).get()
+               Goalscores.objects.filter(player=curr_player).update(goals=goalscorer.goals+player_tt['goals'])
+            except Goalscores.DoesNotExist:
+               goalscorer = Goalscores(player=curr_player, goals=player_tt['goals'])
+               goalscorer.save()
+         logger.info(f'dis: {player_tt}')
+        # logger.info(f'player: {curr_player}')
+    players_data_d=players_data_d.values('player').annotate(total=Sum('goals')) 
+   #  for player_tt2 in players_data_d:
+   #      logger.info(f'sum: {player_tt2}')
+   
     json_final =[]
-    result=players_data.order_by('-total')[:6] 
+    total_records = Goalscores.objects.count()
+    scorers=Goalscores.objects.all()
+    if total_records>5:
+       result=scorers.order_by('-goals')[:6] 
+    else:
+       result=scorers.order_by('-goals')[:total_records] 
+    logger.info(f'result: {result}')
     #result=result[:6]
     for res in result:
+        #logger.info(f'Player: {res}')
         player= Player.objects.filter(id=res['player']).first()
         json_tmp=player.serialize() 
       #  logger.info(f'already a lineup: {player}')
@@ -138,11 +160,7 @@ def stats_goalscores(request):
         json_final.append(json_tmp) 
     return JsonResponse(json_final, safe=False)
 
-def add_round():
-    rounds=Fixture_round.objects.all()
-    for round in rounds:
-        num_round=round.fixture.round_num
-        upd_round=Fixture_round.objects.filter(id=round.id).update()
+
 
 def club_stats(request):
      logging.basicConfig(level=logging.INFO)
@@ -159,10 +177,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize() 
       
      try: 
-        logger.info(f"curr_player: {curr_player.name}")
+        #logger.info(f"curr_player: {curr_player.name}")
         result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
-        logger.info(f"result: {result}") 
-        logger.info(f"result2: {result['total']}")
+       # logger.info(f"result: {result}") 
+        #logger.info(f"result2: {result['total']}")
         json_tmp["avg"]=round(result['total'],2)
      except Fixture_round.DoesNotExist:
         json_tmp["avg"]=6.0

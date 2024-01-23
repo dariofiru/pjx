@@ -262,8 +262,8 @@ def check_for_round_data():
           calculate_round(round) # dowloads fixture data from server if is not already downloaded
      get_fixture_ratings(round) # calculate players score 
      lineup_scores(round) # adds players score for each active lineup
-     if downloaded_fixture==0:
-          calculate_results(round) # calculates winner/looser for each match in round and updates elo
+     #if downloaded_fixture==0:
+     calculate_results(round) # calculates winner/looser for each match in round and updates elo
      #moving to the next round and next table matches
      if round==38:
          # logger.info(f'here: {round} ')
@@ -428,258 +428,245 @@ def lineup_scores(id): # calculates total point for each lineup/round
      logger = logging.getLogger('fmx') 
      lineups= Lineup.objects.filter(Q(active=True)|Q(ai=True)).all() # retrieve all active lineups and assign score
      fixtures= Fixture.objects.filter(round_num=id).all()
+     matches_round=Table.objects.filter(next_round=True)
      lineup_list= []
-     logger.info(f'lineups: {lineups}  ')
-     for lineup in lineups:
-          team_score=Decimal('0.0')
-          try:
-               lineup_round=Table.objects.filter(next_round=True, lineup_1=lineup)
-               logger.info(f'lineup_round 1: {lineup_round}  ')
-          except Table.DoesNotExist:
-               lineup_round=Table.objects.filter(next_round=True, lineup_2=lineup)
-               logger.info(f'lineup_round 2: {lineup_round}  ')
-
-          for fixture in fixtures:
-                
-               json_tmp2={}
-               
-               json_tmp2["lineup"]=lineup.id
-               logger.info(f'lineup: {lineup}  ')
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_1).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_1.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-                    #logger.info(f'fixture: {fixture} player_stat: {lineup.player_1.name}: {player_1_score} ')  
-               except Fixture_round.DoesNotExist: 
-                    pass
-               
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_2.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-               except Fixture_round.DoesNotExist: 
-                    pass
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_3).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_3.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               }) 
-               except Fixture_round.DoesNotExist: 
-                    pass
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_4).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_4.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               }) 
-               except Fixture_round.DoesNotExist: 
-                    pass
-               
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_5).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_5.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               }) 
-               except Fixture_round.DoesNotExist: 
-                    pass
-               
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_6).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_6.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               }) 
-               except Fixture_round.DoesNotExist: 
-                    pass
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_7).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_7.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-               except Fixture_round.DoesNotExist: 
-                    pass
-               
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_8).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_8.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-               except Fixture_round.DoesNotExist: 
-                    pass
-             
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_9).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_9.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-               except Fixture_round.DoesNotExist: 
-                    pass
-             
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_10).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_10.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               }) 
-               except Fixture_round.DoesNotExist: 
-                    pass
-               try:
-                    fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_11).get()
-                    team_score=team_score+fixture_player.score+Decimal(lineup.player_11.rating)
-                    player_score=fixture_player.score+Decimal(lineup.player_1.rating)
-                    Tmp_lineup_score.objects.update_or_create(match=lineup_round.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
-                                                              defaults=
-                                                              {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
-                                                               'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
-                                                               })
-               except Fixture_round.DoesNotExist: 
-                    pass
-          Lineup.objects.filter(id=lineup.id).update(score=team_score)          
-
-     for lineup in lineups:
-          try:
-               lineup_round=Table.objects.filter(next_round=True, lineup_1=lineup).get()
-               logger.info(f'lineup_round 1b: {lineup_round}  ')
-          except Table.DoesNotExist:
-               lineup_round=Table.objects.filter(next_round=True, lineup_2=lineup).get()
-               logger.info(f'lineup_round 2b: {lineup_round}  ')
-          team_bench_score=Decimal('0.0')
+     for matches in matches_round:
+          lineup_list= []
+          lineup_list.append(matches.lineup_1)
+          lineup_list.append(matches.lineup_2)
           
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_1, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_1.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_1 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_2, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_2.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_2 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_3, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_3.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_3 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save()
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_4, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_4.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_4 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_5, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_5.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_5 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_6, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_6.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_6 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_7, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_7.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_7 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save()  
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_8, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_8.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_8 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_9, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_9.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_9 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save() 
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_10, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_10.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_10 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save()  
-          try:
-               player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_11, match=lineup_round.id, type="table",lineup=lineup).get()
-          except Tmp_lineup_score.DoesNotExist:
-               player_score=Decimal('6.0')+Decimal(lineup.player_11.rating)
-               bench=Tmp_lineup_score(match=lineup_round.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_11 ,
-                       score=player_score,goals=fixture_player.goals,assists=fixture_player.assists,
-                    yellow= fixture_player.yellowcard, red=fixture_player.redcard)
-               bench.save()  
-         
-          current_lineup=Lineup.objects.filter(id=lineup.id).first()
-          lineup_score=Tmp_lineup_score.objects.filter(lineup=lineup,match=lineup_round.id,type="table").all()#.annotate(total=Sum('score'))
-          for lineup_tmp in lineup_score:
-               logger.info(f'lineup scores: {lineup_tmp}')     
-          total_score= lineup_score.aggregate(Sum('score'))
-          logger.info(f'lineup scores: {total_score}')
-          Lineup.objects.filter(id=lineup.id).update(score=total_score['score__sum'])      
+          logger.info(f'matches: {matches_round} lineup_list: {lineup_list}  ')
+          for lineup in lineup_list:
+               team_score=Decimal('0.0')
+               # try:
+               #      lineup_round=Table.objects.filter(next_round=True, lineup_1=lineup)
+               #      logger.info(f'lineup_round 1: {lineup_round}  ')
+               # except Table.DoesNotExist:
+               #      lineup_round=Table.objects.filter(next_round=True, lineup_2=lineup)
+               #      logger.info(f'lineup_round 2: {lineup_round}  ')
+
+               for fixture in fixtures:
+                    
+                    json_tmp2={}
+                    
+                    json_tmp2["lineup"]=lineup.id
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_1).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_1.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_1.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                         #logger.info(f'fixture: {fixture} player_stat: {lineup.player_1.name}: {player_1_score} ')  
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_2.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_2.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_3).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_3.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_3.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 }) 
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_4).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_4.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_4.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 }) 
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_5).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_5.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_5.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 }) 
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_6).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_6.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_6.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 }) 
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_7).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_7.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_7.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_8).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_8.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_8.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                    except Fixture_round.DoesNotExist: 
+                         pass
+               
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_9).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_9.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_9.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                    except Fixture_round.DoesNotExist: 
+                         pass
+               
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_10).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_10.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_10.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 }) 
+                    except Fixture_round.DoesNotExist: 
+                         pass
+                    try:
+                         fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_11).get()
+                         team_score=team_score+fixture_player.score+Decimal(lineup.player_11.rating)
+                         player_score=fixture_player.score+Decimal(lineup.player_11.rating)
+                         Tmp_lineup_score.objects.update_or_create(match=matches.id, type="table",club=lineup.club, lineup=lineup, player=fixture_player.player,  
+                                                                 defaults=
+                                                                 {'score':player_score,'goals':fixture_player.goals, 'assists':fixture_player.assists,
+                                                                 'yellow': fixture_player.yellowcard, 'red': fixture_player.redcard
+                                                                 })
+                    except Fixture_round.DoesNotExist: 
+                         pass
+               Lineup.objects.filter(id=lineup.id).update(score=team_score)          
+          logger.info(f'ALL GOOD  ')
+          for lineup in lineup_list:
+               
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_1, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_1.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_1 ,
+                         score=player_score,goals=0,assists=0,yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_2, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_2.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_2 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_3, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_3.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_3 ,
+                         score=player_score,goals=0,assists=0,yellow=0, red=0)
+                    bench.save()
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_4, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_4.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_4 ,
+                         score=player_score,goals=0,assists=0,  yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_5, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_5.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_5 ,
+                         score=player_score,goals=0,assists=0,  yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_6, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_6.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_6 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_7, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_7.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_7 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save()  
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_8, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_8.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_8 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_9, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_9.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_9 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save() 
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_10, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_10.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_10 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save()  
+               try:
+                    player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_11, match=matches.id, type="table",lineup=lineup).get()
+               except Tmp_lineup_score.DoesNotExist:
+                    player_score=Decimal('6.0')+Decimal(lineup.player_11.rating)
+                    bench=Tmp_lineup_score(match=matches.id,type="table",club=lineup.club,lineup=lineup,player=lineup.player_11 ,
+                         score=player_score,goals=0,assists=0, yellow=0, red=0)
+                    bench.save()  
+          
+               current_lineup=Lineup.objects.filter(id=lineup.id).first()
+               lineup_score=Tmp_lineup_score.objects.filter(lineup=lineup,match=matches.id,type="table").all()#.annotate(total=Sum('score'))
+               for lineup_tmp in lineup_score:
+                    logger.info(f'lineup scores: {lineup_tmp}')     
+               total_score= lineup_score.aggregate(Sum('score'))
+               logger.info(f'lineup scores: {total_score}')
+               Lineup.objects.filter(id=lineup.id).update(score=total_score['score__sum'])      
      #scores = Tmp_lineup_score.objects.filter(type="table", match=id).all()           
      
               

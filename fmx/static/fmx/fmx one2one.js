@@ -89,9 +89,11 @@ get_matches()
 var confirm_chall_btn=document.getElementById("confirm_chall_btn");
 confirm_chall_btn.addEventListener('click', event => {
     var typeNumber=document.getElementById("typeNumber");
+    console.log("typeNumber:" +typeNumber.value)
+    if (typeNumber.value ==""||typeNumber.value ==0){return false; }
     if (Number(typeNumber.value)>20){
 
-        alert("bet too high")
+        alert("Bet too high")
         return false;
     }
     var braved=document.getElementById("braved");
@@ -110,7 +112,7 @@ confirm_chall_btn.addEventListener('click', event => {
     }).then(response => {
         return response.text()
     }).then(data => {
-         console.log("here")    
+            
          var modal=document.getElementById("myModal-chll");
          modal.style.display="none"
          alert("your challange has been delivered")
