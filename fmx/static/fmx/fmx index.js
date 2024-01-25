@@ -34,7 +34,7 @@ function get_one2ones(){
                             text_row.classList.add('row', 'm-0', 'text-start')
                             text=document.createElement('div')
                             text.classList.add('col' ,'m-0','p-0' )
-                            text.innerHTML=`${matches[i].club_name} challenge is pending`
+                            text.innerHTML=`Your challenge to ${matches[i].club_name} is pending`
                             text_row.prepend(text)
                             next_match.prepend(text_row)
                         }
@@ -53,7 +53,7 @@ function get_one2ones(){
                             text_row.classList.add('row', 'm-0', 'text-start')
                             text=document.createElement('div')
                             text.classList.add('col' ,'m-0','p-0' )
-                            text.innerHTML=`Your challenge to ${matches[i].club_name} is pending`
+                            text.innerHTML=`${matches[i].club_name} challenge is pending`
                             text_row.prepend(text)
                             next_match.prepend(text_row)
                         }

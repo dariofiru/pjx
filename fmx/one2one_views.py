@@ -32,8 +32,6 @@ def get_one2one(request,id):
      club_details_1=Club_details.objects.filter(user=one2one.squad_1.user).first()
      club_details_2=Club_details.objects.filter(user=one2one.squad_2.user).first()
 
-     #### retrieve match stats 
-     #### end stats
       
      json_data=[]
  
@@ -56,17 +54,17 @@ def my_one2one_data(request, ch_stat, ch_order, br_stat, br_order): #return list
           my_challenges=my_challenges.filter(status=ch_stat)
           logger.info(f'my_challenges: {my_challenges} ')
      if ch_order!="0":
-          my_challenges=my_challenges.order_by(f"-{ch_order}",'-timestamp').all()
+          my_challenges=my_challenges.order_by(f"-{ch_order}",'timestamp').all()
      else:
-          my_challenges=my_challenges.order_by('status','-timestamp').all()
+          my_challenges=my_challenges.order_by('timestamp','status').all()
 
      my_braveds=One2one.objects.filter(squad_2=club).exclude(status="refused").all()
      if br_stat!="0":
           my_braveds=my_braveds.filter(status=br_stat)
      if br_order!="0":
-          my_braveds=my_braveds.order_by(f"-{br_order}",'-timestamp').all()
+          my_braveds=my_braveds.order_by(f"-{br_order}",'timestamp').all()
      else:
-          my_braveds=my_braveds.order_by('status','-timestamp').all()
+          my_braveds=my_braveds.order_by('timestamp','status').all()
      #my_braveds=my_braveds.order_by('status', '-timestamp').all()
      
      json_final =[]
@@ -93,6 +91,14 @@ def my_one2one_data(request, ch_stat, ch_order, br_stat, br_order): #return list
           json_final.append(json_tmp) 
 
      return JsonResponse(json_final, safe=False)
+
+def refuse_challenge(request, id):
+     logging.basicConfig(level=logging.INFO)
+     logger = logging.getLogger('fmx')
+     one2one = One2one.objects.filter(id=id).first()
+     One2one.objects.filter(id=one2one.id).update(status="refused")
+     logger.info(f'one2one: {one2one} ')
+     return render(request, "fmx/my_one2one.html")
 
 def accept_challenge(request, id):
      logging.basicConfig(level=logging.INFO)

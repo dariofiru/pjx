@@ -616,7 +616,8 @@ async function get_player_details(id){
             det_player_1.innerHTML=`<b>Position:</b> ${player_data[i].position}<br><br>
             <b>Nationality:</b> ${player_data[i].nationality} `;
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
-            <b>Height:</b> ${player_data[i].height}<br><br> `;     
+            <b>Height:</b> ${player_data[i].height}<br><br> 
+            <b>Rating:</b> ${Number(player_data[i].rating).toFixed(1)}`;     
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
             Goals: ${player_data[i].goals}<br>
             Assists: ${player_data[i].assists}<br></span>`;
@@ -678,16 +679,16 @@ async function fetchPlayers(page,  position) {
                     
                     //player_name.innerHTML=`<b style="color:black">${player[i].name}</b> `;
                     player_name.innerHTML=` <div class="row align-items-start">
-                    <div class="col-md-3 text-center">
+                    <div class="col-3 text-center">
                     <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" >
                     </div>
-                    <div class="col-md-6 text-start">
+                    <div class="col-6 text-start">
                     <b style="color:black">${player[i].name}</b> <br>
                     
                       ${player[i].position} <br>
                       <span style="font-size:11px"><b>${player[i].team_name}</b></span>
                     </div> 
-                    <div id="add_box-${player[i].id}" class="col-md-3 text-center  ">
+                    <div id="add_box-${player[i].id}" class="col-3 text-center  ">
                      
                     </div> 
                       </div>

@@ -410,14 +410,14 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     player_data=Player.objects.filter(pk=fixture_round.player.id).first()
                     if score>=player_data.rating:
                          if fixture_round.player.position=='Goalkeeper':
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.4'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.3'))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.5'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.4'))
                     elif score<player_data.rating:
                          if fixture_round.player.position=='Goalkeeper':
                               Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.1'))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.3'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.2'))
                     #logger.info(f'score: {score} rating: {player_data.rating} - {score/2}>={player_data.rating-0.5}')
                except TypeError:
                  pass

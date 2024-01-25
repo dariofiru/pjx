@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         div1.classList.add('col-1' ,'m-0','p-0', 'border' )
                         div1.innerHTML=`<b>${Number(i)+1}</b>`
                         player_name.innerHTML=squads[i].name;
-                        avg.innerHTML=Number(squads[i].avg).toFixed(2);
+                        avg.innerHTML=Number(squads[i].avg).toFixed(1);
                         table_row.append(div1)
                         table_row.append(player_name)
                         table_row.append(avg)
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     //console.log(text)
                     var squads = JSON.parse(text);
                     var top_scorers=document.getElementById("top_scorers");
-
+                    console.log(squads)
                     var table_row_h = document.createElement('div')
                     var div1_h =document.createElement('div')
                     var player_name_h=document.createElement('div')
@@ -90,12 +90,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         table_row.classList.add('row', 'm-0',   'bg-success-subtle')
                         player_name.classList.add('col-9', 'm-0','p-0', 'border','text-start' )
                         
-                        avg.classList.add('col','m-0', 'p-0','border'  )
+                        avg.classList.add('col','m-0', 'p-0','border' ,'text-center' )
                         div1.classList.add('col-1' ,'m-0','p-0', 'border' )
                         div1.innerHTML=`<b>${Number(i)+1}</b>`
-                        player_name.innerHTML=squads[i].name;
+                        player_name.innerHTML=squads[i].player;
                         
-                        avg.innerHTML=squads[i].total;
+                        avg.innerHTML=squads[i].goals;
                         table_row.append(div1)
                         table_row.append(player_name)
                         
@@ -117,7 +117,7 @@ function get_team_numbers(){
                         //console.log(text)
                         var squads = JSON.parse(text);
                         var last_matches=document.getElementById("last_matches");
-                        console.log(squads)
+                        //console.log(squads)
                          
                         for (var i in squads) {
                             var table_row = document.createElement('div')
@@ -169,7 +169,7 @@ function get_last_matches(){
                         //console.log(text)
                         var squads = JSON.parse(text);
                         var last_matches=document.getElementById("last_matches");
-                        console.log(squads)
+                        //console.log(squads)
                          
                         for (var i in squads) {
                             var table_row = document.createElement('div')
@@ -291,7 +291,7 @@ function get_squad_value(){
                         }else{
                           //  console.log(text)
                             var squads = JSON.parse(text);
-                            console.log(squads)
+                            //console.log(squads)
                             let start_value =0
                             let current_value=0
                             for (var i in squads) {
@@ -310,33 +310,22 @@ function get_squad_value(){
 
 function get_squad_best_men(){
    // console.log("try value")
-        fetch( `club_stats`)
+        fetch( `club_numbers`)
         .then(response => response.text())
         .then(text => {
             if(text==="empty"){
             }else{
                 //console.log(text)
-                var squads = JSON.parse(text);
-                //console.log(squads)
-                let best_value =Number(squads[0].current_value)-Number(squads[0].value)
-                best_player = squads[0].name
-                let worst_value=Number(squads[0].current_value)-Number(squads[0].value)
-                worst_player = squads[0].name
-                for (var i in squads) {
-                   // console.log(squads[i].name+ " => "+ Number(squads[i].current_value)+ " "+Number(squads[i].value))
-                    if(Number(squads[i].current_value)-Number(squads[i].value)>best_value){
-                        best_value = Number(squads[i].current_value)-Number(squads[i].value)
-                        let best_player = squads[i].name
-                    }
-                    if(Number(squads[i].current_value)-Number(squads[i].value)<best_value){
-                        worst_value = Number(squads[i].current_value)-Number(squads[i].value)
-                        worst_player = squads[i].name
-                    }
-                } 
-                var start_value_el=document.getElementById("best_value");
-                var current_value_el=document.getElementById("worst_value");
-                start_value_el.innerHTML=`${best_player} ${best_value.toFixed(1)}`
-                current_value_el.innerHTML=`${worst_player} ${worst_value.toFixed(1)}`
+                var data = JSON.parse(text);
+                console.log(data)
+                var club_goals=document.getElementById("club_goals");
+                var club_assists=document.getElementById("club_assists");
+                var club_yellowcard=document.getElementById("club_yellowcard");
+                var club_redcard=document.getElementById("club_redcard");
+                club_goals.innerHTML=data[0]['goals']
+                club_assists.innerHTML=data[0]['assists']
+                club_yellowcard.innerHTML=data[0]['yellow']
+                club_redcard.innerHTML=data[0]['red']
             }
  });
 }

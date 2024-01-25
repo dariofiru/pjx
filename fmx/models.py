@@ -275,7 +275,7 @@ class Goalscores(models.Model):
 
     def serialize(self):
         return {
-            "player": self.player,
+            "player": self.player.name,
             "goals": self.goals 
         }
 

@@ -117,7 +117,6 @@ def importPlayers(request):
                 for i in range(len(players['statistics'])):
                     if(players['statistics'][i]['games']['appearences']):
                         if players['statistics'][i]['games']['appearences']>21:
-                            tst=tst+ " " + players['player']['name'] + " "  +str(players['statistics'][i]['team']['id'])
                             try: 
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
                                    age=players['player']['age'], nationality = players['player']['nationality'],
@@ -154,7 +153,6 @@ def importPlayers(request):
                 for i in range(len(players['statistics'])):
                     if(players['statistics'][i]['games']['appearences']):
                         if players['statistics'][i]['games']['appearences']>21:
-                            tst=tst+ " " + players['player']['name'] + " "  +str(players['statistics'][i]['team']['id'])
                             try: 
                                 new_player=Player(id=players['player']['id'],team_id=team,name=players['player']['name'],
                                    age=players['player']['age'], nationality = players['player']['nationality'],

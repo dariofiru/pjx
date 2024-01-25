@@ -124,17 +124,12 @@
         <li class="nav-item  ">
         
     </li>
-  
-    <li class="nav-item   rounded-2">
-      <a class="nav-link  " aria-current="page" href="{% url 'index' %}" >   
-       <b>{{ user.club_details.club  }}</b> </a>
-    </li>
-    <img   src="{{ user.club_details.logo  }}" alt="Bootstrap" width="45" style="border-radius: 50%;padding:0px;padding-top:0px; "> 
-    <li class="nav-item  ">
-      <a class="nav-link  " aria-current="page" href="{% url 'index' %}" ><b>{{ user.username }} </b> 
-     </a>
-      
-    </li>
+    <span class="navbar-text">
+      <b>{{ user.club_details.club  }}</b> &nbsp; </span>
+     
+    <img   src="{{ user.club_details.logo  }}" alt="team logo" width="45" style="border-radius: 50%;padding:0px;padding-top:0px;  "> 
+    <span class="navbar-text">
+      &nbsp; <b>{{ user.username }}</b>  </span>
   <!-- <li class="nav-item  ">
     <button id="run_round" type="button" class="btn btn-sm btn-secondary">Run round</button>
 </li> -->

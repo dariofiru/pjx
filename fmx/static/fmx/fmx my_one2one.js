@@ -61,15 +61,15 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                     date=new Date(`${matches[i].time}`)
                     const formatter = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     const formattedTime = formatter.format(date);
-                    col.classList.add('col-4',   'text-black','align-self-center')
-                    col.innerHTML=` ${matches[i].club_name}<br>${matches[i].id}
+                    col.classList.add('col-3',   'text-black','align-self-center')
+                    col.innerHTML=` ${matches[i].club_name} <br>
                     <span style="font-size:10px"> <i>${date.toDateString()}  </i></span>`
                     var col2 =  document.createElement('div')
-                    col2.classList.add('col', 'm-1', 'text-black','align-self-center')
+                    col2.classList.add('col-3', 'm-1', 'text-black','align-self-center')
                     col2.innerHTML=`${matches[i].status}`
                     row.append(col)
                     var col2b=document.createElement('div')
-                    col2b.classList.add('col', 'm-1', 'text-black','align-self-center')
+                    col2b.classList.add('col-2', 'm-1', 'text-black','align-self-center')
                     col2b.innerHTML=`$${matches[i].bet}`
                     var col3 =  document.createElement('div')
                     col3.classList.add('col',   'text-black','align-self-center')
@@ -272,21 +272,21 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                     date=new Date(`${matches[i].time}`)
                     const formatter = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     const formattedTime = formatter.format(date);
-                    col.classList.add('col-4',   'text-black', 'align-self-center')
-                    col.innerHTML=` ${matches[i].club_name}<br>${matches[i].id}
+                    col.classList.add('col-3',   'text-black', 'align-self-center')
+                    col.innerHTML=` ${matches[i].club_name}<br> 
                     <span style="font-size:10px"> <i>${date.toDateString()}  </i></span>`
                      
                     var col2 =  document.createElement('div')
-                    col2.classList.add('col', 'm-1', 'text-black','align-self-center')
+                    col2.classList.add('col-3', 'm-1', 'text-black','align-self-center')
                     col2.innerHTML=`${matches[i].status}`
                     var col2b=document.createElement('div')
-                    col2b.classList.add('col', 'm-1', 'text-black','align-self-center')
+                    col2b.classList.add('col-2', 'm-1', 'text-black','align-self-center')
                     col2b.innerHTML=`$${matches[i].bet}`
                     row.append(col)
                     row.append(col2b)
                     row.append(col2)
                     var col3 =  document.createElement('div')
-                    col3.classList.add('col',   'text-black','align-self-center')
+                    col3.classList.add('col', 'text-center',  'text-black','align-self-center')
                     if(matches[i].status==='accepted'){
                        
                         var res_btn=document.createElement('button')
@@ -586,6 +586,14 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         refuse_button.classList.add('btn','btn-danger', 'm-1', 'btn-sm')
                         refuse_button.addEventListener('click', event => {
                             console.log("->"+event.target.dataset.one2oneid)
+                            fetch( `refuse_challenge/${event.target.dataset.one2oneid}`)
+                            .then(response => response.text())
+                            .then(text => {
+                               //console.log(text)
+                     });
+                            alert("You have refused the challenge")
+
+                            window.location.reload ()
                         });
                         refuse_button.innerHTML="Refuse"
                         
@@ -602,7 +610,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
     }
 
 
-get_matches(0,0,0,0)
+get_matches(0,0,0,"timestamp")
  
  
 const challenge_status=document.getElementById("challenge_status"); 

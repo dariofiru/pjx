@@ -55,6 +55,7 @@ urlpatterns = [
     path("get_one2one_teams", one2one_views.get_one2one_teams, name="get_one2one_teams"),
     path("challenge/<str:id>", one2one_views.challenge, name="challenge"),
     path("accept_challenge/<str:id>", one2one_views.accept_challenge, name="accept_challenge"),
+    path("refuse_challenge/<str:id>", one2one_views.refuse_challenge, name="refuse_challenge"),
     path("get_one2one/<str:id>", one2one_views.get_one2one, name="get_one2one"),
     path("get_one2one_stats/<str:id>", one2one_views.get_one2one_stats, name="get_one2one_stats"),
 
@@ -64,6 +65,7 @@ urlpatterns = [
     path("club_stats", stats_views.club_stats, name="club_stats"), 
     path("get_last_results", stats_views.get_last_results, name="get_last_results"),
     path("get_team_stats", stats_views.get_team_stats, name="get_team_stats"),
+    path("club_numbers", stats_views.club_numbers, name="club_numbers"),
     
 
 

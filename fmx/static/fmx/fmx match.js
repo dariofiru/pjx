@@ -29,8 +29,8 @@ function get_matches(){
                     away_logo.style.width="30px"
                     home_logo.src=matches[i].img_1
                     away_logo.src=matches[i].img_2
-                    home_logo_div.classList.add("col-1")
-                    away_logo_div.classList.add("col-1")
+                    home_logo_div.classList.add("col-1", "d-md-block", "d-none")
+                    away_logo_div.classList.add("col-1", "d-md-block", "d-none")
                     home_logo_div.append(home_logo)
                     away_logo_div.append(away_logo)
                     var div2 =document.createElement('div')

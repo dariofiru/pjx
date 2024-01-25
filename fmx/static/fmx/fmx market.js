@@ -193,7 +193,11 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
                 headline=headline.replace("*name*",sold_name)
                 headline=headline.replace("*team*",club_name) 
                 headline_txt.innerHTML=headline 
+                console.log(headline+" - "+headline.length)
+                
              }
+             const player_sell_name=document.getElementById("player_sell_name");
+                player_sell_name.innerHTML=sold_name
         }
     );
     confirm_sell_btn.dataset.playername=sell_player_name.innerHTML
@@ -277,22 +281,24 @@ function check_signed(player_id, position){
 
 
             // setting up the confirm sign button
-function confirm_sign_player() {    
-    var modal = document.getElementById("myModal");
-    const content_box=document.getElementById("content-box");
-    modal.style.display = "block";
-    const confirm_sign_btn=document.getElementById("confirm_sign_btn");
-    const det_player_id  =document.getElementById("det_player_id");
+function confirm_sign_player() {   
     const det_player_value  =document.getElementById("det_player_value");
-    const det_player_photo=document.getElementById("det_player_photo");
-    const det_player_name=document.getElementById("det_player_name");
-    const det_player_position=document.getElementById("det_player_position");
     let pl_value=Number(det_player_value.innerHTML)
     var budget_box=document.getElementById("budget");
     if(Number(budget_box.innerHTML)<pl_value){
         alert("Not enough budget")
         return false;
-    }
+    } 
+    var modal = document.getElementById("myModal");
+    const content_box=document.getElementById("content-box");
+    modal.style.display = "block";
+    const confirm_sign_btn=document.getElementById("confirm_sign_btn");
+    const det_player_id  =document.getElementById("det_player_id");
+    const det_player_photo=document.getElementById("det_player_photo");
+    const det_player_name=document.getElementById("det_player_name");
+    const det_player_position=document.getElementById("det_player_position");
+    
+    
 
     fetch( "random_headline/buy")
     .then(response => response.text())
@@ -750,7 +756,8 @@ async function get_player_details(id){
             det_player_1.innerHTML=`<b>Position:</b> ${player_data[i].position}<br><br>
             <b>Nationality:</b> ${player_data[i].nationality} `;
             det_player_2.innerHTML=`<b>Age:</b> ${player_data[i].age}<br><br>
-            <b>Height:</b> ${player_data[i].height}<br><br> `;
+            <b>Height:</b> ${player_data[i].height}<br><br> 
+            <b>Rating:</b> ${Number(player_data[i].rating).toFixed(1)}`;
             
              
             stat_player_1.innerHTML=`<span style="font-size:14px">Lineups: ${player_data[i].lineups}<br> 
@@ -902,7 +909,7 @@ async function fetchPlayers(page, team, position, price, order) {
                     //player_name.classList.add('border-primary-subtle');
                     player_name_extra_info.classList.add('fs-6');
                     player_name_extra_info.innerHTML=` <div class="row m-0 p-0">
-                    <div class="col-md-3 m-0 p-0 ">
+                    <div class="col-3 m-0 p-0 ">
                     <img style="width:50px;margin:5px;border:1px solid black" src="${player[i].photo}" >
                     </div>
                     <div class="col-6 m-0 p-0 lh-sm text-start">
@@ -910,7 +917,7 @@ async function fetchPlayers(page, team, position, price, order) {
                       $ ${player[i].value} <br>
                       <span style="font-size:11px"><b>${player[i].team_name}</b></span>
                       </div>
-                      <div id="add_box-${player[i].id}" class="col-md-3 text-center  ">
+                      <div id="add_box-${player[i].id}" class="col-3 text-center  ">
                      
                     </div> 
                       </div>

@@ -97,6 +97,7 @@ def stats_player_ranking(request):
     #matches= Table.objects.filter(round_id__lt=border_round.round_id).get() #retrieve all matches played so far
     
     #for match in matches:
+    #players_data=Tmp_lineup_score.objects.filter(match__lte=border_round.id).values('player').annotate(total=Avg('score'))
     players_data=Tmp_lineup_score.objects.filter(match__lte=border_round.id).values('player').annotate(total=Avg('score'))
     #result = Fixture_round.objects.values('player').annotate(total=Avg('score'))
     #logger.info(f"border_round: {border_round}") 
@@ -124,23 +125,24 @@ def stats_goalscores(request):
 
     border_round = Table.objects.filter(next_round=True)
     border_round= border_round.order_by('-id').first()
-  
-    players_data_d=Tmp_lineup_score.objects.filter(match__lte=border_round.id).order_by('round_id','player','goals').values('round_id','player','goals').distinct()
-    for player_tt in players_data_d:
-         if player_tt['goals']>0:
-            curr_player = Player.objects.filter(id=player_tt['player']).first()
-            try:
-               goalscorer = Goalscores.objects.filter(player=curr_player).get()
-               Goalscores.objects.filter(player=curr_player).update(goals=goalscorer.goals+player_tt['goals'])
-            except Goalscores.DoesNotExist:
-               goalscorer = Goalscores(player=curr_player, goals=player_tt['goals'])
-               goalscorer.save()
-         logger.info(f'dis: {player_tt}')
-        # logger.info(f'player: {curr_player}')
-    players_data_d=players_data_d.values('player').annotate(total=Sum('goals')) 
-   #  for player_tt2 in players_data_d:
-   #      logger.info(f'sum: {player_tt2}')
-   
+    round=border_round.round_id
+    logger.info(f'round_id:{border_round.round_id} - {str(border_round.round_id)}')
+    
+    chart =Tmp_lineup_score.objects.raw(" SELECT distinct 1 as id, round_id, player_id ,goals FROM fmx_tmp_lineup_score where type= %s ", ['table'])
+    #chart =Tmp_lineup_score.objects.raw(" SELECT distinct 1 as id, round_id, player_id ,goals FROM fmx_tmp_lineup_score")
+    logger.info(f'round_id:{chart}')
+    Goalscores.objects.all().delete()
+    for p in chart:
+      player=Player.objects.filter(id=p.player_id).first()
+      if p.goals>0:
+         scorers=Goalscores.objects.filter(player_id=p.player_id).count()
+         logger.info(f'=> {player}, {p.goals}, {scorers}')
+         if scorers==0:
+            scorer=Goalscores(player=player, goals=p.goals)
+            scorer.save()
+         else: 
+            scorers=Goalscores.objects.filter(player_id=p.player_id).first()
+            scorer=Goalscores.objects.filter(player_id=p.player_id).update(goals=scorers.goals+p.goals)
     json_final =[]
     total_records = Goalscores.objects.count()
     scorers=Goalscores.objects.all()
@@ -148,19 +150,50 @@ def stats_goalscores(request):
        result=scorers.order_by('-goals')[:6] 
     else:
        result=scorers.order_by('-goals')[:total_records] 
+
     logger.info(f'result: {result}')
     #result=result[:6]
     for res in result:
         #logger.info(f'Player: {res}')
-        player= Player.objects.filter(id=res['player']).first()
-        json_tmp=player.serialize() 
-      #  logger.info(f'already a lineup: {player}')
-        json_tmp["total"]=res['total']
-         
+        player= Player.objects.filter(id=res.player.id).first()
+        json_tmp=res.serialize() 
         json_final.append(json_tmp) 
     return JsonResponse(json_final, safe=False)
 
-
+def club_numbers(request):
+   logging.basicConfig(level=logging.INFO)
+   logger = logging.getLogger('fmx')  
+   club = User_club.objects.filter(user=request.user).first()
+   logger.info(f"club: {club}")  
+   try:
+      goals=Tmp_lineup_score.objects.filter(club=club).values('club').annotate(total=Sum('goals')).get()
+      goals=goals['total'] 
+   except Tmp_lineup_score.DoesNotExist:
+      goals=0 
+   try:
+      assists=Tmp_lineup_score.objects.filter(club=club).values('club').annotate(total=Sum('assists')).get()
+      assists=assists['total'] 
+   except Tmp_lineup_score.DoesNotExist:
+      assists=0
+   try:
+      yellow=Tmp_lineup_score.objects.filter(club=club).values('club').annotate(total=Sum('yellow')).get()
+      yellow=yellow['total'] 
+   except Tmp_lineup_score.DoesNotExist:
+      yellow=0
+   try:
+      red=Tmp_lineup_score.objects.filter(club=club).values('club').annotate(total=Sum('red')).get()
+      red=red['total'] 
+   except Tmp_lineup_score.DoesNotExist:
+      red=0  
+   json_final =[]
+   json_tmp={}
+   json_tmp["goals"]=goals
+   json_tmp["assists"]=assists
+   json_tmp["yellow"]=yellow
+   json_tmp["red"]=red
+   json_final.append(json_tmp) 
+   logger.info(f"total: {goals}")
+   return JsonResponse(json_final, safe=False)
 
 def club_stats(request):
      logging.basicConfig(level=logging.INFO)
@@ -178,12 +211,12 @@ def club_stats(request):
       
      try: 
         #logger.info(f"curr_player: {curr_player.name}")
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
        # logger.info(f"result: {result}") 
         #logger.info(f"result2: {result['total']}")
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.goalkeeper_1_price
@@ -192,10 +225,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.goalkeeper_2_price
@@ -204,10 +237,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()  
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.defender_1_price
@@ -216,10 +249,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize() 
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.defender_2_price
@@ -228,10 +261,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.defender_3_price
@@ -240,10 +273,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.defender_4_price
@@ -252,10 +285,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.defender_5_price
@@ -264,10 +297,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.midfielder_1_price
@@ -276,10 +309,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.midfielder_2_price
@@ -288,10 +321,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.midfielder_3_price
@@ -300,10 +333,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.midfielder_4_price
@@ -312,10 +345,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.midfielder_5_price
@@ -324,10 +357,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize() 
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.attacker_1_price
@@ -335,10 +368,10 @@ def club_stats(request):
      curr_player = Player.objects.filter(id=players.attacker_2.id).first()
      json_tmp=curr_player.serialize()  
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.attacker_2_price
@@ -347,10 +380,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.attacker_3_price
@@ -359,10 +392,10 @@ def club_stats(request):
      json_tmp=curr_player.serialize()   
       
      try: 
-        result = Fixture_round.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
+        result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
         json_tmp["avg"]=round(result['total'],2)
-     except Fixture_round.DoesNotExist:
-        json_tmp["avg"]=6.0
+     except Tmp_lineup_score.DoesNotExist:
+        json_tmp["avg"]=6.0+curr_player.rating
      json_tmp["current_value"]=curr_player.value
      #json_tmp["current_value"]=curr_player.current_value
      json_tmp["value"]=players.attacker_4_price
