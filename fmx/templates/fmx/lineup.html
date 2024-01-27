@@ -13,7 +13,7 @@
 <div id="Modal-saved-squad" class="modal "  tabindex="-1">
 
   <!-- Modal content --><div class="modal-dialog">
-  <div class="modal-content  " >
+  <div id="modal_content" class="modal-content  " >
     
     <div class="row">
         
@@ -27,7 +27,7 @@
       </div>
       </div>
       <div id="first_lineup_msg" class="col text-center">
-        <h5 class="modal-header">
+        <h5 class="  text-center">
          Congratulations! 
         </h5><div class="modal-body">
           Your team has been added to the <b style="color:green"> FMX League table</b> get ready for some tough matches!  <br><br>
@@ -37,7 +37,7 @@
       
     </div><div class="modal-footer">
     <div class="row"><div  class="col text-center">
-      <button id="close_table_btn" onclick="document.getElementById('Modal-saved-squad').style.display='none'" type="button" class="btn btn-sm btn-secondary m-1 p-2">Close</button>
+      <button id="close_table_btn" onclick="document.getElementById('Modal-saved-squad').style.display='none'" type="button" class="btn btn-sm btn-secondary  ">Close</button>
     </div></div></div>
 </div></div> </div>
  <!-- END Modal confirming save squad-->
@@ -331,7 +331,7 @@ var  user_name='{{ user.username  }}'
 var  user_id='{{ user.id  }}'
 var  initial_budget_str='{{ user.initial_budget  }}'
 var  initial_budget=Number(initial_budget_str)
-console.log("has lineup:" + has_lineup )
+console.log("has lineup:" + has_lineup+" " + typeof(has_lineup) +" "+(has_lineup=='False') )
 </script>
 
 <script src="{% static 'fmx/fmx lineup.js' %}"></script>

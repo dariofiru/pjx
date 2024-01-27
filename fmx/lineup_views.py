@@ -144,7 +144,7 @@ def save_lineup(request):
      player_10 = None
      player_11 = None
      squad_name= squad['squad_name']
-
+     formation=squad['formation']
      for member in squad['squad']:
           position=member['position']
           id=member['id']
@@ -224,7 +224,7 @@ def save_lineup(request):
           pass
      Lineup.objects.filter(user=request.user).update(active=False) # deactivate old lineups
      lineup= Lineup(     
-               user= request.user,
+               user= request.user, formation=formation,
                club=user_club,
                player_1 = player_1,player_2 = player_2, player_3 = player_3, player_4 = player_4, player_5 = player_5,
                player_6 = player_6, player_7 = player_7, player_8 = player_8, player_9 = player_9,
@@ -334,8 +334,16 @@ def calculate_results(round): # returns winner/looser for each round and updates
             #Table.objects.filter(pk__gt=game.id, round=round+1).update(next_round=True)
             Club_details.objects.filter(user__in=user_1).update(elo=new_elo_1)
             Club_details.objects.filter(user__in=user_2).update(elo=new_elo_2)
-            
-
+            # check if table need to be extended
+            next_games = Table.objects.filter(id__gt=game.id).count()
+            logger.info(f'game.id: {game.id}')
+            logger.info(f'NEXT GAME: {next_games}')
+            if next_games==0:
+                 logger.info(f'last match, time to extend')
+                 table_views.create_table(None,round+1,game.round_id+1)
+            else:
+                 next_games_list = Table.objects.filter(id__gt=game.id).all()
+                 logger.info(f'next_games_list: {next_games_list}')
 
 def calculate_round(id): # downloads from API all players stats for fixures in round
      logging.basicConfig(level=logging.INFO)
@@ -408,12 +416,12 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     score = score-(fixture_round.redcard*3)                    
                     Fixture_round.objects.filter(fixture=fixture, player=fixture_round.player).update(score=round(score,1)) 
                     player_data=Player.objects.filter(pk=fixture_round.player.id).first()
-                    if score>=player_data.rating:
+                    if score>=player_data.rating-0.3:
                          if fixture_round.player.position=='Goalkeeper':
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.3'))
-                         else:
                               Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.4'))
-                    elif score<player_data.rating:
+                         else:
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.5'))
+                    elif score<player_data.rating-0.3:
                          if fixture_round.player.position=='Goalkeeper':
                               Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.1'))
                          else:
@@ -435,15 +443,9 @@ def lineup_scores(id): # calculates total point for each lineup/round
           lineup_list.append(matches.lineup_1)
           lineup_list.append(matches.lineup_2)
           
-          logger.info(f'matches: {matches_round} lineup_list: {lineup_list}  ')
+          #logger.info(f'matches: {matches_round} lineup_list: {lineup_list}  ')
           for lineup in lineup_list:
                team_score=Decimal('0.0')
-               # try:
-               #      lineup_round=Table.objects.filter(next_round=True, lineup_1=lineup)
-               #      logger.info(f'lineup_round 1: {lineup_round}  ')
-               # except Table.DoesNotExist:
-               #      lineup_round=Table.objects.filter(next_round=True, lineup_2=lineup)
-               #      logger.info(f'lineup_round 2: {lineup_round}  ')
 
                for fixture in fixtures:
                     

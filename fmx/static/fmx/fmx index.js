@@ -113,11 +113,16 @@ function get_one2ones(){
     
     get_table()
 
- 
- 
-    get_next_match()
+    if(has_lineup=='False' ){
 
-    get_one2ones()
+    }else{
+        get_next_match()
+
+        get_one2ones()   
+
+    }  
+ 
+    
  
    
        

@@ -550,20 +550,23 @@ save_btn.addEventListener("click", function() {
         body: JSON.stringify({
             csrfmiddlewaretoken: csrftoken,
             squad: jsonSquad,
-            squad_name: club_name
+            squad_name: club_name,
+            formation: formation
         })
     }).then(response=>response.text())
     .then(data=>{  
     saved_squad=document.getElementById('Modal-saved-squad')
-    if(has_lineup==false ){
+    if(has_lineup=='False' ){
         saved_squad.style.height="160px;"
         document.getElementById('first_lineup_msg').style.display='block'
         document.getElementById('new_lineup_msg').style.display='none'
+        alert("false")
     }
     else{
-        saved_squad.style.height="200px;"
+        saved_squad.style.height="100px;"
         document.getElementById('first_lineup_msg').style.display='none'
         document.getElementById('new_lineup_msg').style.display='block'
+        alert("true")
     }
     saved_squad.style.display='block'
      

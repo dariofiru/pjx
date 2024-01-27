@@ -260,6 +260,7 @@
 }
 
  
+ 
 .modal-content {
  background-color:#D8DDE2;
  text-align:left;
@@ -277,11 +278,18 @@
   
 }  
 
+.button_center{
+  text-align: left;
+}
+ 
+
 .lineup_resize{
   height: 750px;
 }
 @media screen and (max-width: 575px) {
-
+  .button_center {
+     text-align: center;
+  }
   .lineup_resize {
     height: 1750px;
   }

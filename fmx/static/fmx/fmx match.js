@@ -42,7 +42,7 @@ function get_matches(){
                     home_score.classList.add('col-md-1')
                     away_score.classList.add('col-md-1')
                     div1.classList.add('col-2')
-                    div2.classList.add('col-2', 'text-start' ) 
+                    div2.classList.add('col-2',  'button_center') 
                     home_team.innerHTML=matches[i].lineup_1_name;
                     away_team.innerHTML=matches[i].lineup_2_name;
                     home_score.innerHTML=matches[i].score_1;
@@ -235,7 +235,7 @@ function get_matches(){
                         away_score.classList.add('border','bg-success-subtle')
                         var stats_btn =document.createElement('button')
                         stats_btn.classList.add('btn','btn-sm',  'btn-outline-success' )
-                        stats_btn.innerHTML="View Stats!"
+                        stats_btn.innerHTML="View Stats"
                         stats_btn.dataset.matchid=matches[i].id
                         stats_btn.dataset.club1=matches[i].lineup_1_name
                         stats_btn.dataset.club2=matches[i].lineup_2_name

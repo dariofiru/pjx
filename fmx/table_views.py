@@ -151,7 +151,7 @@ def elo_value(elo_1, elo_2):
 
  
 
-def create_table(request, id):
+def create_table(request, id, round_id):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')
 
@@ -167,7 +167,7 @@ def create_table(request, id):
     team_list_A = [team_list_main[i] for i in list_A]
     team_list_B = [team_list_main[i] for i in list_B]
     round_num=int(id)
-    round_id=int(id)
+    round_id=int(round_id)
      ############# first round
     for i in range(0,team_count//2):
             lineup_1= Lineup.objects.filter(id=team_list_A[i].id).first()
@@ -263,21 +263,30 @@ def new_team_in_table(request, id):
      logger = logging.getLogger('fmx')
      Lineup.objects.filter(ai=True).update(active=False)
      round = Round.objects.filter(next=True).values("round_num").first()
-     games = Table.objects.filter(round_num__gt=round["round_num"]).all()   
-     for game in games:
-          game.delete()
+     tot_games = Table.objects.filter(next_round=True).count()
+     round_id=round_num=round["round_num"]
+     if tot_games>0:
+          games = Table.objects.filter(next_round=True).all() 
+          next_games=games.order_by('-id').first()
+          logger.info(f'{round} -  {next_games.id}')
+          
+          games = Table.objects.filter(pk__gt=next_games.id).all()   
+          round_id=next_games.round_id
+          for game in games:
+               game.delete()
+          
      lineup_new_team= Lineup.objects.filter(id=id).first()
      lineup_ai= Lineup.objects.filter(ai=True).first()
-     logger.info(f'{round} -  {games}')
+     logger.info(f'round_id -  {round_id}')
      previous_rounds=Table.objects.all().count()
      logger.info(f'PREV ROUNDS: {previous_rounds}')
      if previous_rounds==0:
-          table_entry=Table(round_id=round["round_num"], squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)
+          table_entry=Table(round_id=round_id, squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)
      else:
           last_rounds=Table.objects.all().all()
           last_rounds= last_rounds.order_by('-round_id')[0]
           logger.info(f'LAST ROUNDS: {last_rounds}')
-          table_entry=Table(round_id=round["round_num"], squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)
+          table_entry=Table(round_id=round_id, squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)
 
      table_entry.save()
       
@@ -287,12 +296,12 @@ def new_team_in_table(request, id):
      if team_count % 2==0:
           team_ai = Lineup.objects.filter(ai=True).first()
           Lineup.objects.filter(id=team_ai.id).update(active=False)
-          create_table(None,round["round_num"]+1 )
+          create_table(None,round["round_num"]+1,round_id+1)
      else:
           team_ai = Lineup.objects.filter(ai=True).first()
           Lineup.objects.filter(id=team_ai.id).update(active=True)
-          logger.info(f'QUI: {team_count} -  {games}')     
-          create_table(None,round["round_num"]+1 )
+         # logger.info(f'QUI: {team_count} -  {games}')     
+          create_table(None,round["round_num"]+1,round_id+1)
      return HttpResponse(json.dumps({"x":"x", "y":"y"}), content_type="application/json")
      
 # insert squad, then insert lineup.

@@ -65,23 +65,25 @@ def get_last_results(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      round = Round.objects.filter(current=True).values("round_num").first()
+     rounds = Table.objects.filter(next_round=True).all()
      table_round = Table.objects.filter(next_round=True).first()
      user_club = User_club.objects.filter(user=request.user).first() 
      json_final =[]
      for x in range(1,5):
         json_tmp={}
+        logger.info(f"round {table_round.round_id }")
         try:
             previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_1=user_club).get()
             json_tmp=previous_played.serialize()
             json_final.append(json_tmp)
-            #logger.info(f"{table_round.round_id-x} - {user_club} - {previous_played}")
+            logger.info(f"q {table_round.round_id-x} -   - {previous_played}")
         except Table.DoesNotExist:
             pass
         try:
             previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_2=user_club).get()
             json_tmp=previous_played.serialize()
             json_final.append(json_tmp)
-           # logger.info(f"{table_round.round_id-x} - {user_club} - {previous_played}")
+            logger.info(f"q { table_round.round_id-x} -   - {previous_played}")
         except Table.DoesNotExist:
             pass    
      return JsonResponse(json_final, safe=False)
@@ -126,17 +128,17 @@ def stats_goalscores(request):
     border_round = Table.objects.filter(next_round=True)
     border_round= border_round.order_by('-id').first()
     round=border_round.round_id
-    logger.info(f'round_id:{border_round.round_id} - {str(border_round.round_id)}')
+    #logger.info(f'round_id:{border_round.round_id} - {str(border_round.round_id)}')
     
     chart =Tmp_lineup_score.objects.raw(" SELECT distinct 1 as id, round_id, player_id ,goals FROM fmx_tmp_lineup_score where type= %s ", ['table'])
     #chart =Tmp_lineup_score.objects.raw(" SELECT distinct 1 as id, round_id, player_id ,goals FROM fmx_tmp_lineup_score")
-    logger.info(f'round_id:{chart}')
+    #logger.info(f'round_id:{chart}')
     Goalscores.objects.all().delete()
     for p in chart:
       player=Player.objects.filter(id=p.player_id).first()
       if p.goals>0:
          scorers=Goalscores.objects.filter(player_id=p.player_id).count()
-         logger.info(f'=> {player}, {p.goals}, {scorers}')
+         #logger.info(f'=> {player}, {p.goals}, {scorers}')
          if scorers==0:
             scorer=Goalscores(player=player, goals=p.goals)
             scorer.save()
@@ -151,7 +153,7 @@ def stats_goalscores(request):
     else:
        result=scorers.order_by('-goals')[:total_records] 
 
-    logger.info(f'result: {result}')
+    #logger.info(f'result: {result}')
     #result=result[:6]
     for res in result:
         #logger.info(f'Player: {res}')
@@ -164,7 +166,7 @@ def club_numbers(request):
    logging.basicConfig(level=logging.INFO)
    logger = logging.getLogger('fmx')  
    club = User_club.objects.filter(user=request.user).first()
-   logger.info(f"club: {club}")  
+   #logger.info(f"club: {club}")  
    try:
       goals=Tmp_lineup_score.objects.filter(club=club).values('club').annotate(total=Sum('goals')).get()
       goals=goals['total'] 
@@ -192,7 +194,7 @@ def club_numbers(request):
    json_tmp["yellow"]=yellow
    json_tmp["red"]=red
    json_final.append(json_tmp) 
-   logger.info(f"total: {goals}")
+   #logger.info(f"total: {goals}")
    return JsonResponse(json_final, safe=False)
 
 def club_stats(request):
