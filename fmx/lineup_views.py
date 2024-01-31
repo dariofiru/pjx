@@ -10,10 +10,11 @@ import logging
 import json
 import requests
 import http.client
+from random import randrange
 import datetime
 from . import table_views 
 from django.db.models import Q
-from .models import Team, Player, Club_details,Tmp_lineup_score, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
+from .models import Team, Player, Club_details,Starter, Tmp_lineup_score, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
 # Create your views here.
 
 def lineup(request):
@@ -246,6 +247,12 @@ def save_lineup(request):
      lineup_round.save()  
      return HttpResponseRedirect("/")
  
+def check_for_round_data_hook(request):
+     check_for_round_data()
+     round = Round.objects.filter(current=True).values("round_num").first()
+     starter = Starter.objects.first()
+     Starter.objects.filter(id=starter.id).update(round_num = round["round_num"])
+     return HttpResponse("success") 
 
 def check_for_round_data():
      logging.basicConfig(level=logging.INFO)
@@ -263,7 +270,9 @@ def check_for_round_data():
      get_fixture_ratings(round) # calculate players score 
      lineup_scores(round) # adds players score for each active lineup
      #if downloaded_fixture==0:
+     logger.info(f'checking for next round: {round} ') 
      calculate_results(round) # calculates winner/looser for each match in round and updates elo
+     logger.info(f'done round: {round} ') 
      #moving to the next round and next table matches
      if round==38:
          # logger.info(f'here: {round} ')
@@ -298,7 +307,7 @@ def calculate_results(round): # returns winner/looser for each round and updates
                  Table.objects.filter(pk=game.id).update(score_1=score_1) #moving 
             except Team.DoesNotExist:
                  pass
-            logger.info(f"lineup 1: {lineup_1} - {score_1}")
+            #logger.info(f"lineup 1: {lineup_1} - {score_1}")
 
             try:
                  lineup_2 = Lineup.objects.filter(id=game.lineup_2.id).values("score")
@@ -308,7 +317,7 @@ def calculate_results(round): # returns winner/looser for each round and updates
                  Table.objects.filter(pk=game.id).update(score_2=lineup_2) #
             except Team.DoesNotExist:
                  pass
-            logger.info(f"lineup 2: {lineup_2} - {score_2}")
+            #logger.info(f"lineup 2: {lineup_2} - {score_2}")
                
             elo_1 = Club_details.objects.filter(user__in=user_1).values('elo').first()
             elo_2 = Club_details.objects.filter(user__in=user_2).values('elo').first()
@@ -336,14 +345,15 @@ def calculate_results(round): # returns winner/looser for each round and updates
             Club_details.objects.filter(user__in=user_2).update(elo=new_elo_2)
             # check if table need to be extended
             next_games = Table.objects.filter(id__gt=game.id).count()
-            logger.info(f'game.id: {game.id}')
+            #logger.info(f'game.id: {game.id}')
             logger.info(f'NEXT GAME: {next_games}')
             if next_games==0:
                  logger.info(f'last match, time to extend')
                  table_views.create_table(None,round+1,game.round_id+1)
+                 Table.objects.filter(round_id=game.round_id+1).update(next_round=True)
             else:
                  next_games_list = Table.objects.filter(id__gt=game.id).all()
-                 logger.info(f'next_games_list: {next_games_list}')
+                 #logger.info(f'next_games_list: {next_games_list}')
 
 def calculate_round(id): # downloads from API all players stats for fixures in round
      logging.basicConfig(level=logging.INFO)
@@ -416,17 +426,25 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     score = score-(fixture_round.redcard*3)                    
                     Fixture_round.objects.filter(fixture=fixture, player=fixture_round.player).update(score=round(score,1)) 
                     player_data=Player.objects.filter(pk=fixture_round.player.id).first()
-                    if score>=player_data.rating-0.3:
+                    logger.info(f'player_data: {player_data.name} - {score}- {player_data.rating}')
+                    if score>=player_data.rating-0.1:
+                         random_value=randrange(-1, 4)
+                         variation=round(random_value/10,1)
+                         new_value=player_data.value+Decimal(variation)
+                         logger.info(f'good: {player_data.value} - {new_value}')
                          if fixture_round.player.position=='Goalkeeper':
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.4'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value+Decimal('0.5'))
-                    elif score<player_data.rating-0.3:
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
+                    elif score<player_data.rating-0.1:
+                         random_value=randrange(-3, 2)
+                         variation=round(random_value/10,1) 
+                         new_value=player_data.value+Decimal(variation)
+                         logger.info(f'bad: {player_data.value} - {Decimal(variation)} - {new_value}')
                          if fixture_round.player.position=='Goalkeeper':
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.1'))
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
                          else:
-                              Player.objects.filter(pk=fixture_round.player.id).update(value=player_data.value-Decimal('0.2'))
-                    #logger.info(f'score: {score} rating: {player_data.rating} - {score/2}>={player_data.rating-0.5}')
+                              Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
                except TypeError:
                  pass
      
@@ -464,7 +482,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                          #logger.info(f'fixture: {fixture} player_stat: {lineup.player_1.name}: {player_1_score} ')  
                     except Fixture_round.DoesNotExist: 
                          pass
-                    
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_2.rating)
@@ -498,7 +515,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                                                                  }) 
                     except Fixture_round.DoesNotExist: 
                          pass
-                    
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_5).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_5.rating)
@@ -510,7 +526,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                                                                  }) 
                     except Fixture_round.DoesNotExist: 
                          pass
-                    
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_6).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_6.rating)
@@ -533,7 +548,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                                                                  })
                     except Fixture_round.DoesNotExist: 
                          pass
-                    
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_8).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_8.rating)
@@ -545,7 +559,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                                                                  })
                     except Fixture_round.DoesNotExist: 
                          pass
-               
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_9).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_9.rating)
@@ -557,7 +570,6 @@ def lineup_scores(id): # calculates total point for each lineup/round
                                                                  })
                     except Fixture_round.DoesNotExist: 
                          pass
-               
                     try:
                          fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_10).get()
                          team_score=team_score+fixture_player.score+Decimal(lineup.player_10.rating)
@@ -581,9 +593,8 @@ def lineup_scores(id): # calculates total point for each lineup/round
                     except Fixture_round.DoesNotExist: 
                          pass
                Lineup.objects.filter(id=lineup.id).update(score=team_score)          
-          logger.info(f'ALL GOOD  ')
+          #logger.info(f'ALL GOOD  ')
           for lineup in lineup_list:
-               
                try:
                     player_bench=Tmp_lineup_score.objects.filter(player=lineup.player_1, match=matches.id, type="table",lineup=lineup).get()
                except Tmp_lineup_score.DoesNotExist:
@@ -664,10 +675,10 @@ def lineup_scores(id): # calculates total point for each lineup/round
           
                current_lineup=Lineup.objects.filter(id=lineup.id).first()
                lineup_score=Tmp_lineup_score.objects.filter(lineup=lineup,match=matches.id,type="table").all()#.annotate(total=Sum('score'))
-               for lineup_tmp in lineup_score:
-                    logger.info(f'lineup scores: {lineup_tmp}')     
+              # for lineup_tmp in lineup_score:
+                  #  logger.info(f'lineup scores: {lineup_tmp}')     
                total_score= lineup_score.aggregate(Sum('score'))
-               logger.info(f'lineup scores: {total_score}')
+               #logger.info(f'lineup scores: {total_score}')
                Lineup.objects.filter(id=lineup.id).update(score=total_score['score__sum'])      
      #scores = Tmp_lineup_score.objects.filter(type="table", match=id).all()           
      

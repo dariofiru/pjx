@@ -223,7 +223,7 @@ function get_my_stats(){
                         //console.log(text)
                         var squads = JSON.parse(text);
                         var top_scorers=document.getElementById("my_stats");
-                       // console.log(squads)
+                        console.log(squads)
                         var table_row_h = document.createElement('div')
                         var div1_h =document.createElement('div')
                         var player_name_h=document.createElement('div')
@@ -247,6 +247,7 @@ function get_my_stats(){
                         table_row_h.append(avg_h)
                         table_row_h.append(variation_h)
                         top_scorers.append(table_row_h) 
+                        let delta_final=0.0
                         for (var i in squads) {
                             var player_name=document.createElement('div')
                             var table_row = document.createElement('div')
@@ -265,7 +266,9 @@ function get_my_stats(){
                             player_name.innerHTML=squads[i].name;
                             avg.innerHTML=Number(squads[i].avg).toFixed(1)
                             role.innerHTML=squads[i].position;
-                            delta=(Number(squads[i].current_value)-Number(squads[i].value)).toFixed(1)
+                            delta=Number((Number(squads[i].current_value)-Number(squads[i].value)).toFixed(1))
+                            delta_final=delta_final+delta
+                            
                             if(delta>0)
                                 variation.innerHTML=`+${delta}`
                             else
@@ -278,6 +281,7 @@ function get_my_stats(){
                             top_scorers.append(table_row) 
                          
                         }      
+                        console.log(delta_final +" "+typeof(delta_final)+" = "+typeof(delta))
                     }
                 });
             }

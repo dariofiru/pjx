@@ -259,8 +259,16 @@
  background-color: rgba(0,0,0,0.4); 
 }
 
- 
- 
+.grower{
+   height: 950px;
+} 
+
+@media screen and (max-width: 767px) {
+  .grower{
+    height: 1300px;
+ }
+}
+
 .modal-content {
  background-color:#D8DDE2;
  text-align:left;
@@ -270,6 +278,9 @@
  width: 430px;
  height:300px;
 } 
+
+
+
  @media screen and (max-width: 430px) {
 
   .modal-content {
@@ -435,32 +446,7 @@ p {
 
 /* end ripped paper effect */
 
-/* double border for headline */
  
-.double-bar {
-  &:after {
-    content: "";
-    border-bottom: 1px solid black;
-    width: 100%;
-    position: absolute;
-    top: 39px;
-    left: 0;
-    z-index: 1;
-  }
-  
-  &:before {
-    content: "";
-    border-bottom: 1px solid black;
-    width: 100%;
-    position: absolute;
-    top: 43px;
-    left: 0;
-    z-index: 1;    
-  }
-}
-   
-
-/* end double border for headline */
 
 .dropbtn { 
   background-color: gray; 
@@ -508,7 +494,9 @@ p {
   background-color: #3e8e41; 
 } 
 
- 
+.dropdown:click  { 
+  display: none; 
+}  
 
 .button_x {
   color: white;

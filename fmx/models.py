@@ -7,7 +7,7 @@ class User(AbstractUser):
     pass
 
     def __str__(self) -> str:
-        return f"{self.id} - {self.username}"
+        return f" {self.username}"
 
     def serialize(self):
         return {
@@ -115,7 +115,7 @@ class Player(models.Model):
 
     def __str__(self) -> str:
        # return f"{self.team_id.name} - {self.name}: {self.position} - {self.rating}"
-        return f"{self.id} - {self.name} "
+        return f" {self.name} "
 
 class Fixture_round(models.Model):
     fixture = models.ForeignKey("Fixture", on_delete=models.CASCADE, related_name="fixture_ids")
@@ -299,7 +299,7 @@ class Table(models.Model):
     next_round = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.id} - {self.next_round},{self.round_num}:  {self.squad_1} vs {self.squad_2}"
+        return f"{self.id} - {self.round_num} {self.next_round}:  {self.squad_1} vs {self.squad_2}"
 
     def serialize(self):
         return {
@@ -493,6 +493,9 @@ class One2one(models.Model):
             "bet": self.bet
         }
     
+class MatchTick(models.Model):
+    interval = models.PositiveIntegerField(default=2)
 
-
+    def __str__(self) -> str:
+        return f"{self.interval} "   
  

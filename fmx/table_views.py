@@ -217,7 +217,7 @@ def create_table(request, id, round_id):
             
             if (w)==int(id):
                 logger.info(f'{lineup_1.club} - {lineup_2.club}')
-                table_entry=Table(round_id=round_id, squad_1=lineup_1.club, squad_2=lineup_2.club, lineup_1=lineup_1, lineup_2=lineup_2, round_num=round_num, next_round=True)
+                table_entry=Table(round_id=round_id, squad_1=lineup_1.club, squad_2=lineup_2.club, lineup_1=lineup_1, lineup_2=lineup_2, round_num=round_num, next_round=False)
                 
             else:
                 logger.info(f'{lineup_1.club} - {lineup_2.club}')
@@ -237,7 +237,7 @@ def create_table(request, id, round_id):
             
             if (w)==int(id):
                 logger.info(f'{lineup_1.club} - {lineup_2.club}')
-                table_entry=Table(round_id=round_id, squad_1=lineup_1.club, squad_2=lineup_2.club, lineup_1=lineup_1, lineup_2=lineup_2, round_num=round_num, next_round=True)
+                table_entry=Table(round_id=round_id, squad_1=lineup_1.club, squad_2=lineup_2.club, lineup_1=lineup_1, lineup_2=lineup_2, round_num=round_num, next_round=False)
                 
             else:
                 logger.info(f'{lineup_1.club} - {lineup_2.club}')
@@ -283,7 +283,7 @@ def new_team_in_table(request, id):
      if previous_rounds==0:
           table_entry=Table(round_id=round_id, squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)
      else:
-          last_rounds=Table.objects.all().all()
+          last_rounds=Table.objects.all()
           last_rounds= last_rounds.order_by('-round_id')[0]
           logger.info(f'LAST ROUNDS: {last_rounds}')
           table_entry=Table(round_id=round_id, squad_1=lineup_new_team.club ,squad_2=lineup_ai.club, lineup_1=lineup_new_team, lineup_2=lineup_ai, round_num=round["round_num"], next_round=True)

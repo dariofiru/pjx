@@ -9,8 +9,10 @@ urlpatterns = [
     path("import-players", views.importPlayers, name="import-players"),
     path("import-fixtures", views.importFixtures, name="import-fixtures"),
     path("get_teams", market_views.get_teams, name="get_teams"),
-    path("get_player_value", views.get_player_value, name="get_player_value"),
-
+    #path("get_player_value", views.get_player_value, name="get_player_value"),
+    path("resetGame", views.resetGame, name="resetGame"),
+    path("setScheduler/<str:id>", views.setScheduler, name="setScheduler"),
+    
     path("players/<str:page>/<str:team>/<str:position>/<str:value>/<str:order>/<str:id>", views.players, name="players"),
 
     path("get_player_details/<str:id>", views.get_player_details, name="get_player_details"),
@@ -26,7 +28,7 @@ urlpatterns = [
     path("get_lineup", lineup_views.get_lineup, name="get_lineup"),
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     #path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
-    #path("check_for_round_data", lineup_views.check_for_round_data, name="check_for_round_data"),
+    path("check_for_round_data_hook", lineup_views.check_for_round_data_hook, name="check_for_round_data_hook"),
     
 
     
@@ -41,7 +43,7 @@ urlpatterns = [
     path("table", table_views.table, name="table"),
     path("get_table", table_views.get_table, name="get_table"),
     path("round_results", table_views.round_results, name="round_results"),
-    path("create_table/<str:id>", table_views.create_table, name="create_table"),
+    path("create_table/<str:id>/<str:round_id>", table_views.create_table, name="create_table"),
     path("new_team_in_table/<str:id>", table_views.new_team_in_table, name="new_team_in_table"),
     path("get_next_match", table_views.get_next_match, name="get_next_match"),
     path("get_match_stats/<str:id>", table_views.get_match_stats, name="get_match_stats"),

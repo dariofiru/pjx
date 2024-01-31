@@ -10,5 +10,5 @@ def update_something():
     round = Round.objects.filter(current=True).values("round_num").first()
     starter = Starter.objects.first()
     Starter.objects.filter(id=starter.id).update(round_num = round["round_num"])
-
-    print(f"this function runs every 2 minutes {starter.round_num} - {datetime.datetime.now()}")
+ 
+     

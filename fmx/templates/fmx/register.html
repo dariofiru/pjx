@@ -4,32 +4,40 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var logo_drop = document.getElementById("logo_drop");
+    let img_list=[]
+    let randy=0
+    for (let i = 1; i<8; i++){
+    randy = Math.floor(Math.random() * 24) + 1;
+    if (img_list.includes(randy)){
+            i--
+    }else{
+        img_list.push(randy)
+    }
     
-    for (let i = 1; i<25; i++){
-        const box=document.createElement("a");
-        box.href="#"
-        const logo = document.createElement("img");
-    logo.src=`static/fmx/squads/pic${i}.png`
+    }
+ 
+for (let i = 0; i<img_list.length; i++){
+     
+    const box=document.createElement("a");
+    box.href="#"
+    const logo = document.createElement("img");
+    logo.src=`static/fmx/squads/pic${img_list.slice(i,i+1)}.png`
     logo.classList.add("team-logo")
     logo.style.width="60px"
      
     logo.addEventListener('click', chosen_logo, false);
     logo.addEventListener('hoover', hoover_pic, false);
-    let chance = Math.floor(Math.random() * 8) + 1;
-    console.log(chance)
-    if(chance<3){
-        box.append(logo)
-        logo_drop.prepend(box)
-    }else if(chance==3){
-        box.append(logo)
-        logo_drop.append(box)
-    }
+    box.append(logo)
+    logo_drop.append(box)
 }
+
+ 
 function chosen_logo()  {
     var img = document.getElementById("logo_img");
     var img_id = document.getElementById("logo_hidden");
     img_id.value=event.target.src
     img.src=event.target.src
+    img.style.border="2px solid black"
     img.style.display='block'
     var tst = document.getElementById("reg_form");
     return false;
@@ -40,14 +48,26 @@ function hoover_pic(){
 });
 </script>
 <!--background-image: url('static/fmx/bg_3.jpg');-->
-<div class="container-fluid text-info center  big_ball_img" style="height:800px">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="container-fluid text-info center grower big_ball_img" >
     
     <div class=" col    center    " style="  margin: 0px;padding:0px;">
 <div class="row"><div class="col-md-8">
-    <h2 class="text-black"> Register</h2>
+    <div class="row bg-light text-center rounded-2 p-2 m-4" style="border:1px solid green">
+        <div class="col-2"></div><div class="col text-center"><div class="text-black text-center">
+            <h4 class="text-black">Welcome to FMX League</h4>
+            <div class="h6">Create your account and select your team name and logo</div>
+        </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div class="row bg-light text-center rounded-2 p-2 m-4" style="border:1px solid green">
+            <div class="col-2"></div><div class="col text-center"><div class="text-black text-center">{{ message }}</div></div>
+            <div class="col-2"></div>
+        </div>
     {% endif %}
    
 
@@ -56,12 +76,12 @@ function hoover_pic(){
         
 
      
-        
+      
      
    
     <div class="row    bg-light text-center rounded-2 p-4 m-4 opacity-75 text-black" style="border:4px solid green">
          
-        <div class="col-8 ">
+        <div class="col-md-8  ">
             <h4 class="text-black">Create your User and Club</h4><br>
 
                  
@@ -69,7 +89,7 @@ function hoover_pic(){
         <input type="hidden" id="logo_hidden" name="logo" value="">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control fw-bold" autofocus type="text" name="club" placeholder="Club Name">
+            <input class="form-control fw-bold" autofocus type="text" name="club" placeholder="Team Name">
         </div><br>
         <div class="form-group">
             <input class="form-control fw-bold" autofocus type="text" name="username" placeholder="Username">
@@ -92,11 +112,13 @@ function hoover_pic(){
      
     
 </div>
-<div class="col-4">
-   <div class="row" style="height:150px">
-    <div class="col"></div>
-        <div class="col  "><img src="" style="width:80px;border:1px solid black;display: none;" id="logo_img">
-        </div></div><div class="row"></div>
+<div class="col-md-4  ">
+   <div class="row text-center " style="text-align: center;height:120px">
+     
+        <div class="col text-center " style="text-align: center;">
+            <img class="mx-auto d-block mt-1" src="" style="text-align: center; width:80px; display: none;" id="logo_img">
+        </div></div>
+        <div class="row"></div>
         <div class="row  text-center">
             <div class="col-12">
             <div class="dropdown"> 
@@ -112,7 +134,7 @@ function hoover_pic(){
 
 
 </div>
-<div class="col-md-4 p-4  " style="text-align: center;">
+<div class="col-md-4 p-4  order-md-0" style="text-align: center;">
     <img   src="static/fmx/fmxlogo.jpg" alt="Bootstrap" width="180" style="border-radius: 50%;padding:0px;padding-top:0px; ">
 </div>
 </div>

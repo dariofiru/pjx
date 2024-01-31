@@ -10,8 +10,9 @@ import logging
 from django.core.paginator import Paginator
 import requests
 import http.client
+from . import table_views
 import datetime
-from .models import Team, Player, Fixture, User, Club_details, Round, User_club
+from .models import Team, Player, Fixture, User, MatchTick, Club_details, Round, User_club, Goalscores, Table, Tmp_lineup_score,One2one
 #from notifications.signals import notify
 # Create your views here.
 
@@ -45,15 +46,89 @@ def utilities(request, cmd):
                "what1":  fixtures
                })
 
-
+@login_required
 def match(request):
      return render(request, "fmx/match.html")
 
 
-
+@login_required(login_url='/login')
 def index(request):
      return render(request, "fmx/index.html")
- 
+
+@login_required
+def setScheduler(request, id):
+    tick = MatchTick.objects.update(interval=int(id))
+    return HttpResponse("done") 
+
+@login_required
+def resetGame(request):
+    if request.user.username != 'admin':
+        return HttpResponse(f'error {request.user.username}') 
+    scorers=Goalscores.objects.all() #delete goalscorers chart
+    for scorer in scorers:
+        scorer.delete()
+    
+    get_player_value() #reset players value
+    #table_round = Table.objects.count()
+    #if table_round>1:
+        #table_round = Table.objects.all().update(next_round=False)
+    #table_round = Table.objects.filter(round_id=2).update(next_round=True)
+    Round.objects.all().update(next=False, current=False) 
+    Round.objects.filter(round_num=1).update(next=False, current=True)  
+    Round.objects.filter(round_num=2).update(next=True)   
+    rounds_to_delete = Table.objects.all()
+    for round_to_delete in rounds_to_delete:
+        round_to_delete.delete()
+    table_views.create_table(None,2,2)
+    Table.objects.all().update(next_round=False)
+    Table.objects.filter(round_id=2).update(next_round=True)
+    
+    match_details=Tmp_lineup_score.objects.filter(type="table").all() #delete matches details
+    for match_detail in match_details:
+        match_detail.delete()
+    one2ones=One2one.objects.all() #delete one2ones (and connected match stats)
+    for one2one in one2ones:
+        one2one.delete()
+    
+    elos=Club_details.objects.all().update(elo=1000) #put elo ranking back to start
+
+    clubs=User_club.objects.all() #reset player value
+    for club in clubs:
+        player=Player.objects.filter(id=club.goalkeeper_1.id).first() 
+        User_club.objects.filter(id=club.id).update(goalkeeper_1_price=player.value)
+        player=Player.objects.filter(id=club.goalkeeper_2.id).first() 
+        User_club.objects.filter(id=club.id).update(goalkeeper_2_price=player.value)
+        player=Player.objects.filter(id=club.defender_1.id).first() 
+        User_club.objects.filter(id=club.id).update(defender_1_price=player.value)
+        player=Player.objects.filter(id=club.defender_2.id).first() 
+        User_club.objects.filter(id=club.id).update(defender_2_price=player.value)
+        player=Player.objects.filter(id=club.defender_3.id).first() 
+        User_club.objects.filter(id=club.id).update(defender_3_price=player.value)
+        player=Player.objects.filter(id=club.defender_4.id).first() 
+        User_club.objects.filter(id=club.id).update(defender_4_price=player.value)
+        player=Player.objects.filter(id=club.defender_5.id).first() 
+        User_club.objects.filter(id=club.id).update(defender_5_price=player.value)
+        player=Player.objects.filter(id=club.midfielder_1.id).first() 
+        User_club.objects.filter(id=club.id).update(midfielder_1_price=player.value)
+        player=Player.objects.filter(id=club.midfielder_2.id).first() 
+        User_club.objects.filter(id=club.id).update(midfielder_2_price=player.value)
+        player=Player.objects.filter(id=club.midfielder_3.id).first() 
+        User_club.objects.filter(id=club.id).update(midfielder_3_price=player.value)
+        player=Player.objects.filter(id=club.midfielder_4.id).first() 
+        User_club.objects.filter(id=club.id).update(midfielder_4_price=player.value)
+        player=Player.objects.filter(id=club.midfielder_5.id).first() 
+        User_club.objects.filter(id=club.id).update(midfielder_5_price=player.value)
+        player=Player.objects.filter(id=club.attacker_1.id).first() 
+        User_club.objects.filter(id=club.id).update(attacker_1_price=player.value)
+        player=Player.objects.filter(id=club.attacker_2.id).first() 
+        User_club.objects.filter(id=club.id).update(attacker_2_price=player.value)
+        player=Player.objects.filter(id=club.attacker_3.id).first() 
+        User_club.objects.filter(id=club.id).update(attacker_3_price=player.value)
+        player=Player.objects.filter(id=club.attacker_4.id).first() 
+        User_club.objects.filter(id=club.id).update(attacker_4_price=player.value)
+    return HttpResponse("reset") 
+
+
 def importTeam(request):
     conn = http.client.HTTPSConnection("api-football-v1.p.rapidapi.com/v3/leagues/39")
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
@@ -182,7 +257,7 @@ def importPlayers(request):
                })
 
      
-def get_player_value(request):
+def get_player_value():
     players= Player.objects.all()
     d = {'player': '0'}
     for player in players:
@@ -202,21 +277,17 @@ def get_player_value(request):
     for player in players:
         super_secret_algorithm=(player.appearences*0.5)+(player.lineups*0.8)+(player.goals*1.6)+(player.rating*1.1)+(player.assists*1.4)
         if player.position == 'Defender':
-            super_secret_algorithm = super_secret_algorithm*0.85
+            super_secret_algorithm = super_secret_algorithm*0.82
         elif player.position == 'Attacker':
             super_secret_algorithm = super_secret_algorithm*1.05
         elif player.position =='Goalkeeper':
-             super_secret_algorithm = super_secret_algorithm*0.70
+             super_secret_algorithm = super_secret_algorithm*0.65
 
         Player.objects.filter(pk=player.id).update(value=round(super_secret_algorithm,1),current_value= round(super_secret_algorithm,1))
          
         d[player.name] = round(super_secret_algorithm,1)
 
-    avg = Player.objects.aggregate(Avg('value'))
-    return render(request, "fmx/index.html",
-             {
-               "players": players, "avg" : avg
-               })
+    
 
 def players(request,page,team,position,value, order, id):
     logging.basicConfig(level=logging.INFO)
@@ -357,6 +428,8 @@ def importFixtures(request):
                })        
 
 
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -391,6 +464,11 @@ def register(request):
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        club_name=Club_details.objects.filter(club= club).count()
+        if club_name>0:
+            return render(request, "fmx/register.html", {
+                "message": "Team name already taken."
+            })
         if password != confirmation:
             return render(request, "fmx/register.html", {
                 "message": "Passwords must match."
@@ -400,7 +478,7 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
-            club_details= Club_details(user=user, club= club, logo=logo)
+            club_details= Club_details(user=user, club=club, logo=logo)
             club_details.save()
         except IntegrityError:
             return render(request, "fmx/register.html", {

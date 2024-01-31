@@ -50,8 +50,78 @@
 </div>
 </div>
 <!--- end modal box for new match-->
+<!--- modal box for admin --> 
+<div id="Modal-reset" class="modal overlay"> 
+  <div class="modal-content overlay" style="height:310px;">
+  
+      <div class="row">
+        <div class="col">
+         
+      <div class="col text-center">
+        <h5>Are you sure you want to reset FMX League?  </h5>
+  
+        Please be aware that:<br>
 
-<!--- test navbar -->
+        <ul style="text-align: left;margin-top: 3px;"><li >All table matches and one2ones will be deleted
+
+        </li>
+        <li>All teams ranking will be reset
+
+        </li>
+        <li>All players value will be reset
+
+        </li>
+        <li>A new <span style="color:green">FMX League table</span> will be created
+
+        </li>
+      </ul>
+        <br> 
+        Are you sure you want to go ahead? <br><br>
+         
+           
+          <button id="reset_fmx_btn" type="button" class="btn btn-danger">Yes, reset FMX</button>
+        &nbsp;
+        <button id="close_reset_btn" 
+        onclick="document.getElementById('Modal-reset').style.display='none'"
+         type="button" class="btn btn-secondary  ">No, thanks</button>
+        
+      </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+  <div id="Modal-run_round" class="modal overlay"> 
+    <div class="modal-content overlay" style="height:150px;">
+    
+        <div class="row">
+          <div class="col">
+           
+        <div class="col text-center">
+          <h5>Confirm running a new round?  </h5>
+         
+            <button id="run_round_btn" type="button" class="btn btn-success">Confirm</button>
+          &nbsp;
+          <button id="close_run_round_btn" 
+          onclick="document.getElementById('Modal-run_round').style.display='none'"
+           type="button" class="btn btn-secondary  ">Cancel</button>
+          <br><br>
+          
+        </div>
+        <div id="spinner_admin" class="spinner-border visually-hidden text-success" role="status">
+          
+          <span class="visually-hidden">Please wait...</span>
+        </div> <span id="spinner_admin_txt"  class="visually-hidden">Please wait...</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  <!--- end modal box admin-->
+
+<!---   navbar -->
 <nav class="navbar  navbar-expand-lg text-bg-success " >
   <div class="container-fluid">
     {% if user.is_authenticated %}
@@ -62,17 +132,15 @@
    
     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
-
-     
-
-
+    </button> 
     <div class="navbar-collapse collapse" id="navbarSupportedContent" >
+      
       <ul class="navbar-nav me-auto  ">
+        {% if user.is_authenticated %}
         <li class="nav-item ">
           <a class="nav-link text-white" href="{% url 'index' %}">Home</a>
         </li>
-        {% if user.is_authenticated %}
+        
       
         {% if  user.club_details.has_squad %}
         <li class="nav-item ">
@@ -115,28 +183,63 @@
           <a class="nav-link text-white " href="{% url 'stats' %}">My Stats</a>
         </li>
         {% endif %}
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{% url 'logout' %}">Log Out</a>
-      </li>
-      <li id="countdown" class="nav-item nav-link text-white">
-      </a></li>
+       
+     
       
-        <li class="nav-item  ">
         
+      {% if  user.username == "admin" %}
+
+      <li class="nav-item dropdown justify-content-end">
+        <a class="nav-link border rounded-2 text-white ps-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Admin tools
+        </a>
+        <ul class="dropdown-menu text-center">
+          <li> 
+            <button id="run_round" type="button" class="btn btn   m-2   btn-secondary">Run round</button>
+           </li>
+           <li><hr class="dropdown-divider"></li>
+          <li> <button id="reset_game" type="button" class="btn btn  m-2 btn-danger">Reset FMX</button></button>
+           </li>
+           <li><hr class="dropdown-divider"></li>
+         <div class="li">
+          <div class="row  g-3 align-items-center">
+            <div class="col-auto align-items-center ps-3 pe-3">
+              <label for="inputPassword6" class="col-form-label  mt-1" style="font-size: 14px;">round scheduling interval: <br>
+              <span style="font-size: 12px;">* Requires restart</span></label>
+            </div>
+            <div class="col  align-items-center">
+          <div class="form-floating align-items-center">
+            <select id="tick_schedule" class="form-select-sm" id="floatingSelect" aria-label="Floating label select example">
+              <option value="2" selected>2 Minutes</option>
+              <option value="5">5 Minutes</option>
+              <option value="10">10 Minutes</option>
+              <option value="60">60 Minutes</option>
+              <option value="1440">24 Hours</option>
+            </select>
+          </div>
+        </div>
+          </div>
+
+         </div>
+           
+        </ul>
+      </li>
+
+      <li class="nav-item  ">
+        <span class="navbar-text">&nbsp;&nbsp;&nbsp;</span>
+      </li>
+ 
+      {% endif %}  
+      <li class="nav-item">
+        <a class="nav-link text-white me-3" href="{% url 'logout' %}">Log Out</a>
     </li>
-    <span class="navbar-text">
-      <b>{{ user.club_details.club  }}</b> &nbsp; </span>
-     
-    <img   src="{{ user.club_details.logo  }}" alt="team logo" width="45" style="border-radius: 50%;padding:0px;padding-top:0px;  "> 
-    <span class="navbar-text">
-      &nbsp; <b>{{ user.username }}</b>  </span>
+      <span class="navbar-text">
+        <b>{{ user.club_details.club  }}</b> &nbsp; </span>
        
-  <!-- <li class="nav-item  ">
-    <button id="run_round" type="button" class="btn btn-sm btn-secondary">Run round</button>
-</li> -->
-      
-       
-     
+      <img   src="{{ user.club_details.logo  }}" alt="team logo" width="55" style="border-radius: 50%;padding:0px;padding-top:0px;  "> 
+      <span class="navbar-text">
+        &nbsp; <b>{{ user.username }}</b>  </span> 
+   
      
         {% else %}
         <li class="nav-item">
@@ -152,14 +255,16 @@
     </div>
   </div>
 </nav>
-<!--- end test navbar-->
+<!--- end   navbar-->
 
         {% block body %}
         {% endblock %}
  <script>
 var match_link=`{% url 'match' %}`
+var logged_in=`{{user.is_authenticated}}`
+var user_in = `{{user.username}}`
 document.addEventListener('DOMContentLoaded', function () {
-
+if(logged_in==='True'){
 const view_res_btn=document.getElementById("view_res_btn");
  
 view_res_btn.addEventListener('click', event => {
@@ -184,79 +289,79 @@ function startcheckRound(url){
           else{
             console.log("still on round: "+start+"-"+start_round)
           }   
-        }, 20000);     
+        }, 18000);     
       }
 fetch(`get_start`)
 .then(response => response.text())
 .then(text => {
 var start = JSON.parse(text);
-// 2024-01-05T22:55:32.839Z
+ 
 start_round= start['round_num'] 
     console.log(" =>" +start_round)
     });
 //startcheckRound('get_start')
 
-
-//var run_round=document.getElementById("run_round"); 
-//run_round.addEventListener('click', function () {
-//   fetch( `check_for_round_data`)
-//         .then(response => response.text())
-//         .then(text => {
-//             console.log(text)
+if(user_in==='admin'){ // js code for admin 
+const tick_schedule=document.getElementById("tick_schedule"); 
+tick_schedule.addEventListener("change", function() {
+    console.log("change1")
+          fetch(`setScheduler/${tick_schedule.value}`)
+              .then(response => response.text())
+              .then(text => {
+               
+               
+                  console.log(" =>" +text)
+                  if(text==="done"){
+                    alert('New settings will be active at restart')
+                  }
+                  });
+});
+ 
+var reset_game=document.getElementById("reset_game"); 
+reset_game.addEventListener('click', function () {
+  var modal_reset=document.getElementById("Modal-reset"); 
+  modal_reset.style.display='block'
+    });
+var reset_fmx_btn=document.getElementById("reset_fmx_btn"); 
+reset_fmx_btn.addEventListener('click', function () {
+  var modal_reset=document.getElementById("Modal-reset"); 
+  modal_reset.style.display='none'
+   fetch( `resetGame`)
+        .then(response => response.text())
+        .then(text => {
+           console.log("result:" +text)
+            alert("FMX has been reset")
             
-//         });
-//     });
-
-
-/*
-function countdown(){
- var table_box=document.getElementById("countdown"); 
-    var current = new Date().getTime();
-    //var countDownDate = new Date().getTime() + 600000;
-    //localStorage.setItem("countDownDate", countDownDate);  
-//var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
-sessionStorage = window.sessionStorage;    
-if (!sessionStorage.getItem('countDownDate')) {
-  var countDownDate = new Date().getTime() + 600000;
-  sessionStorage.setItem('countDownDate', new Date().toLocaleTimeString());
-}else{  
-  countDownDate = sessionStorage.getItem('countDownDate');
-}
-console.log(" => " + countDownDate)
-// Update the count down every 1 second
-var x = setInterval(function() {  
-
-  // Get today's date and time
-  var now = new Date().getTime();
-  
-  countDownDate = sessionStorage.getItem('countDownDate');  
-  sessionStorage.setItem('countDownDate', countDownDate);
-  //console.log(" : " + countDownDate + " : "+now)
-  // Find the distance between now and the count down date
-  //console.log(typeof(countDownDate) +" " + typeof(now))
-  console.log(" : " + Number(countDownDate) + " : "+now)
-  //console.log(typeof(Number(countDownDate)) +" " + typeof(now))
-  var distance = Number(countDownDate) - now;
-    
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-  // Output the result in an element with id="demo"
-  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-  
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "EXPIRED";
+            
+        });
+    });
+var run_round=document.getElementById("run_round"); 
+run_round.addEventListener('click', function () {
+  var modal_run_round=document.getElementById("Modal-run_round"); 
+  modal_run_round.style.display='block'
+    });
+var run_round_btn=document.getElementById("run_round_btn"); 
+run_round_btn.addEventListener('click', function () {
+  var modal_run_round=document.getElementById("Modal-run_round"); 
+  var spinner_admin=document.getElementById("spinner_admin");
+  spinner_admin.classList.remove('visually-hidden')
+  var spinner_admin_txt=document.getElementById("spinner_admin_txt");
+  spinner_admin_txt.classList.remove('visually-hidden')
+   fetch( `check_for_round_data_hook`)
+        .then(response => response.text())
+        .then(text => {
+           console.log("result:" +text)
+           spinner_admin.classList.add('visually-hidden')
+           spinner_admin_txt.classList.add('visually-hidden')
+           modal_run_round.style.display='none'
+           window.location.reload ()
+            //alert("A new round has been completed")
+            
+            
+        });
+    });
   }
-}, 1000);
-}
-       // setTimeout(function(){alert("Hello")},3000); 
-*/
+  } 
       });
       </script> 
 </body>
