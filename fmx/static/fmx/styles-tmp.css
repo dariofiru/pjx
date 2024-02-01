@@ -9,30 +9,14 @@
      
 } 
 
-
-.internal-field{
-  border: 2px solid white;
-  margin-top:40px;
-}
-
-
 .player-box-market{
   border:1px solid black;
    margin: 5px;
   height: 40px;   
   width:40px;
 }
-/* @media (max-width:480px) { 
-  .player-box-market{
-    border:1px solid black;
-     margin: 5px;
-    height: 40px;   
-    width:40px;
-    font-size: 10px;
-  }
-
- } */
-
+ 
+/* 
 .sidebar {
   height: 100%;
   width: 0;
@@ -65,9 +49,9 @@
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
-}
+} */
 
-.openbtn {
+/* .openbtn {
   font-size: 20px;
   cursor: pointer;
   background-color: #111;
@@ -78,7 +62,7 @@
 
 .openbtn:hover {
   background-color: #444;
-}
+} */
 
 #main {
   transition: margin-left .5s;
@@ -93,7 +77,7 @@
    }
 
 
-.hero {
+/* .hero {
   background-size: cover;
   background-position: center center; }
   .hero, .hero > .container > .row {
@@ -141,7 +125,7 @@
 
 
         .cd-panel {
-          /*...*/
+         
           visibility: hidden;
           transition: visibility 0s 0.6s;
           color:black;
@@ -153,7 +137,7 @@
         }
         
         .cd-panel__header {
-          /*...*/
+         
           position: fixed;
           top: 0;
           width: 90%;
@@ -176,7 +160,7 @@
         }
         
         .cd-panel__container {
-          /*...*/
+           
           position: fixed;
           width: 90%;
           height: 100%;
@@ -197,52 +181,52 @@
         .cd-panel--is-visible .cd-panel__container {
           transform: translate3d(0, 0, 0);
           transition-delay: 0s;
-        }
+        } */
 /* The side navigation menu */
 
-        .sidenav {
-          height: 100%; /* 100% Full-height */
-          width: 0; /* 0 width - change this with JavaScript */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Stay on top */
-          top: 0px;
-          right: 0;
-          background-color: black;
-          overflow-x: hidden; /* Disable horizontal scroll */
-          padding-top: 15px; /* Place content 60px from the top */
-          transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-        }
- 
-        
-        /* When you mouse over the navigation links, change their color */
-        .sidenav a:hover {
-          color: #f1f1f1;
-        }
-        
-        /* Position and style the close button (top right corner) */
-        .sidenav .closebtn {
-          position: absolute;
-          top: 0;
-          right: 25px;
-          font-size: 36px;
-          margin-left: 50px;
-        }
-        
-        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-        
-        @media screen and (max-height: 450px) {
-          .sidenav {padding-top: 15px;}
-          .sidenav a {font-size: 18px;}
-        }        
-  
-        .box {
-          float: left;
-          height: 20px;
-          width: 20px;
-          margin-bottom: 15px;
-          border: 1px solid black;
-          clear: both;
-        }
+.sidenav {
+height: 100%;  
+width: 0; 
+position: fixed; 
+z-index: 1; /* Stay on top */
+top: 0px;
+right: 0;
+background-color: black;
+overflow-x: hidden; /* Disable horizontal scroll */
+padding-top: 15px; /* Place content 60px from the top */
+transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+position: absolute;
+top: 0;
+right: 25px;
+font-size: 36px;
+margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
+@media screen and (max-height: 450px) {
+.sidenav {padding-top: 15px;}
+.sidenav a {font-size: 18px;}
+}        
+
+.box {
+float: left;
+height: 20px;
+width: 20px;
+margin-bottom: 15px;
+border: 1px solid black;
+clear: both;
+}
         
   
 /* modal*/
@@ -306,7 +290,7 @@
   }
   
 }  
-        /* The Close Button */
+       
         .close {
           color: #aaa;
           float: right;
@@ -447,74 +431,3 @@ p {
 /* end ripped paper effect */
 
  
-
-.dropbtn { 
-  background-color: gray; 
-  border-radius:  5px;
-  color: white; 
-  padding: 6px; 
-  font-size: 16px; 
-  border: none; 
-  cursor: pointer; 
-} 
-
-.dropdown { 
-  position: relative; 
-  display: inline-block; 
-} 
-
-.dropdown-content { 
-  display: none; 
-  position: absolute; 
-  text-align: center;
-  background-color: #f9f9f9; 
-  min-width: 120px; 
-  box-shadow: 0px 8px 16px 
-    0px rgba(0, 0, 0, 0.2); 
-  z-index: 1; 
-} 
-
-.dropdown-content a { 
-  color: black; 
-  padding: 6px 6px; 
-  text-decoration: none; 
-  display: block; 
-} 
-
-.dropdown-content a:hover { 
-  background-color: #f1f1f1;
-  border:2px solid black;
-} 
-
-.dropdown:hover .dropdown-content { 
-  display: block; 
-} 
-
-.dropdown:hover .dropbtn { 
-  background-color: #3e8e41; 
-} 
-
-.dropdown:click  { 
-  display: none; 
-}  
-
-.button_x {
-  color: white;
-  display: inline-block; /* Inline elements with width and height. TL;DR they make the icon buttons stack from left-to-right instead of top-to-bottom */
-  position: relative; /* All 'absolute'ly positioned elements are relative to this one */
-  padding: 2px 5px; /* Add some padding so it looks nice */
-}
-
-/* Make the badge float in the top right corner of the button */
-.button__badge {
-  background-color: #fa3e3e;
-  border-radius: 2px;
-  color: white;
- 
-  padding: 1px 3px;
-  font-size: 10px;
-  
-  position: absolute; /* Position the badge within the relatively positioned button */
-  top: 0;
-  right: 0;
-}

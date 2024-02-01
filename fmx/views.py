@@ -46,7 +46,7 @@ def utilities(request, cmd):
                "what1":  fixtures
                })
 
-@login_required
+@login_required(login_url='/login')
 def match(request):
      return render(request, "fmx/match.html")
 
@@ -55,12 +55,12 @@ def match(request):
 def index(request):
      return render(request, "fmx/index.html")
 
-@login_required
+@login_required(login_url='/login')
 def setScheduler(request, id):
     tick = MatchTick.objects.update(interval=int(id))
     return HttpResponse("done") 
 
-@login_required
+@login_required(login_url='/login')
 def resetGame(request):
     if request.user.username != 'admin':
         return HttpResponse(f'error {request.user.username}') 
@@ -128,7 +128,7 @@ def resetGame(request):
         User_club.objects.filter(id=club.id).update(attacker_4_price=player.value)
     return HttpResponse("reset") 
 
-
+@login_required(login_url='/login')
 def importTeam(request):
     conn = http.client.HTTPSConnection("api-football-v1.p.rapidapi.com/v3/leagues/39")
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
@@ -164,7 +164,7 @@ def importTeam(request):
              {
                "api":  list_teams
                })
-     
+@login_required(login_url='/login')     
 def importPlayers(request):
 
     tst ="hello"
@@ -256,7 +256,7 @@ def importPlayers(request):
                "api": tst
                })
 
-     
+@login_required(login_url='/login')     
 def get_player_value():
     players= Player.objects.all()
     d = {'player': '0'}
@@ -288,7 +288,7 @@ def get_player_value():
         d[player.name] = round(super_secret_algorithm,1)
 
     
-
+@login_required(login_url='/login')
 def players(request,page,team,position,value, order, id):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')
@@ -364,7 +364,7 @@ def players(request,page,team,position,value, order, id):
     return JsonResponse(json_final, safe=False)
 
 
-
+@login_required(login_url='/login')
 def get_player_details(request,id):
     playerT = None
     try:
@@ -391,7 +391,7 @@ def get_player_details(request,id):
     return JsonResponse([player.serialize() for player in playerT], safe=False)
 
 
-
+@login_required(login_url='/login')
 def importFixtures(request):
     active_teams = Team.objects.filter(active=True) 
     for team in active_teams:

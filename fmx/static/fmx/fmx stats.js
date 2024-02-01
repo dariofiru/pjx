@@ -326,6 +326,8 @@ function get_squad_best_men(){
                 var club_assists=document.getElementById("club_assists");
                 var club_yellowcard=document.getElementById("club_yellowcard");
                 var club_redcard=document.getElementById("club_redcard");
+                var budget=document.getElementById("budget");
+                budget.innerHTML=data[0]['budget']
                 club_goals.innerHTML=data[0]['goals']
                 club_assists.innerHTML=data[0]['assists']
                 club_yellowcard.innerHTML=data[0]['yellow']

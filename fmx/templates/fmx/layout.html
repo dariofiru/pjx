@@ -148,6 +148,9 @@
         </li>
         {% if  user.club_details.has_lineup %}
         <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'stats' %}">My Stats</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link text-white " href="{% url 'lineup' %}">New Lineup </a>
         </li>
         {% else %} 
@@ -179,9 +182,7 @@
              
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{% url 'stats' %}">My Stats</a>
-        </li>
+        
         {% endif %}
        
      

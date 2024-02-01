@@ -14,11 +14,12 @@ import datetime
 import re
 from .models import Team, Player, Fixture, User, User_club, Headline, Lineup,Club_details, Table
 # Create your views here.
- 
+
+@login_required(login_url='/login')
 def market(request):
      return render(request, "fmx/market.html")
 
-@login_required             
+@login_required(login_url='/login')           
 def user_club(request, id):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger(__name__)
@@ -117,13 +118,13 @@ def user_club(request, id):
 
      return JsonResponse(json_final, safe=False)
  
-@login_required
+@login_required(login_url='/login')
 def get_teams(request):
      teams = Team.objects.filter(active=True)
      teams = teams.order_by("-name").all()
      return JsonResponse([team.serialize() for team in teams], safe=False)
 
-@login_required
+@login_required(login_url='/login')
 def save_squad(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
@@ -309,7 +310,7 @@ def save_squad(request):
                
      return HttpResponseRedirect("/")
 
-@login_required
+
 def random_lineup(user):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
@@ -328,7 +329,7 @@ def random_lineup(user):
      Table.objects.filter(round_id__gte=table_round.round_id,lineup_1=old_lineup).update(lineup_1=new_lineup)
      Table.objects.filter(round_id__gte=table_round.round_id,lineup_2=old_lineup).update(lineup_2=new_lineup)
      
-@login_required     
+@login_required(login_url='/login')
 def get_headlines(request):
      headline_list=""
      url = "https://open-ai25.p.rapidapi.com/ask"
@@ -351,7 +352,7 @@ def get_headlines(request):
 
      return JsonResponse({"status":"ok"}, safe=False)   
 
-@login_required
+@login_required(login_url='/login')
 def random_headline(request, type):
      headline=Headline.objects.filter(type=type).order_by('?').first()
      logging.basicConfig(level=logging.INFO)

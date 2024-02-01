@@ -5,7 +5,7 @@ from . import lineup_views
   
 
 
-def update_something():
+def round_retriever():
     lineup_views.check_for_round_data()
     round = Round.objects.filter(current=True).values("round_num").first()
     starter = Starter.objects.first()

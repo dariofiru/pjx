@@ -16,26 +16,26 @@ import requests
 from django.db.models import F
 import http.client
 import datetime
-from .models import Team, Player,One2one, Fixture,Tmp_lineup_score, User, User_club, Lineup,One2one, Fixture_round, Lineup_round, Round, Table, Club_details, Elo_table
+from .models import Team, Player,One2one, Fixture,Tmp_lineup_score, User, User_club, Lineup,One2one, Fixture_round, Round, Table, Club_details, Elo_table
 # Create your views here.
 
+@login_required(login_url='/login')
 def one2one(request):
      return render(request, "fmx/one2one.html")
 
+@login_required(login_url='/login')
 def my_one2one(request):
      return render(request, "fmx/my_one2one.html")
 
+@login_required(login_url='/login')
 def get_one2one(request,id):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      one2one=One2one.objects.filter(id=id).first()
      club_details_1=Club_details.objects.filter(user=one2one.squad_1.user).first()
      club_details_2=Club_details.objects.filter(user=one2one.squad_2.user).first()
-
-      
      json_data=[]
- 
-     logger.info(f'club_details_1: {club_details_1} ')
+     #logger.info(f'club_details_1: {club_details_1} ')
      json_tmp={}
      json_tmp=one2one.serialize()
      json_tmp["logo_1"]=club_details_1.logo
@@ -43,7 +43,7 @@ def get_one2one(request,id):
      json_data.append(json_tmp)
      return JsonResponse(json_data, safe=False)
 
-
+@login_required(login_url='/login')
 def my_one2one_data(request, ch_stat, ch_order, br_stat, br_order): #return list of mychallenges and braved
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
@@ -76,7 +76,6 @@ def my_one2one_data(request, ch_stat, ch_order, br_stat, br_order): #return list
           json_tmp["status"]=challenge.status
           json_tmp["bet"]=challenge.bet
           json_tmp["time"]=challenge.timestamp
-
           json_final.append(json_tmp) 
      
      for braved in my_braveds:
@@ -87,26 +86,27 @@ def my_one2one_data(request, ch_stat, ch_order, br_stat, br_order): #return list
           json_tmp["status"]=braved.status
           json_tmp["bet"]=braved.bet
           json_tmp["time"]=braved.timestamp
-
           json_final.append(json_tmp) 
 
      return JsonResponse(json_final, safe=False)
 
+@login_required(login_url='/login')
 def refuse_challenge(request, id):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      one2one = One2one.objects.filter(id=id).first()
      One2one.objects.filter(id=one2one.id).update(status="refused")
-     logger.info(f'one2one: {one2one} ')
+     #logger.info(f'one2one: {one2one} ')
      return render(request, "fmx/my_one2one.html")
 
+@login_required(login_url='/login')
 def accept_challenge(request, id):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
      one2one = One2one.objects.filter(id=id).first()
-     logger.info(f'one2one: {one2one} ')
+     #logger.info(f'one2one: {one2one} ')
      lineup_1= Lineup.objects.filter(active=True, club=one2one.squad_1).first()
-     logger.info(f'lineup_1: {lineup_1} ')
+     #logger.info(f'lineup_1: {lineup_1} ')
      One2one.objects.filter(id=one2one.id).update(lineup_1=lineup_1.id)
      lineup_2= Lineup.objects.filter(active=True, club=one2one.squad_2).first()
      One2one.objects.filter(id=one2one.id).update(lineup_2=lineup_2.id)
@@ -114,8 +114,8 @@ def accept_challenge(request, id):
      #round = Round.objects.filter(id=id).values("round_num").first() # retrieve round number                    
      #round=round['round_num']
      fixture= Fixture.objects.filter(round_num=one2one.round_num).first()
-     logger.info(f'round_num: {one2one.round_num} ')
-     logger.info(f'fixture: {fixture} ')
+     #logger.info(f'round_num: {one2one.round_num} ')
+     #logger.info(f'fixture: {fixture} ')
      downloaded_fixture=Fixture_round.objects.filter(fixture=fixture).count()
      logger.info(f'downloaded_fixture: {downloaded_fixture} ')
      if downloaded_fixture==0:
@@ -125,7 +125,7 @@ def accept_challenge(request, id):
       
      score_1=one2one_scores(None, lineup_1, one2one, one2one.round_num)
      score_2=one2one_scores(None, lineup_2, one2one, one2one.round_num)
-     logger.info(f'score_1: {score_1} - score_2: {score_2}')
+     #logger.info(f'score_1: {score_1} - score_2: {score_2}')
      One2one.objects.filter(id=one2one.id).update(score_1=score_1)
      One2one.objects.filter(id=one2one.id).update(score_2=score_2)
      if score_1>=score_2:
@@ -238,14 +238,14 @@ def challenge(request, id):
      if request.method == "PUT":
           data = json.loads(request.body)
           bet = data.get("bet", "")
-          logger.info(f"bet: {bet} - data: {data} ")
+          #logger.info(f"bet: {bet} - data: {data} ")
           club_challanger= User_club.objects.filter(user=request.user).first()
           club_braved=User_club.objects.filter(id=id).first()
           round = Round.objects.order_by('?').values("round_num").first()
           one2one = One2one(squad_1=club_challanger ,squad_2=club_braved,bet=bet,status="pending",round_num=round["round_num"] )
           one2one.save()
      return HttpResponseRedirect("/")
-     HttpResponse("ok")
+     
 
 def get_one2one_teams(request):
      logging.basicConfig(level=logging.INFO)
@@ -314,7 +314,7 @@ def get_one2one_stats(request,id):
      lineup_couple.append(one2one.lineup_1)
      lineup_couple.append(one2one.lineup_2)
      fixtures= Fixture.objects.filter(round_num=one2one.round_num).all()
-     logger.info(f'lineup_couple: {lineup_couple} ')  
+     #logger.info(f'lineup_couple: {lineup_couple} ')  
      json_final =[]
      for lineup in lineup_couple:
            for fixture in fixtures:
@@ -334,11 +334,6 @@ def get_one2one_stats(request,id):
                     logger.info(f'fixture: {fixture} player_stat: {lineup.player_1.name}: {player_1_score} ')  
                except Fixture_round.DoesNotExist: 
                     pass
-                    # player_1_score=Decimal('6.0')#+Decimal(lineup.player_1.rating)
-                    # Tmp_lineup_score.objects.get_or_create(match=id, type="one2one",club=lineup.club,lineup=lineup, player=lineup.player_1,
-                    #                                        defaults={'score':player_1_score,'goals':0, 'assists':0,
-                    #                                            'yellow': 0, 'red': 0} )
-               
                try:
                     fixture_player=Fixture_round.objects.filter(fixture=fixture, player=lineup.player_2).get()
                     player_2_score=fixture_player.score+Decimal(lineup.player_2.rating)

@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from .run_update import update_something
+from .run_update import round_retriever
 from .models import MatchTick
 import logging
 
@@ -10,6 +10,6 @@ def start():
     scheduler = BackgroundScheduler()
     tick = MatchTick.objects.first()
     logger.info(f'starting FMX : {round}')
-    scheduler.add_job(update_something, 'interval', minutes=tick.interval)
+    scheduler.add_job(round_retriever, 'interval', minutes=tick.interval)
     scheduler.start()
-    logger.info(f'lets see: {scheduler.get_jobs()[0].trigger}')
+    #logger.info(f'lets see: {scheduler.get_jobs()[0].trigger}')

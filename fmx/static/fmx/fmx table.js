@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }else{
                     //console.log(text)
                     var squads = JSON.parse(text);
+                     
                     var table_box=document.getElementById("table_box");
+                    let rank=1
                     for (var i in squads) {
                         var table_row = document.createElement('div')
                         var div1 =document.createElement('div')
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         away_won.classList.add('col', 'text-black' , 'd-none', 'd-sm-block')
                         div1.classList.add('col-1', 'text-black' )
                         div2.classList.add('col-2', 'text-black')
-                        div1.innerHTML=Number(i)+1
+                         
                         team.innerHTML=squads[i].name;
                        
                         elo.innerHTML=squads[i].elo;
@@ -59,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         table_row.append(away_won)
                        // table_row.append(div2)
                         if(Number(squads[i].total_played)>0){
+                            div1.innerHTML=rank
+                            rank++
                         table_box.append(table_row)
                     }
                     } 
@@ -69,34 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     get_table()
 
-// var start_round;
-// function startcheckRound(url){
-//         setInterval(async function(){
-//           const response = await fetch(url);
-//           const text = await response.text();
-//           var start = JSON.parse(text);
-//           start= start['round_num'] 
-//           if(start>start_round){
-//             console.log("New match available: "+start+"-"+start_round)
-//             start_round=start
-//           }
-//           else{
-//             console.log("still on round: "+start+"-"+start_round)
-//           }   
-//         }, 20000);     
-//       }
-// fetch(`get_start`)
-// .then(response => response.text())
-// .then(text => {
-// var start = JSON.parse(text);
-// // 2024-01-05T22:55:32.839Z
-// start_round= start['round_num'] 
-//     console.log(" =>" +start_round)
-//     });
-// startcheckRound('get_start')
-    
-
  
-    //console.log("=> "+table_box)    
        
     });

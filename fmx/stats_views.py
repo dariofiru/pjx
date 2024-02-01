@@ -12,7 +12,7 @@ import requests
 import http.client
 import datetime
 from operator import attrgetter
-from .models import Team, Player, Club_details,Tmp_lineup_score,Goalscores, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
+from .models import Team, Player, Club_details,Tmp_lineup_score,Goalscores, Fixture, User, User_club, Lineup, Fixture_round, Round, Table
 
 #from notifications.signals import notify
 # Create your views here.
@@ -189,6 +189,7 @@ def club_numbers(request):
       red=0  
    json_final =[]
    json_tmp={}
+   json_tmp["budget"]=club.remaining_budget
    json_tmp["goals"]=goals
    json_tmp["assists"]=assists
    json_tmp["yellow"]=yellow

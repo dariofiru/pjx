@@ -14,12 +14,12 @@ from random import randrange
 import datetime
 from . import table_views 
 from django.db.models import Q
-from .models import Team, Player, Club_details,Starter, Tmp_lineup_score, Fixture, User, User_club, Lineup, Fixture_round, Lineup_round, Round, Table
+from .models import Team, Player, Club_details,Starter, Tmp_lineup_score, Fixture, User, User_club, Lineup, Fixture_round,   Round, Table
 # Create your views here.
-
+@login_required(login_url='/login')
 def lineup(request):
      return render(request, "fmx/lineup.html")
-
+@login_required(login_url='/login')
 def club_players(request,position):
      curr_player=None
      try:
@@ -105,7 +105,7 @@ def club_players(request,position):
 
      return JsonResponse([user_club.serialize() for user_club in players], safe=False)
      
-# don't touch
+@login_required(login_url='/login')
 def user_club(request, id):
      userT = User.objects.filter(id=id)
      try:
@@ -115,7 +115,7 @@ def user_club(request, id):
 
      return JsonResponse([user_club.serialize() for user_club in user_clubT], safe=False)
 
-
+@login_required(login_url='/login')
 def get_lineup(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')  
@@ -128,6 +128,7 @@ def get_lineup(request):
      logger.info(f'player: {existing_lineup.player_1.position}')
      return JsonResponse([existing_lineup.serialize()], safe=False)
 
+@login_required(login_url='/login')
 def save_lineup(request):
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')   
@@ -241,12 +242,11 @@ def save_lineup(request):
           table_views.new_team_in_table(None, lineup.id)
      #HttpResponse("done")
      # adding lineup to next round
-     round=Round.objects.filter(next=True).values("round_num") # probably TODELETE
-     lineup_round=Lineup_round(user=request.user,lineup=lineup, round_num=round)
+
      Club_details.objects.filter(user=request.user).update(has_lineup=True)
-     lineup_round.save()  
      return HttpResponseRedirect("/")
  
+@login_required(login_url='/login')
 def check_for_round_data_hook(request):
      check_for_round_data()
      round = Round.objects.filter(current=True).values("round_num").first()
@@ -430,7 +430,8 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     if score>=player_data.rating-0.1:
                          random_value=randrange(-1, 4)
                          variation=round(random_value/10,1)
-                         new_value=player_data.value+Decimal(variation)
+                         bonus=round(fixture_round.goals/5,1)+round(fixture_round.assists/10,1)
+                         new_value=player_data.value+Decimal(variation)+Decimal(bonus)
                          logger.info(f'good: {player_data.value} - {new_value}')
                          if fixture_round.player.position=='Goalkeeper':
                               Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
@@ -439,7 +440,8 @@ def get_fixture_ratings(id): #calculates  total score for each PLAYER in fixure_
                     elif score<player_data.rating-0.1:
                          random_value=randrange(-3, 2)
                          variation=round(random_value/10,1) 
-                         new_value=player_data.value+Decimal(variation)
+                         bonus=round(fixture_round.goals/5,1)+round(fixture_round.assists/10,1)
+                         new_value=player_data.value+Decimal(variation)+Decimal(bonus)
                          logger.info(f'bad: {player_data.value} - {Decimal(variation)} - {new_value}')
                          if fixture_round.player.position=='Goalkeeper':
                               Player.objects.filter(pk=fixture_round.player.id).update(value=round(new_value,1))
@@ -682,6 +684,5 @@ def lineup_scores(id): # calculates total point for each lineup/round
                Lineup.objects.filter(id=lineup.id).update(score=total_score['score__sum'])      
      #scores = Tmp_lineup_score.objects.filter(type="table", match=id).all()           
      
-              
-                    
+            
               

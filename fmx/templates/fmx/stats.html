@@ -19,7 +19,7 @@
   <div class=" col   opacity-75 center    " style="  margin:30px;padding:0px;">
     
     <div class="row">
-        <div class="col-md-8   "  align="center" >
+        <div class="col-md-8"  align="center" >
             <div class="row text-center">
                 <div class="col bg-light text-center rounded-2   m-2" style="border:1px solid green">
                     <h1 class="text-black">{{ user.club_details.club  }} stats</h1>
@@ -47,14 +47,17 @@
                         <div class="col mt-3">
                             <div class="card border-success " style="width: 21rem;">
                                 <div class="card-body  ">
-                                  <h5 class="card-title">Team Value</h5>
+                                  <h5 class="card-title">Team Financials</h5>
                                   <div class="row">
-                                    <div class="col text-center fw-bold">
-                                        Start
+                                    <div class="col text-center " style="font-size: 12px;">
+                                        Team starting value
                                     </div>
-                                    <div class="col text-center fw-bold">
-                                        Current
+                                    <div class="col text-center  " style="font-size: 12px;">
+                                      Team current value
                                     </div>
+                                    <div class="col text-center  ">
+                                      Budget
+                                  </div>
                                   </div>
                                   <div class="row ">
                                     <div  class="col text-center fw-bold">
@@ -63,6 +66,9 @@
                                     <div  class="col text-center fw-bold">
                                         <h3 id="current_value">-</h3>
                                     </div>
+                                    <div  class="col text-center fw-bold">
+                                      <h3 id="budget">-</h3>
+                                  </div>
                                   </div> <hr> 
                                   <h5 class="card-title">Team stats</h5>
                                   <div class="row">

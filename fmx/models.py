@@ -278,14 +278,7 @@ class Goalscores(models.Model):
             "player": self.player.name,
             "goals": self.goals 
         }
-
-class Lineup_round(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="users_lineup_round")
-    lineup = models.ForeignKey("Lineup", on_delete=models.CASCADE, related_name="lineup")
-    round_num = models.PositiveIntegerField(blank=True,null=True)
-    
-    def __str__(self) -> str:
-        return f"{self.user}:  {self.round_num}"
+ 
 
 class Table(models.Model):
     squad_1=models.ForeignKey("User_club", on_delete=models.CASCADE, related_name="User_club1",blank=True,null=True)
