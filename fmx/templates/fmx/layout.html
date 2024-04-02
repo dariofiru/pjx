@@ -17,8 +17,7 @@
  
     </head>
   <body style="background-image: url('static/fmx/bg_3.jpg');background-repeat: no-repeat;background-size: cover;">
-   {{api}}
-   {% csrf_token %}
+   
    <header >
 
     
@@ -52,7 +51,7 @@
 <!--- end modal box for new match-->
 <!--- modal box for admin --> 
 <div id="Modal-reset" class="modal overlay"> 
-  <div class="modal-content overlay" style="height:310px;">
+  <div class="modal-content overlay" style="height:330px;">
   
       <div class="row">
         <div class="col">
@@ -62,7 +61,7 @@
   
         Please be aware that:<br>
 
-        <ul style="text-align: left;margin-top: 3px;"><li >All table matches and one2ones will be deleted
+        <ul style="text-align: left;margin-top: 3px;font-size: 14px;"><li >All table matches and one2ones will be deleted
 
         </li>
         <li>All teams ranking will be reset
@@ -237,7 +236,7 @@
       <span class="navbar-text">
         <b>{{ user.club_details.club  }}</b> &nbsp; </span>
        
-      <img   src="{{ user.club_details.logo  }}" alt="team logo" width="55" style="border-radius: 50%;padding:0px;padding-top:0px;  "> 
+      <img   src="{{ user.club_details.logo  }}" alt="team logo" width="55" style="border:1px solid black;border-radius: 50%;padding:0px;padding-top:0px;  "> 
       <span class="navbar-text">
         &nbsp; <b>{{ user.username }}</b>  </span> 
    
@@ -261,6 +260,9 @@
         {% block body %}
         {% endblock %}
  <script>
+  //const csrftoken2 = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const csrftoken2 =  '{{ csrf_token }}' 
+  console.log("token: "+ csrftoken2)
 var match_link=`{% url 'match' %}`
 var logged_in=`{{user.is_authenticated}}`
 var user_in = `{{user.username}}`
@@ -300,7 +302,7 @@ var start = JSON.parse(text);
 start_round= start['round_num'] 
     console.log(" =>" +start_round)
     });
-//startcheckRound('get_start')
+startcheckRound('get_start')
 
 if(user_in==='admin'){ // js code for admin 
 const tick_schedule=document.getElementById("tick_schedule"); 

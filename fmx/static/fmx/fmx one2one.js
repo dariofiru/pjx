@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+   // const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
 function Challange_box(){
 
 }

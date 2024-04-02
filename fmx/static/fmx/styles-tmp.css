@@ -263,7 +263,14 @@ clear: both;
  height:300px;
 } 
 
-
+.logo_img{
+  width:110px;
+}
+@media screen and (max-width: 992px) {
+  .logo_img{
+    width:80px;
+  }
+}
 
  @media screen and (max-width: 430px) {
 

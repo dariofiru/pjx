@@ -152,8 +152,6 @@ def elo_value(elo_1, elo_2):
      return new_elos
 
 
- 
-
 def create_table(request, id, round_id):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('fmx')
@@ -252,12 +250,8 @@ def create_table(request, id, round_id):
         else:     
                round_num=round_num+1  
         round_id=round_id+1
-
-
         ########### end return matches   
         
-        
-         
     return HttpResponse(json.dumps({"x":"x", "y":"y"}), content_type="application/json")
 
 

@@ -183,7 +183,11 @@
 
  
 
-<script>var user='{{ user.username }}'
+<script>
+ const csrftoken3 = '{{ csrf_token }}'
+  console.log("token3: "+ csrftoken3)
+
+var user='{{ user.username }}'
 var has_squad='{{ user.club_details.has_squad }}'
 var has_lineup='{{ user.club_details.has_lineup }}'
 console.log("squad: "+has_squad)

@@ -26,7 +26,7 @@ function get_one2ones(){
                 var matches = JSON.parse(text);
                 var next_match=document.getElementById("one2ones");
                 next_match.innerHTML=""
-                console.log(matches)
+                //console.log(matches)
                 for (var i in matches) {
                     if(matches[i].braved==='false'){
                         if(matches[i].status==='pending'){

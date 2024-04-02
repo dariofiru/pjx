@@ -37,7 +37,7 @@
       
     </div><div class="modal-footer">
     <div class="row"><div  class="col text-center">
-      <button id="close_table_btn" onclick="document.getElementById('Modal-saved-squad').style.display='none'" type="button" class="btn btn-sm btn-secondary  ">Close</button>
+      <button id="close_table_btn" onclick="document.getElementById('Modal-saved-squad').style.display='none';window.location.href=`{% url 'index' %}`" type="button" class="btn btn-sm btn-secondary  ">Close</button>
     </div></div></div>
 </div></div> </div>
  <!-- END Modal confirming save squad-->
@@ -323,12 +323,13 @@
 
 <script>
  
-
+const csrftoken3 = '{{ csrf_token }}' 
 var  club_name='{{ user.club  }}'
 var has_squad='{{ user.club_details.has_squad }}'
 var has_lineup='{{ user.club_details.has_lineup }}'
 var  user_name='{{ user.username  }}'
 var  user_id='{{ user.id  }}'
+var index_link=`{% url 'index' %}`
 var  initial_budget_str='{{ user.initial_budget  }}'
 var  initial_budget=Number(initial_budget_str)
 console.log("has lineup:" + has_lineup+" " + typeof(has_lineup) +" "+(has_lineup=='False') )

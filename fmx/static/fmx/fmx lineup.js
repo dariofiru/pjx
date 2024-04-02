@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
+//console.log("csrftoken3: "+csrftoken3)
     const save_btn=document.getElementById("save_btn");
     const clear_btn=document.getElementById("clear_btn");
     save_btn.style.display="none"
@@ -501,7 +501,8 @@ save_btn.addEventListener("click", function() {
     D_line = Number(chosen_formation.innerHTML[0]);
     M_line = Number(chosen_formation.innerHTML[1]);
     A_line = Number(chosen_formation.innerHTML[2]);
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
     var jsonSquad = [];
         let box = document.getElementById(`Goalkeeper-1`);
         if(box.innerHTML.includes("Goalkeeper")){
@@ -560,13 +561,13 @@ save_btn.addEventListener("click", function() {
         saved_squad.style.height="160px;"
         document.getElementById('first_lineup_msg').style.display='block'
         document.getElementById('new_lineup_msg').style.display='none'
-        alert("false")
+        //alert("false")
     }
     else{
         saved_squad.style.height="100px;"
         document.getElementById('first_lineup_msg').style.display='none'
         document.getElementById('new_lineup_msg').style.display='block'
-        alert("true")
+        //alert("true")
     }
     saved_squad.style.display='block'
      
@@ -644,7 +645,8 @@ position_search.addEventListener("change", function() {
 
  
 async function fetchPlayers(page,  position) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
         var my_likesR = [];
 
           //fetch(`players/${page}/${team}/${position}` )

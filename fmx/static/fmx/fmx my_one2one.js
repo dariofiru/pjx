@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+    //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
 const btn_stats=document.getElementById("btn_stats"); 
 btn_stats.addEventListener("click", function() {
     var modal_box= document.getElementById('modal_box')

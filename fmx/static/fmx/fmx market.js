@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     console.log("has_squadmain: "+has_squad)
+    //console.log("csrftoken3: "+csrftoken3)
 previous = document.getElementById("page-item-Previous")
 next = document.getElementById("page-item-Next")
 
@@ -108,6 +109,44 @@ async function get_data(){
 
                 boxclose.style.display="block"
                 boxclose.dataset.playerid=club_data[i]['id']
+                
+                let player_in_team =document.getElementById(`player-${club_data[i].id}`);
+                if (player_in_team!==null){
+                    var classes = player_in_team.classList;
+                   // console.log("first:"+classes);
+                    //console.log("**"+club_data[i]['name']+" - "+club_data[i].position)
+                    if (club_data[i].position.includes("Attacker")){
+                        //console.log("**"+club_data[i]['name']+" - ")
+                        if(player_in_team.classList.contains('bg-success-subtle')){
+                            player_in_team.classList.remove( 'bg-success-subtle');
+                            player_in_team.classList.add( 'bg-success');
+                        }
+                            
+                    } else if (club_data[i].position.includes("Midfielder")){
+                        if(player_in_team.classList.contains('bg-primary-subtle')){
+                            player_in_team.classList.remove( 'bg-primary-subtle');
+                            player_in_team.classList.add( 'bg-primary');
+                        }
+                            
+                    }
+                    else if (club_data[i].position.includes("Defender")){
+                        if(player_in_team.classList.contains('bg-secondary-subtle')){
+                            player_in_team.classList.remove( 'bg-secondary-subtle');
+                            player_in_team.classList.add( 'bg-secondary');
+                        }
+                    }
+                    else if (club_data[i].position.includes("Goalkeeper")){
+                        if(player_in_team.classList.contains('bg-danger-subtle'))
+                        {
+                            player_in_team.classList.remove( 'bg-danger-subtle');
+                            player_in_team.classList.add( 'bg-danger');
+                        }
+                    }
+                    classes = player_in_team.classList;
+                    console.log("last:"+classes);
+                }
+                 
+
                 boxclose.dataset.position=club_data[i]['position']
                  //boxclose.addEventListener("click", remove_sign(boxclose));
                 boxpic.innerHTML=`<img src="${club_data[i]['photo']}" style="width:35px;border-radius: 50%;border:1px solid black">`
@@ -166,8 +205,8 @@ var sold_list=[]
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
 function sell_player(player_id, box, boxclose, position_del, empty_position, color_del){
     var sold_name= box.innerHTML
-    console.log("sold_name"+sold_name)
-    console.log("boxclose: "+boxclose.id)
+    //console.log("sold_name"+sold_name)
+    //console.log("boxclose: "+boxclose.id)
     var modal = document.getElementById("myModal-sell");
     const content_box=document.getElementById("content-box-sell");
     //const gif=document.getElementById("shaking-gif");
@@ -208,14 +247,14 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
         let player_box_sold=document.getElementById(`player-${event.target.dataset.playerid}`);
 
         //console.log("BOX: "+player_box_sold.innerHTML )
-        console.log("NAME: "+event.target.dataset.playername)
+        //console.log("NAME: "+event.target.dataset.playername)
         if (typeof(player_box_sold) != 'undefined' && player_box_sold != null)
         {
-              console.log("BOX: "+player_box_sold.innerHTML )
-             console.log("NAME: "+event.target.dataset.playername)
+              //console.log("BOX: "+player_box_sold.innerHTML )
+             //console.log("NAME: "+event.target.dataset.playername)
             if(player_box_sold.innerHTML.includes(event.target.dataset.playername)){
-                console.log("2x color: "+box.dataset.color )
-                console.log("3x color: "+event.target.dataset.color )
+                //console.log("2x color: "+box.dataset.color )
+                //console.log("3x color: "+event.target.dataset.color )
     
                 player_box_sold.classList.add(`bg-${event.target.dataset.color}-subtle`,`text-black`)
                 player_box_sold.classList.remove(`bg-${event.target.dataset.color}`,`text-white`) 
@@ -338,7 +377,7 @@ function confirm_sign_player() {
         }
         console.log("nome: "+event.target.dataset.playername)
         if(is_available==false)
-           alert("no space")
+           alert("Position full")
 
         const content_box=document.getElementById("content-box");
        // const gif=document.getElementById("shaking-gif");
@@ -589,7 +628,7 @@ order_search.addEventListener("change", function() {
     previous.classList.add('disabled')
     fetchPlayers(1, team_search.value, position_search.value,price_search.value,order_search.value)
 });
-// listener for save team (temporary)
+// listener for save team  
 const save_btn=document.getElementById("save_btn");
 save_btn.addEventListener("click", function() {
     var check_complete = document.getElementsByClassName("player-box-market")
@@ -599,16 +638,15 @@ save_btn.addEventListener("click", function() {
             // probably not needed
          }
     }
-   
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-     
-    //var list_lineup_existing=list_lineup[1]['id']
-    //console.log("=>"+list_lineup_existing )
+    //console.log("csrftoken3_2:" +csrftoken3)
+    //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
+    
     var jsonSquad = [];
     var lineupDelete = [];
     for (var i = 1; i < 3; i++) {
         let box = document.getElementById(`Goalkeeper-${i}`);
-        console.log("json: "+box.innerHTML+ " *" + box.innerHTML.includes("Goalkeeper"))
+        //console.log("json: "+box.innerHTML+ " *" + box.innerHTML.includes("Goalkeeper"))
         if(box.innerHTML.includes("Goalkeeper")){
             alert("Please fill up all positions")
             return;
@@ -677,8 +715,7 @@ save_btn.addEventListener("click", function() {
             curr_budget:curr_budget,
             lineupDelete: sold_list
         })
-    })//.then(response=>response.text())
-    // .then(data=>{ console.log("hello "+data); 
+    }) 
 
     modal_box=document.getElementById('Modal-saved-squad')
     console.log("has_squad: "+has_squad)
@@ -703,7 +740,7 @@ const create_lineup_btn=document.getElementById("create_lineup_btn");
 const later_lineup_btn=document.getElementById("later_lineup_btn");
 create_lineup_btn.addEventListener('click', event => {
     document.getElementById('Modal-saved-squad').style.display='none'
-    //window.location.href = lineup_link
+    window.location.href = lineup_link
 });     
 later_lineup_btn.addEventListener('click', event => {
     document.getElementById('Modal-saved-squad').style.display='none'
@@ -820,7 +857,8 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
  
 
 async function fetchPlayers(page, team, position, price, order) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = csrftoken3;
+    //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.log("link"+`players/${page}/${team}/${position}/`)
         var my_likesR = [];
           
@@ -828,7 +866,7 @@ async function fetchPlayers(page, team, position, price, order) {
             .then(response => response.text())
             .then(text => {
                 var player = JSON.parse(text);
-                console.log(player)
+                //console.log(player)
                 tot_pages=player[0].pages
                 if(page===tot_pages){
                      next.classList.add('disabled')
@@ -837,7 +875,7 @@ async function fetchPlayers(page, team, position, price, order) {
                     if (next.classList.contains('disabled'))
                     next.classList.remove('disabled')
                 }
-                console.log(page+" "+tot_pages)
+                //console.log(page+" "+tot_pages)
                 const player_list= document.getElementById('player-list')
                 player_list.innerHTML=""
                 for (var i in player) {
@@ -870,14 +908,15 @@ async function fetchPlayers(page, team, position, price, order) {
                     var check_complete = document.getElementsByClassName("player-box-market")
                     still_bought=false    
                     for (var j = 0; j < check_complete.length; j++) {
+                       // console.log("=>"+check_complete[j].innerHTML)
+                        //    console.log("=>"+player[i].name)
                         if(check_complete[j].innerHTML.includes(`${player[i].name}`)) 
-                        {  still_bought=true
+                        {  
+                            still_bought=true
                         }
                     }
                     console.log(player[i].name+" still_bought: "+still_bought)
                      if (player[i].position ==="Attacker"){
-                        
-
                         if((is_signed || player[i].in_squad)&&still_bought) 
                             player_name.classList.add( 'bg-success');
                         else
@@ -1058,8 +1097,9 @@ function get_club_details( ){
 
 get_teams() // get team names for search options  
 //fetchPlayers_bug(1, "0", "0")
-fetchPlayers(1, "0", "0", "0", "name") // fetch players for first time
 get_data()
+fetchPlayers(1, "0", "0", "0", "name") // fetch players for first time
+
 
  
     

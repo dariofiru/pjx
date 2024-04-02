@@ -256,7 +256,7 @@ def importPlayers(request):
                "api": tst
                })
 
-@login_required(login_url='/login')     
+
 def get_player_value():
     players= Player.objects.all()
     d = {'player': '0'}
@@ -464,6 +464,18 @@ def register(request):
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        if username=="":
+           return render(request, "fmx/register.html", {
+                "message": "Please enter User name."
+            }) 
+        if club=="":
+           return render(request, "fmx/register.html", {
+                "message": "Please enter Club name."
+            }) 
+        if logo=="":
+           return render(request, "fmx/register.html", {
+                "message": "Please choose a team logo."
+            }) 
         club_name=Club_details.objects.filter(club= club).count()
         if club_name>0:
             return render(request, "fmx/register.html", {
