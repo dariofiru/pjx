@@ -11,7 +11,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
 
-<!--background-image: url('static/fmx/bg_3.jpg'); style="height:700px"-->
 <div class="container-fluid text-info center  big_ball_img" >
       
   <div class="row w-50 bs-success-bg-subtle  "> </div>
@@ -184,13 +183,10 @@
  
 
 <script>
- const csrftoken3 = '{{ csrf_token }}'
-  console.log("token3: "+ csrftoken3)
-
+const csrftoken3 = '{{ csrf_token }}'
 var user='{{ user.username }}'
 var has_squad='{{ user.club_details.has_squad }}'
 var has_lineup='{{ user.club_details.has_lineup }}'
-console.log("squad: "+has_squad)
 </script>  
  <script src="{% static 'fmx/fmx index.js' %}"></script>
 {% endblock %}

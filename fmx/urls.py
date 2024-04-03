@@ -4,7 +4,7 @@ from . import views, market_views, lineup_views, table_views, one2one_views, sta
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("utilities/<str:cmd>", views.utilities, name="utilities"),
+    #path("utilities/<str:cmd>", views.utilities, name="utilities"),
     #path("import-team", views.importTeam, name="import-team"),
     path("import-players", views.importPlayers, name="import-players"),
     path("import-fixtures", views.importFixtures, name="import-fixtures"),
@@ -29,12 +29,6 @@ urlpatterns = [
     path("save_lineup", lineup_views.save_lineup, name="save_lineup"),
     #path("calculate_round/<str:id>", lineup_views.calculate_round, name="calculate_round"),
     path("check_for_round_data_hook", lineup_views.check_for_round_data_hook, name="check_for_round_data_hook"),
-    
-
-    
-    #path("get_fixture_ratings/<str:id>", lineup_views.get_fixture_ratings, name="get_fixture_ratings"),# calc players rating for fixture
-    #path("lineup_scores/<str:id>", lineup_views.lineup_scores, name="lineup_scores"), #sums player rating per lineup
-    
 
     path("user_club/<str:id>", market_views.user_club, name="user_club"),
 
@@ -49,7 +43,7 @@ urlpatterns = [
     path("get_match_stats/<str:id>", table_views.get_match_stats, name="get_match_stats"),
     
    # path("schedule_match", table_views.schedule_match, name="schedule_match"), # test cron
-    path("get_start", table_views.get_start, name="get_start"), # test cron
+    path("get_start", table_views.get_start, name="get_start"), 
     
     path("one2one", one2one_views.one2one, name="one2one"),
     path("my_one2one", one2one_views.my_one2one, name="my_one2one"),
