@@ -130,26 +130,7 @@ function get_team_numbers(){
                             score_1.classList.add('col-2','m-0', 'p-0', 'text-center')
                             score_2.classList.add('col-2','m-0', 'p-0','text-center')
                             table_row.classList.add('row', 'm-0',   'bg-success-subtle' )
-                            // if(Number(squads[i].score_1)>=Number(squads[i].score_2)){
-                            //     team_1.classList.add('fw-bold')
-                            //     score_1.classList.add('fw-bold')
-                            // }else{
-                            //     team_2.classList.add('fw-bold')
-                            //     score_2.classList.add('fw-bold')
-                            // }
-                          
-                           // div1.innerHTML=`<b>${Number(i)+1}</b>`
-                        //    team_1.innerHTML=squads[i].lineup_1_name;
-                        //    team_2.innerHTML=squads[i].lineup_2_name; 
-                        //    score_1.innerHTML=squads[i].score_1;
-                        //    score_2.innerHTML=squads[i].score_2; 
-                        //     //avg.innerHTML=squads[i].total;
-                        //     //table_row.append(div1)
-                        //     table_row.append(team_1)
-                        //     table_row.append(score_1)
-                        //     table_row.append(score_2)
-                        //     table_row.append(team_2)
-                        //     last_matches.append(table_row) 
+                           
                          
                         }      
                     }
@@ -327,7 +308,7 @@ function get_squad_best_men(){
                 var club_yellowcard=document.getElementById("club_yellowcard");
                 var club_redcard=document.getElementById("club_redcard");
                 var budget=document.getElementById("budget");
-                budget.innerHTML=data[0]['budget']
+                budget.innerHTML=Number(data[0]['budget']).toFixed(1)
                 club_goals.innerHTML=data[0]['goals']
                 club_assists.innerHTML=data[0]['assists']
                 club_yellowcard.innerHTML=data[0]['yellow']
