@@ -1,10 +1,14 @@
  
 # Table of Contents
+1. [Intro](#intro)
+2. [Distinctiveness and Complexity](#DC)
+a. [Complexity](#complexity)
+b. [Distinctiveness](#Distinctiveness)
+3. [How to play the game](#play)
+3. [Match Score example](#ex)
 
-1. [Complexity](#complexity)
 
-
-# Intro  [](#){name=Intro}
+# Intro  <a id="intro"></a>
 
 I wanted to create a project that felt “alive”, not just a website where users interact to each other, but a website that changes its internal status in time, providing a different experience each time a user logs in. I came up with a collective game, more specifically my own version of a fantasy football manager called **FMX**.
 
@@ -35,11 +39,11 @@ The main rules of an FFM are:
 
 + FMX is based on real data from the English Premier league 2021 season (in a live environment it could be based on current season). Everything that happens in FMX is based on real players and real EPL fixtures.  
 
-# Distinctiveness and Complexity
+# Distinctiveness and Complexity <a id="DC"></a>
 
 The idea that drove me on this project was to create an app that felt "alive", where users could not just interact with each other but where the app in itself would have an internal status that would change in time based on real life data. Something that people may enjoy playing, an app to spend a few minutes every day checking stats, the latest round results, creating a new lineups or maybe considering selling a player for another etc.. I also wanted to add an UI that would make the game pleasant to play with, as a game should be.
 
-## Complexity [](#){name=complexity}
+## Complexity <a id="complexity"></a>
 ### Consuming API data:
 I manage to find a free API provider for English Premier League data (https://rapidapi.com/api-sports/api/API-FOOTBALL) that provides, players stats, historical player rating, fixture results, etc...
 All data is based on 2021 real English Premier League data, unfortunately the API provider allows only up to 100 connections a day free of charge (limit that is easly reached by FMX) hence I decided the following approach:
@@ -205,7 +209,7 @@ Playing in the FMX League is not the only way to play against other players, use
 If the challenge is accepted it will be immediately run against a **random** EPL round (with actual real live data), and the bet amount will be tranfered from the looser to the winner budget. FMX Table, elo rating, etc... are not impacted.
 ### My Stats
 As any sports game, match results and table standings are just part of the game, stats are always very appreciated by game players.
-I added a "My Stats" page where users can review which are the FMX overall best players and best goalscorers and where user could review team & players performance and also how the team is doing "financially" [^3]
+I added a "My Stats" page where users can review which are the FMX overall best players and best goalscorers and where user can review team & players performance and also how the team is doing "financially" [^3]
 ### Random headlines 
 Each time a player is bought/sold or a one2one challenge is accepted, a mockup newspaper frontpage is shown with an ai
 generated newspaper title. the mockup titles have been fetched from "OPEN AI" API (https://open-ai25.p.rapidapi.com/ask).
@@ -217,12 +221,12 @@ But on top of that it has a set of admin tools at his/hers disposal:
 + **Reset FMX**: Clicking the button will reset all FMX data and basically restart a new league: all teams/players scores and values are reset, and a new table (with all active lineups) is created.
 + **set round interval**: admin can set how often the scheduling job runs. In a live production game that would probably be every 24 hours, but since it would be impractical, the value can be set to just a few minutes. This feature require server restart.
 
-## How to play the game
+## How to play the game <a id="play"></a>
 The app should be launched with:
 **python manage.py runserver --noreload**
 
 The app comes preloaded with a number of accounts and a running FMX League (usernames: dario, tony, sarah, silvia, john. password: 1234 ), in order to join them we need to:
-1. register on the app with a unique user name and team name and choosing a team logo between a random selection of the available logos.
+1. Register on the app with a unique user name and team name and choosing a team logo between a random selection of the available logos.
 2. After registration we access the main dashboard. At this stage we can already view the latest round results or check the FMX League table but of course we are not part of it yet. 
 As the dashboard suggests, we should immediately create our team using the allocated budget (800 FMX coins)
 3. on the create squad page we are presented with a page divided in two: on the left side we can see the available players, while on the right the empty roster that we need to fill up taking into consideration our budget, recent career stats for each players are available. 
@@ -235,10 +239,10 @@ On the right we can see the available formations (352, 532, 442, 433). Here we c
 Once the lineup is saved, a popup informs us that we are now part of the FMX League!
 5. Any time a new FMX Leaugue is played by the scheduler, we'll be informed by a popup. Between rounds we can consult our team stats or create a fresh new lineup or even trade a player. 
 Players value is slightly increased or decreased after each round meaning every time we sell a player we may either make a profit or a loss. Also for each win or loss we'll get or loose 2 FMX coins. 
-6. At ay moment we can also challenge another team to a one2one (or we could receive a challenge), specifing a betting amount, allowing our team budget to increase or decrease [^6].
+6. At ay moment we can also challenge another team to a one2one (or we could receive a challenge), specifing a betting amount, allowing our team budget to increase or decrease.
 7. The admin player (user: admin, pswd: 1234) has got access to an admin menu. 
 
-### Matches score example 
+### Matches score example <a id="ex"></a>
 
 Let's immagine that on FMX League round 20 Little Island and Hackney Boys clash, for semplicity we'll assume 4 players teams. Here are the 2 lineups:
 <table>
@@ -294,12 +298,10 @@ Little Island won the fixure 57.4-57.0
 
 [^bignote]: in case of draw, the home team is declared a winner
 
-[^2]:The scheduled job interval can be set from the FMX admin account (2 minutes, 5 minutes, 1 hour, 24 hours, etc..)
+[^2]:The scheduled job interval can be set from the FMX admin account 
 
 [^3]:Teams can still play both League and one2one with a negative budget. However players can't be bought if funds are not available.
 
 [^4]:Players are not exclusive to a team, differently from real life a player can be a member of multiple separate teams.
 
 [^5]:Until the number of teams is odd, FMX Home Team is part of the table, however it's not shown on the overall table.
-
-[^6]: Teams budget can go into negative, although funds must be available if we wish to trade players.
