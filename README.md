@@ -10,7 +10,9 @@ b. [Distinctiveness](#Distinctiveness)
 
 # Intro  <a id="intro"></a>
 
-I wanted to create a project that felt “alive”, not just a website where users interact to each other, but a website that changes its internal status in time, providing a different experience each time a user logs in. I came up with a collective game, more specifically my own version of a fantasy football manager called **FMX**.
+I wanted to create a project that felt “alive”, not just a website where users interact to each other, but a website that changes its internal status in time, providing a different experience each time a user logs in. I came up with a collective game, more specifically my own version of a fantasy football manager called **FMX**. 
+
+**Screencast link:** https://youtu.be/RIFrugGWlF8
 
 **What’s a fantasy football manager (FFM) and what’s FMX?**
 
