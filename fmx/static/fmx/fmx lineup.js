@@ -17,7 +17,7 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 function clear_players(){
     const chosen_formation=document.getElementById("chosen_formation");
     formation=chosen_formation.innerHTML 
-    console.log("formation:" +formation)
+    
         color_d="secondary"
         player_position_d='Defender'
         line_d = Number(chosen_formation.innerHTML[0]);
@@ -319,7 +319,7 @@ function f_433(){
         A_2.classList.add('lineup_attacker', 'player-box-market')
         A_3.classList.add('lineup_attacker', 'player-box-market')
 
-        console.log('before');
+        
     
         G_1.innerHTML="Goalkeeper 1"
         D_1.innerHTML="Defender 1"
@@ -429,12 +429,7 @@ function get_lineup(){
                         row.append(col)
                         row.append(div2)
                         lineup_list.append(row)
-                        // var player = {}
-                        // player['id'] = lineup[0][`player_${Number(j)}_id`]
-                        // player['name']= lineup[0][`player_${Number(j)}`]
-                        // let player_name=lineup[0][`player_${Number(j)}_id`]
-                        //list_lineup.push(player)
-                        //console.log(list_lineup[j])
+                       
                     }
                     
                     
@@ -543,7 +538,7 @@ save_btn.addEventListener("click", function() {
        // console.log("json: "+box.innerHTML)
         jsonSquad.push({position: `player-${j}`, id: box.dataset.playerid});
     }
-    console.log(jsonSquad)
+   
     fetch(`/save_lineup`, {
         method: 'PUT',
         headers: { 'X-CSRFToken': csrftoken },
@@ -739,7 +734,7 @@ async function fetchPlayers(page,  position) {
                         show_details_btn.addEventListener('click', event => {
                         
                             const side_nav=document.getElementById("mySidenav");
-                            console.log("called:" + side_nav.style.width  )
+                          
                             if(side_nav.style.width==="0px"){
                                 get_player_details(event.target.id)
                                 document.getElementById("mySidenav").style.width = "340px";

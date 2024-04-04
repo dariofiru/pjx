@@ -317,8 +317,7 @@ def random_lineup(user):
      old_lineup = Lineup.objects.filter(active=True,user=user).first()
      lineup = Lineup.objects.filter(active=True,user=user).update(active=False)
      user_club = User_club.objects.filter(user=user).first()
-     logger.info(f'lineup to delete: {lineup}')
-     logger.info(f'user club to pick: {user_club}')
+   
      new_lineup=Lineup( player_1=user_club.goalkeeper_1 , player_2= user_club.defender_1, player_3= user_club.defender_2,
             player_4= user_club.defender_3 , player_5=user_club.defender_4 ,
               player_6= user_club.midfielder_1, player_7=user_club.midfielder_2 , player_8=user_club.midfielder_3 ,
@@ -357,6 +356,5 @@ def random_headline(request, type):
      headline=Headline.objects.filter(type=type).order_by('?').first()
      logging.basicConfig(level=logging.INFO)
      logger = logging.getLogger('fmx')
-     logger.info(f'headline:{headline.type} {headline.headline}')
      return JsonResponse(headline.serialize() , safe=False)
 

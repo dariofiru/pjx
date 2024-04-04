@@ -2,15 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function get_matches(){
-   // console.log("try")
         fetch( `round_results`)
         .then(response => response.text())
         .then(text => {
-            //console.log(text)
             if(text==="empty"){
 
             }else{
-                console.log(text)
                 var matches = JSON.parse(text);
                 var table_box=document.getElementById("table_box");
                 for (var i in matches) {
@@ -79,8 +76,7 @@ function get_matches(){
                         stats_btn.dataset.club2id=matches[i].club_2_id
                         
                         stats_btn.addEventListener('click', event => {
-                            console.log("click")
-                            console.log(event.target.dataset.matchid)
+                        
                             var result_box=document.getElementById("myModal-result");
                             var club_1=document.getElementById("club_1");
                             club_1.innerHTML=event.target.dataset.club1
@@ -111,9 +107,7 @@ function get_matches(){
                                 if(text==="empty"){
                                     console.log(text)
                                 }else{
-                                   // console.log(text)
-                                    //var squads = JSON.parse(text);
-                                   // console.log(squads)
+                              
                                     /////////////
                                     //////// creating stats box
                                     //////////////////
@@ -207,8 +201,7 @@ function get_matches(){
                                             
                                             row.append(col2)
                                         if(Number(players[i].club)===Number(stats_btn.dataset.club1id)){
-                                            console.log("qui")
-                                             
+                                       
                                             col_team_1.append(row)
                                             //console.log(col_team_2.innerHTML)
                                         }else if(Number(players[i].club)===Number(stats_btn.dataset.club2id)){
@@ -246,8 +239,7 @@ function get_matches(){
                         stats_btn.dataset.club1id=matches[i].club_1_id
                         stats_btn.dataset.club2id=matches[i].club_2_id
                         stats_btn.addEventListener('click', event => {
-                            console.log("click")
-                            console.log(event.target.dataset.matchid)
+                          
                             var result_box=document.getElementById("myModal-result");
                             var club_1=document.getElementById("club_1");
                             club_1.innerHTML=event.target.dataset.club1
@@ -374,15 +366,12 @@ function get_matches(){
                                             
                                             row.append(col2)
                                         if(Number(players[i].club)===Number(stats_btn.dataset.club1id)){
-                                            console.log("qui")
-                                             
+                                            
                                             col_team_1.append(row)
                                             //console.log(col_team_2.innerHTML)
                                         }else if(Number(players[i].club)===Number(stats_btn.dataset.club2id)){
-                                            console.log("team: "+players[i].club + " - "+stats_btn.dataset.club2id)
-                                           
-                                            col_team_2.append(row)
-                                            //console.log(col_team_2.innerHTML)
+                                             col_team_2.append(row)
+                                            
                                         }
                                     }
                                     //////////
@@ -396,9 +385,7 @@ function get_matches(){
                         });  
 
                         div2.append(stats_btn)
-
-
-                        
+              
                     }
                     table_row.append(div1)
                     table_row.append(home_logo_div)
@@ -413,7 +400,6 @@ function get_matches(){
                     //var div1 =document.getElementById("budget");
                     let score_1=matches[i].score_1;
                     let score_2=matches[i].score_2;
-                    console.log(score_1+" vs "+score_2)
 
                 }
                 

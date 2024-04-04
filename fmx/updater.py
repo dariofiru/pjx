@@ -10,7 +10,6 @@ def start():
     scheduler = BackgroundScheduler()
     tick = MatchTick.objects.first()
     logger.info(f'starting FMX : {round}')
-    #scheduler.add_job(round_retriever, 'interval', minutes=tick.interval, seconds=45)
-    scheduler.add_job(round_retriever, 'interval', minutes=1)
-    #scheduler.start()
+    scheduler.add_job(round_retriever, 'interval', minutes=tick.interval)
+    scheduler.start()
      

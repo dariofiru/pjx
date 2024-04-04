@@ -2,16 +2,16 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    console.log("has_squadmain: "+has_squad)
+    
     //console.log("csrftoken3: "+csrftoken3)
 previous = document.getElementById("page-item-Previous")
 next = document.getElementById("page-item-Next")
 
-//console.log("p:"+previous_link+ " n: "+next_link)
+
 next.addEventListener('click', event => {
     if (next.classList.contains('disabled'))
         return false;
-    console.log("next first=> p:"+ previous.value+ " n: "+next.value)
+   
     const team_search=document.getElementById("team_search"); 
     const position_search=document.getElementById("position_search");
     const price_search=document.getElementById("price_search"); 
@@ -23,13 +23,13 @@ next.addEventListener('click', event => {
      
     previous.value = previous.value + 1
     next.value = next.value + 1
-    console.log("next after=> p:"+ previous.value+ " n: "+next.value)
+   
     return false;
     });
 previous.addEventListener('click', event => {
     if (previous.classList.contains('disabled'))
         return false;
-    console.log("prev=> p:"+ previous.value+ " n: "+next.value)
+    
     const team_search=document.getElementById("team_search"); 
     const position_search=document.getElementById("position_search");
     const price_search=document.getElementById("price_search"); 
@@ -70,9 +70,9 @@ function get_lineup(){
                     playerid=lineup[0][`player_${Number(j)}_id`]
                     let player_name=lineup[0][`player_${Number(j)}_id`]
                     list_lineup.push(player)
-                    //console.log(list_lineup[j-1]['name'])
+                    
                 }
-                 //console.log(list_lineup)
+                
                 
             }            
         }
@@ -80,7 +80,7 @@ function get_lineup(){
 }
 
 get_lineup()    
-//console.log(list_lineup)
+
 
 
 var budget_box=document.getElementById("budget");
@@ -97,14 +97,14 @@ async function get_data(){
                 var budget_box=document.getElementById("budget");
                 var remaining_budget=club_data[0].remaining_budget
                 budget_box.innerHTML=`${remaining_budget.toFixed(1)}`
-                console.log("Budget: "+ remaining_budget )
+              
                 for (i in club_data){
-                //console.log(club_data)
+                
                 let box =document.getElementById(`${club_data[i].position}`);
                 boxpic =document.getElementById(`${club_data[i].position}-pic`);
                 boxclose =document.getElementById(`${club_data[i].position}-close`);
                 let player_box=document.getElementById(`player-${club_data[i]['id']}`);
-                //console.log("=>"+boxclose.innerHTML)
+             
                 box.dataset.price=club_data[i].value
 
                 boxclose.style.display="block"
@@ -143,7 +143,7 @@ async function get_data(){
                         }
                     }
                     classes = player_in_team.classList;
-                    console.log("last:"+classes);
+                   
                 }
                  
 
@@ -165,8 +165,7 @@ async function get_data(){
                     box.classList.remove('bg-danger-subtle','text-black')
                     box.classList.add('bg-danger','text-white') 
                 }else if(club_data[i]['position'].includes('Defender')){
-                    //console.log("=>"+club_data[i]['position']);
-                    //console.log("=>"+boxclose.id);
+
                     box.dataset.color='secondary'
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "),  "secondary"); };
                
@@ -174,8 +173,7 @@ async function get_data(){
                     box.classList.add('bg-secondary','text-white') 
                 }
                 else if(club_data[i]['position'].includes('Midfielder')){
-                    //console.log("=>"+club_data[i]['position']);
-                    //console.log("=>"+boxclose.id);
+
                     box.dataset.color='primary'
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "), "primary"); };
                
@@ -183,8 +181,7 @@ async function get_data(){
                     box.classList.add('bg-primary','text-white') 
                 }
                 else if(club_data[i]['position'].includes('Attacker')){
-                    //console.log("=>"+club_data[i]['position']);
-                    //console.log("=>"+boxclose.id);
+
                     box.dataset.color='success'
                     boxclose.onclick = () => { sell_player(club_data[i]['id'],box, boxclose,club_data[i]['position'],  club_data[i]['position'].replace("-", " "),  "success"); };
                
@@ -205,8 +202,7 @@ var sold_list=[]
 //sell_player(player_box,club_data[i]['id'],box, boxclose,club_data[i].position,  club_data[i].position.replace("-", " "),  "success")
 function sell_player(player_id, box, boxclose, position_del, empty_position, color_del){
     var sold_name= box.innerHTML
-    //console.log("sold_name"+sold_name)
-    //console.log("boxclose: "+boxclose.id)
+ 
     var modal = document.getElementById("myModal-sell");
     const content_box=document.getElementById("content-box-sell");
     //const gif=document.getElementById("shaking-gif");
@@ -232,7 +228,6 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
                 headline=headline.replace("*name*",sold_name)
                 headline=headline.replace("*team*",club_name) 
                 headline_txt.innerHTML=headline 
-                console.log(headline+" - "+headline.length)
                 
              }
              const player_sell_name=document.getElementById("player_sell_name");
@@ -246,15 +241,11 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
        
         let player_box_sold=document.getElementById(`player-${event.target.dataset.playerid}`);
 
-        //console.log("BOX: "+player_box_sold.innerHTML )
-        //console.log("NAME: "+event.target.dataset.playername)
         if (typeof(player_box_sold) != 'undefined' && player_box_sold != null)
         {
-              //console.log("BOX: "+player_box_sold.innerHTML )
-             //console.log("NAME: "+event.target.dataset.playername)
+ 
             if(player_box_sold.innerHTML.includes(event.target.dataset.playername)){
-                //console.log("2x color: "+box.dataset.color )
-                //console.log("3x color: "+event.target.dataset.color )
+
     
                 player_box_sold.classList.add(`bg-${event.target.dataset.color}-subtle`,`text-black`)
                 player_box_sold.classList.remove(`bg-${event.target.dataset.color}`,`text-white`) 
@@ -279,7 +270,6 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
     boxpic.innerHTML=""
     boxclose.style.display="none"
     boxclose.dataset.playerid="0"
-    console.log("1 color: "+color )
     box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.classList.remove(`bg-${color}`,`text-white`) 
     //cd csplayer_box.classList.add(`bg-${color}-subtle`,`text-black`)
@@ -300,7 +290,7 @@ function sell_player(player_id, box, boxclose, position_del, empty_position, col
 
 function check_signed(player_id, position){
         // check if a player in the main list is already bought
-        console.log()
+      
         let pos_counter=0;
         if(position==="Goalkeeper"){
             pos_counter=2;
@@ -364,10 +354,10 @@ function confirm_sign_player() {
         //// TODO AVOID CALL LOOP
          var available = document.getElementsByClassName('player-box-market');
          var is_available=false
-         console.log(event.target.dataset.playername)
+         //console.log(event.target.dataset.playername)
         // console.log(det_player_name.innerHTML)
          for(var index=0;index < available.length;index++){
-            console.log(available[index].innerHTML);
+            //console.log(available[index].innerHTML);
             let available_txt=available[index].innerHTML
            // console.log(available_txt.includes(`${det_player_position.innerHTML}`))
             if(available_txt.includes(`${det_player_position.innerHTML}`)==true)
@@ -375,7 +365,7 @@ function confirm_sign_player() {
             if(available_txt.includes(`${event.target.dataset.playername}`)==true)
                 return false;
         }
-        console.log("nome: "+event.target.dataset.playername)
+       // console.log("nome: "+event.target.dataset.playername)
         if(is_available==false)
            alert("Position full")
 
@@ -391,11 +381,7 @@ function confirm_sign_player() {
     
         budget_box.innerHTML=`${remaning_budget.toFixed(1)}`
         curr_budget=remaning_budget
-        console.log("=>"+curr_budget+" - "+pl_value_tmp)
-        //if (pl_value>curr_budget){
-          //  alert("not enough money");
-            //return false;
-        //}
+     
  
 
     var modal = document.getElementById("myModal");
@@ -465,7 +451,7 @@ function confirm_sign_player() {
             modal.style.display = "none";
             return false
         }
-                    console.log("full")
+                   // console.log("full")
         } // end goalkeeper
         else if(det_player_position.innerHTML==="Defender"){
         let why = det_player_name.innerHTML
@@ -558,7 +544,7 @@ function confirm_sign_player() {
 
 
 function remove_sign(player_box, box, boxclose, position, empty_position, color){
-    console.log("1:"+boxclose.dataset.playerid+ " - 2:"+ empty_position+" - 3;"+player_box)
+     
     //lineupDelete_players
     let player_box_price=document.getElementById(`player-${det_player_id.innerHTML}`);
     let pl_value=Number(player_box_price.dataset.price)
@@ -574,11 +560,10 @@ function remove_sign(player_box, box, boxclose, position, empty_position, color)
     player_box.classList.add(`bg-${color}-subtle`,`text-black`)
     box.innerHTML=empty_position
     //let pl_value= Number(box.dataset.price)
-    console.log("box.dataset.price: "+box.innerHTML)
-    console.log("pl_value: "+pl_value)
+ 
     var budget_box=document.getElementById("budget");
     let curr_budget=Number(budget_box.innerHTML)
-    console.log("curr_budget: "+ curr_budget)
+  
     let remaning_budget = curr_budget+pl_value
     budget_box.innerHTML=`${remaning_budget.toFixed(1)}`
 }
@@ -652,48 +637,48 @@ save_btn.addEventListener("click", function() {
             return;
         }
         jsonSquad.push({ position: `Goalkeeper-${i}`,id: box.dataset.playerid});
-        console.log(box.dataset.playerid+ " - " +list_lineup.includes(`box.dataset.playerid`))
+  
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
 
     }
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Defender-${i}`);
-        console.log("json: "+box.innerHTML)
+      
         if(box.innerHTML.includes("Defender")){
             alert("Please fill up all positions")
             return;
         }
         jsonSquad.push({ position: `Defender-${i}`, id: box.dataset.playerid });
-        console.log(box.dataset.playerid+ " - " +list_lineup.includes(Number(box.dataset.playerid)))
+     
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
     }
     for (var i = 1; i < 6; i++) {
         let box = document.getElementById(`Midfielder-${i}`);
-        console.log("json: "+box.innerHTML)
+      
         if(box.innerHTML.includes("Midfielder")){
             alert("Please fill up all positions")
             return;
         }
         jsonSquad.push({position: `Midfielder-${i}`, id: box.dataset.playerid});
-        console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
+      
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
     }
     for (var i = 1; i < 5; i++) {
         let box = document.getElementById(`Attacker-${i}`);
-        console.log("json: "+box.innerHTML)
+       
         jsonSquad.push({ position: `Attacker-${i}`, id: box.dataset.playerid});
         if(box.innerHTML.includes("Attacker")){
             alert("Please fill up all positions")
             return;
         }
-        console.log(box.dataset.playerid+ " - " +list_lineup.includes(box.dataset.playerid))
+        
         if(list_lineup.includes(Number(box.dataset.playerid)) ) 
             lineupDelete.push(Number(box.dataset.playerid))
     }
-    console.log("list: "+lineupDelete)
+    
     var budget_box=document.getElementById("budget");
     let curr_budget=Number(budget_box.innerHTML)  
     
@@ -701,7 +686,7 @@ save_btn.addEventListener("click", function() {
      
      
     document.getElementById('Modal-saved-squad').style.display='block'
-    console.log("has_squad1: "+has_squad)
+   
 
 
     fetch(`/save_squad`, {
@@ -718,18 +703,18 @@ save_btn.addEventListener("click", function() {
     }) 
 
     modal_box=document.getElementById('Modal-saved-squad')
-    console.log("has_squad: "+has_squad)
+   
     if(has_squad==true){
-        console.log("1: "+has_squad)
+      
         document.getElementById('upd_squad_msg').style.display='block'
         document.getElementById('new_squad_msg').style.display='none'
     }else{
-        console.log("2: "+has_squad)
+      
         document.getElementById('upd_squad_msg').style.display='none'
         document.getElementById('new_squad_msg').style.display='block'
     }
     document.getElementById('Modal-saved-squad').style.display='block'
-    // console.log("Modal?")
+    
     return false;
 // })
      
@@ -859,7 +844,7 @@ async function buyPlayer(player_id, player_value,player_position, player_fullnam
 async function fetchPlayers(page, team, position, price, order) {
     const csrftoken = csrftoken3;
     //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    console.log("link"+`players/${page}/${team}/${position}/`)
+  
         var my_likesR = [];
           
           fetch(`players/${page}/${team}/${position}/${price}/${order}/${user_id}` )
@@ -915,7 +900,7 @@ async function fetchPlayers(page, team, position, price, order) {
                             still_bought=true
                         }
                     }
-                    console.log(player[i].name+" still_bought: "+still_bought)
+                   
                      if (player[i].position ==="Attacker"){
                         if((is_signed || player[i].in_squad)&&still_bought) 
                             player_name.classList.add( 'bg-success');
@@ -984,7 +969,7 @@ async function fetchPlayers(page, team, position, price, order) {
                         show_details_btn.style.margin="5px"
                         show_details_btn.addEventListener('click', event => {
                             const side_nav=document.getElementById("mySidenav");
-                            console.log("called:" + side_nav.style.width + " - "+side_nav.innerHTML)
+                           
                             if(side_nav.style.width==="0px"){
                                 get_player_details(event.target.id)
                                 document.getElementById("mySidenav").style.width = "340px";
@@ -1052,11 +1037,11 @@ async function fetchPlayers(page, team, position, price, order) {
                         det_player_name.innerHTML=player_fullname
                         const det_player_position=document.getElementById("det_player_position");
                         det_player_position.innerHTML=player_position
-                        console.log(`${player_fullname}:${player_value} - ${photo}`)
+                     
 
                         var available = document.getElementsByClassName('player-box-market');
                         var is_available=false
-                        console.log(player_fullname)
+                      
                        // console.log(det_player_name.innerHTML)
                         for(var index=0;index < available.length;index++){
                            //console.log(available[index].innerHTML);

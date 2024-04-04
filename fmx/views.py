@@ -257,7 +257,7 @@ def importPlayers(request):
                })
 
 
-def get_player_value():
+def get_player_value(): # calculates initial players value
     players= Player.objects.all()
     d = {'player': '0'}
     for player in players:
@@ -303,9 +303,9 @@ def players(request,page,team,position,value, order, id):
     player_id_list=[]
     try:
           user_clubT = User_club.objects.filter(user__in=userT).get() 
-          logger.info(user_clubT)
+          #logger.info(user_clubT)
           player_id_list=user_clubT.list_players_club 
-          logger.info(player_id_list) 
+          #logger.info(player_id_list) 
           #user_clubT =  user_clubT.first()
     except User_club.DoesNotExist:
           pass
@@ -347,7 +347,7 @@ def players(request,page,team,position,value, order, id):
         except Player.DoesNotExist:
             HttpResponse("error")
     paginator = Paginator(players, 6)
-    logger.info(f'paginator: {paginator.num_pages} ') 
+    #logger.info(f'paginator: {paginator.num_pages} ') 
     players = paginator.get_page(page)
      
     json_final =[]

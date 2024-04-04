@@ -71,19 +71,19 @@ def get_last_results(request):
      json_final =[]
      for x in range(1,5):
         json_tmp={}
-        logger.info(f"round {table_round.round_id }")
+        #logger.info(f"round {table_round.round_id }")
         try:
             previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_1=user_club).get()
             json_tmp=previous_played.serialize()
             json_final.append(json_tmp)
-            logger.info(f"q {table_round.round_id-x} -   - {previous_played}")
+            #logger.info(f"q {table_round.round_id-x} -   - {previous_played}")
         except Table.DoesNotExist:
             pass
         try:
             previous_played = Table.objects.filter(round_id=table_round.round_id-x, squad_2=user_club).get()
             json_tmp=previous_played.serialize()
             json_final.append(json_tmp)
-            logger.info(f"q { table_round.round_id-x} -   - {previous_played}")
+            #logger.info(f"q { table_round.round_id-x} -   - {previous_played}")
         except Table.DoesNotExist:
             pass    
      return JsonResponse(json_final, safe=False)
@@ -215,8 +215,6 @@ def club_stats(request):
      try: 
         #logger.info(f"curr_player: {curr_player.name}")
         result = Tmp_lineup_score.objects.values('player').filter(player=curr_player).annotate(total=Avg('score')).get()
-       # logger.info(f"result: {result}") 
-        #logger.info(f"result2: {result['total']}")
         json_tmp["avg"]=round(result['total'],2)
      except Tmp_lineup_score.DoesNotExist:
         json_tmp["avg"]=6.0+curr_player.rating

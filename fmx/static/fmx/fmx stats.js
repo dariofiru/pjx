@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     //console.log(text)
                     var squads = JSON.parse(text);
                     var top_scorers=document.getElementById("top_scorers");
-                    console.log(squads)
+                 
                     var table_row_h = document.createElement('div')
                     var div1_h =document.createElement('div')
                     var player_name_h=document.createElement('div')
@@ -223,7 +223,7 @@ function get_my_stats(){
                         //console.log(text)
                         var squads = JSON.parse(text);
                         var top_scorers=document.getElementById("my_stats");
-                        console.log(squads)
+                     
                         var table_row_h = document.createElement('div')
                         var div1_h =document.createElement('div')
                         var player_name_h=document.createElement('div')
@@ -281,7 +281,7 @@ function get_my_stats(){
                             top_scorers.append(table_row) 
                          
                         }      
-                        console.log(delta_final +" "+typeof(delta_final)+" = "+typeof(delta))
+                       
                     }
                 });
             }
@@ -321,7 +321,7 @@ function get_squad_best_men(){
             }else{
                 //console.log(text)
                 var data = JSON.parse(text);
-                console.log(data)
+               
                 var club_goals=document.getElementById("club_goals");
                 var club_assists=document.getElementById("club_assists");
                 var club_yellowcard=document.getElementById("club_yellowcard");

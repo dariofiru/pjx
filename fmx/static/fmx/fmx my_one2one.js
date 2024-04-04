@@ -33,7 +33,7 @@ close_result_btn.addEventListener("click", function() {
 
 
 function get_matches(challenge_status, challenge_order,braved_status,braved_order){
-    console.log(`my_one2one_data/${challenge_status}/${challenge_order}/${braved_status}/${braved_order}`)
+   // console.log(`my_one2one_data/${challenge_status}/${challenge_order}/${braved_status}/${braved_order}`)
     var cleanup= document.getElementById('challenge_box_in')
     cleanup.innerHTML=""
     cleanup= document.getElementById('braved_box_in')
@@ -41,7 +41,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
         fetch( `my_one2one_data/${challenge_status}/${challenge_order}/${braved_status}/${braved_order}`)
         .then(response => response.text())
         .then(text => {
-           console.log(text)
+           //console.log(text)
             if(text==="empty"){
 
             }else{
@@ -52,7 +52,6 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                 
                 for (var i in matches) {
                     if(matches[i].braved==='false'){
-                        console.log("not braved")
                     var row =  document.createElement('div')
                     var challenge_header=document.getElementById("challenge_header");
                     //challenge_header.style.display='block'
@@ -81,21 +80,19 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         res_btn.dataset.one2oneid=matches[i].id
                         res_btn.innerHTML="View results"
                         res_btn.addEventListener('click', event => { //// results
-                            console.log("->"+event.target.dataset.one2oneid)
                             var myModal_chall=document.getElementById("myModal-result");  
                              myModal_chall.style.display='block'
                             fetch( `get_one2one/${event.target.dataset.one2oneid} `)
                             .then(response => response.text())
                             .then(text => {
                                 var result = JSON.parse(text);
-                                console.log(result)
-                                console.log("call one2one: "+"get_one2one/"+event.target.dataset.one2oneid)
+
                                     var btn_stats=document.getElementById("btn_stats");
                                      
                                     btn_stats.dataset.one2oneid=event.target.dataset.one2oneid
                                     var logo_1=document.getElementById("logo_1");
                                     logo_1.src=`${result[0].logo_1}`
-                                    console.log(result[0].logo_1)
+                                   
                                     var logo_2=document.getElementById("logo_2");
                                     logo_2.src=`${result[0].logo_2}`
                                     var club_1=document.getElementById("club_1");
@@ -114,7 +111,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                       fetch( `get_one2one_stats/${event.target.dataset.one2oneid} `)
                                       .then(response => response.text())
                                       .then(text => {
-                                        console.log("call stats: "+"get_one2one_stats/"+event.target.dataset.one2oneid)
+                                     
                                         document.getElementById('stats').style.display='none'
                                         var col_team_1=document.getElementById("col_team_1");
                                         var col_team_2=document.getElementById("col_team_2");
@@ -175,7 +172,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         row_top2.append(col6_2)
                                         col_team_2.append(row_top2)   
                                           var players = JSON.parse(text);
-                                              console.log(players)
+                                            
                                               for (var i in players) {
                                                   var row =  document.createElement('div')
                                                       row.classList.add('row','border', 'm-0','p-0',  'text-black')
@@ -206,18 +203,18 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                                       
                                                       row.append(col2)
                                                   if(Number(players[i].club)===Number(result[0].club_1_id)){
-                                                      console.log("qui")
+                                                    
                                                       score_1_correct=score_1_correct+Number(players[i].score) 
                                                       col_team_1.append(row)
                                                       //console.log(col_team_2.innerHTML)
                                                   }else if(Number(players[i].club)===Number(result[0].club_2_id)){
-                                                      console.log("team: "+players[i].club + " - "+result[0].lineup_2)
+                                                     
                                                       score_2_correct=score_2_correct+Number(players[i].score)
                                                       col_team_2.append(row)
                                                       //console.log(col_team_2.innerHTML)
                                                   }
                                               }
-                                              console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
+                                              //console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
                                               if(score_1_correct<score_2_correct){
                                                 score_1.style.color="red"
                                                 score_2.style.color="green"
@@ -265,7 +262,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                     row.append(col3)
                     challenge_box.append(row)
                     }else{
-                        console.log(" braved")
+                    
                         var row =  document.createElement('div')
                     row.classList.add('row','m-2','border-black','border','rounded-2')
                     var col =  document.createElement('div')
@@ -296,7 +293,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         
                         res_btn.innerHTML="View results"
                         res_btn.addEventListener('click', event => { //results
-                            console.log("->"+event.target.dataset.one2oneid)
+                           
                             var myModal_chall=document.getElementById("myModal-result");  
                              myModal_chall.style.display='block'
                             fetch( `get_one2one/${event.target.dataset.one2oneid} `)
@@ -304,20 +301,20 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                             .then(text => {
                                     
                                     var result = JSON.parse(text);
-                                    console.log( result)
+                                    //console.log( result)
                                     var btn_stats=document.getElementById("btn_stats");
                                     
                                     btn_stats.dataset.one2oneid=event.target.dataset.one2oneid
                                     var logo_1=document.getElementById("logo_1");
                                     logo_1.src=`${result[0].logo_1}`
-                                    //console.log(result[22]["one2one"].logo_1)
+                                    ////console.log(result[22]["one2one"].logo_1)
                                     var logo_2=document.getElementById("logo_2");
                                     logo_2.src=`${result[0].logo_2}`
                                     var club_1=document.getElementById("club_1");
                                     club_1.innerHTML=`${result[0].lineup_1_name}`
                                     var club_2=document.getElementById("club_2");
                                     club_2.innerHTML=`${result[0].lineup_2_name}`
-                                    //console.log("me: "+ " "+club_name)
+                                    ////console.log("me: "+ " "+club_name)
                                     var score_1=document.getElementById("score_1");
                                     var score_2=document.getElementById("score_2");
                                     
@@ -391,7 +388,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         row_top2.append(col6_2)
                                         col_team_2.append(row_top2)   
                                 var players = JSON.parse(text);
-                                    console.log(players)
+                                    //console.log(players)
                                     for (var i in players) {
                                         var row =  document.createElement('div')
                                             row.classList.add('row','border', 'm-0','p-0',  'text-black')
@@ -421,18 +418,18 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                             
                                             row.append(col2)
                                         if(Number(players[i].club)===Number(result[0].club_1_id)){
-                                           // console.log("qui")
+                                           // //console.log("qui")
                                            score_1_correct=score_1_correct+Number(players[i].score) 
                                             col_team_1.append(row)
-                                            //console.log(col_team_2.innerHTML)
+                                            ////console.log(col_team_2.innerHTML)
                                         }else if(Number(players[i].club)===Number(result[0].club_2_id)){
-                                            console.log("team: "+players[i].club + " - "+result[0].lineup_2)
+                                            //console.log("team: "+players[i].club + " - "+result[0].lineup_2)
                                             score_2_correct=score_2_correct+Number(players[i].score)
                                             col_team_2.append(row)
-                                            //console.log(col_team_2.innerHTML)
+                                            ////console.log(col_team_2.innerHTML)
                                         }
                                     }
-                                    console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
+                                    //console.log("score1 correct: "+ score_1_correct+ " score2 correct: "+score_2_correct)
                                               if(score_1_correct<score_2_correct){
                                                 score_1.style.color="red"
                                                 score_2.style.color="green"
@@ -478,9 +475,9 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         accept_btn.dataset.lineup2=matches[i].club_name
                         
                         accept_btn.addEventListener('click', event => {
-                            console.log("->"+event.target.dataset.one2oneid)
-                            console.log("1:"+matches[i].club_name)
-                            console.log("2:"+club_name)
+                            //console.log("->"+event.target.dataset.one2oneid)
+                            //console.log("1:"+matches[i].club_name)
+                            //console.log("2:"+club_name)
                             var myModal_chall=document.getElementById("myModal-chall");  
                             myModal_chall.style.display='block'
 ///////////////////////////////////////////////////////
@@ -524,7 +521,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                                         );
                                      }
                                  );
-                                 console.log(headline_var)
+                                 //console.log(headline_var)
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -541,7 +538,7 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                             // }).then(response => {
                             //     return response.text()
                             // }).then(data => {
-                            //      console.log("here") 
+                            //      //console.log("here") 
                             //      console.log("3:"+matches[i].club_name)
                             // console.log("4:"+club_name)
                             //     // var headline_var="hello"
@@ -585,11 +582,11 @@ function get_matches(challenge_status, challenge_order,braved_status,braved_orde
                         refuse_button.dataset.one2oneid=matches[i].id
                         refuse_button.classList.add('btn','btn-danger', 'm-1', 'btn-sm')
                         refuse_button.addEventListener('click', event => {
-                            console.log("->"+event.target.dataset.one2oneid)
+                            //console.log("->"+event.target.dataset.one2oneid)
                             fetch( `refuse_challenge/${event.target.dataset.one2oneid}`)
                             .then(response => response.text())
                             .then(text => {
-                               //console.log(text)
+                               ////console.log(text)
                      });
                             alert("You have refused the challenge")
 
@@ -614,25 +611,25 @@ get_matches(0,0,0,"timestamp")
  
  
 const challenge_status=document.getElementById("challenge_status"); 
-console.log("- "+challenge_status.value)
+//console.log("- "+challenge_status.value)
 const challenge_order=document.getElementById("challenge_order");
-console.log("- "+challenge_order.value)
+//console.log("- "+challenge_order.value)
 const braved_status=document.getElementById("braved_status"); 
 const braved_order=document.getElementById("braved_order"); 
 challenge_status.addEventListener("change", function() {
-    console.log("change1")
+    
     get_matches(challenge_status.value, challenge_order.value,braved_status.value,braved_order.value)
 });
 challenge_order.addEventListener("change", function() {
-    console.log("change2")
+   
     get_matches(challenge_status.value, challenge_order.value,braved_status.value,braved_order.value)
 });
 braved_status.addEventListener("change", function() {
-    console.log("change3")
+    
     get_matches(challenge_status.value, challenge_order.value,braved_status.value,braved_order.value)
 });
 braved_order.addEventListener("change", function() {
-    console.log("change4")
+  
     get_matches(challenge_status.value, challenge_order.value,braved_status.value,braved_order.value)
 });
 

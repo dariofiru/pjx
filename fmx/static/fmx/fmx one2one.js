@@ -15,7 +15,7 @@ function get_matches(){
             }else{
                 //console.log(text)
                 var matches = JSON.parse(text);
-                console.log(matches)
+                ////console.log(matches)
                 var table_box=document.getElementById("table_box");
                 var clubs=matches.length
                 var row =  document.createElement('div')
@@ -57,7 +57,7 @@ function get_matches(){
                         modal.style.display='block'
                         //console.log("?>"+event.target.dataset.clubname)
                     });
-                    console.log(matches[i].pending)
+                   
                     if(matches[i].pending){
                         
                         var pending_box =document.createElement('div')
@@ -89,7 +89,7 @@ get_matches()
 var confirm_chall_btn=document.getElementById("confirm_chall_btn");
 confirm_chall_btn.addEventListener('click', event => {
     var typeNumber=document.getElementById("typeNumber");
-    console.log("typeNumber:" +typeNumber.value)
+   
     if (typeNumber.value ==""||typeNumber.value ==0){return false; }
     if (Number(typeNumber.value)>20){
 

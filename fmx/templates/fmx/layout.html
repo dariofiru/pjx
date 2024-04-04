@@ -284,12 +284,12 @@ function startcheckRound(url){
           start= start['round_num'] 
           if(start>start_round){
             
-            console.log("New match available: "+start+"-"+start_round)
+            //console.log("New match available: "+start+"-"+start_round)
             start_round=start
             document.getElementById("Modal-new_match").style.display="block"
           }
           else{
-            console.log("still on round: "+start+"-"+start_round)
+            //console.log("still on round: "+start+"-"+start_round)
           }   
         }, 18000);     
       }
@@ -299,7 +299,7 @@ fetch(`get_start`)
 var start = JSON.parse(text);
  
 start_round= start['round_num'] 
-    console.log(" =>" +start_round)
+   // console.log(" =>" +start_round)
     });
 startcheckRound('get_start')
 
@@ -310,8 +310,6 @@ tick_schedule.addEventListener("change", function() {
               .then(response => response.text())
               .then(text => {
                
-               
-                  console.log(" =>" +text)
                   if(text==="done"){
                     alert('New settings will be active at restart')
                   }
