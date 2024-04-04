@@ -1,5 +1,10 @@
  
-# Intro  
+# Table of Contents
+
+1. [Complexity](#complexity)
+
+
+# Intro  [](#){name=Intro}
 
 I wanted to create a project that felt “alive”, not just a website where users interact to each other, but a website that changes its internal status in time, providing a different experience each time a user logs in. I came up with a collective game, more specifically my own version of a fantasy football manager called **FMX**.
 
@@ -34,7 +39,7 @@ The main rules of an FFM are:
 
 The idea that drove me on this project was to create an app that felt "alive", where users could not just interact with each other but where the app in itself would have an internal status that would change in time based on real life data. Something that people may enjoy playing, an app to spend a few minutes every day checking stats, the latest round results, creating a new lineups or maybe considering selling a player for another etc.. I also wanted to add an UI that would make the game pleasant to play with, as a game should be.
 
-## Complexity
+## Complexity [](#){name=complexity}
 ### Consuming API data:
 I manage to find a free API provider for English Premier League data (https://rapidapi.com/api-sports/api/API-FOOTBALL) that provides, players stats, historical player rating, fixture results, etc...
 All data is based on 2021 real English Premier League data, unfortunately the API provider allows only up to 100 connections a day free of charge (limit that is easly reached by FMX) hence I decided the following approach:
@@ -212,7 +217,9 @@ But on top of that it has a set of admin tools at his/hers disposal:
 + **Reset FMX**: Clicking the button will reset all FMX data and basically restart a new league: all teams/players scores and values are reset, and a new table (with all active lineups) is created.
 + **set round interval**: admin can set how often the scheduling job runs. In a live production game that would probably be every 24 hours, but since it would be impractical, the value can be set to just a few minutes. This feature require server restart.
 
-### How to play the game
+## How to play the game
+The app should be launched with:
+**python manage.py runserver --noreload**
 
 The app comes preloaded with a number of accounts and a running FMX League (usernames: dario, tony, sarah, silvia, john. password: 1234 ), in order to join them we need to:
 1. register on the app with a unique user name and team name and choosing a team logo between a random selection of the available logos.
